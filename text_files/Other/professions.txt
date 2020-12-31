@@ -1,0 +1,48 @@
+lawyers
+doctors
+cashiers
+professors
+students
+gamers
+nurses
+teachers
+video editors
+photo editors
+physicists
+technicians
+waiters
+scientists
+counselors
+psychologists
+sociologists
+psychiatrists
+barbers
+bartenders
+programmers
+pilots
+chemists
+librarians
+managers
+carpenters
+police officers
+clowns
+miners
+writers
+janitors
+chefs
+dancers
+dentists
+directors
+pilots
+models
+truck drivers
+farmers
+zoologists
+instructors
+musicians
+journalists
+bankers
+basketball players
+baseball players
+soccer players
+hockey players
