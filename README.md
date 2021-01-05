@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # (Not) Super Seducer: The Bootleg Version
 (Couldn't think of a better name)
 
@@ -46,3 +47,6 @@ For possible clueless users, like my future self, that may not understand how to
 - This game is a WIP (though I'm not planning to work on it any time soon). Things may be added, removed, etc. Who knows what'll happen?
 
 - If you've played the game, you'll notice that some questions tend to repeat themselves across multiple playthroughs. This is because I only added 20 questions to the game. I ask you 15 of these questions (no repeats). So, for each completed playthrough you're going to cover 3/4 of my made questions. That's a lot! If you do have anymore questions, feel free to suggest them.
+=======
+# seducer-bootleg
+>>>>>>> b21c3830ad8537d7367376e89a1998fe49dc5d11
