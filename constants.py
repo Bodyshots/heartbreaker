@@ -2,6 +2,7 @@ import pygame as pg
 from os.path import abspath
 
 pg.init()
+
 # Battle Options
 
 OPTION_A = 'A'
@@ -48,7 +49,6 @@ OBJECTIVE = 'Objective'
 ACTIVE = 'Active'
 NEGATIVE = 'Negative'
 
-
 # Sounds
 
 conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\437.wav'))
@@ -68,17 +68,16 @@ drum_roll_SE = pg.mixer.Sound(abspath(r'Sounds\SE\drum_roll.wav'))
 gunshot_1_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshot.wav'))
 gunshot_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshot_2.wav'))
 panic_SE = pg.mixer.Sound(abspath(r'Sounds\SE\crowd_panic.wav'))
-panic2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\crowd_panic2.wav'))
 cough_SE = pg.mixer.Sound(abspath(r'Sounds\SE\cough.wav'))
 
-# Making all sounds have a consistent volume of around 0.4
+# Making all sounds have a consistent volume of around 0.5
 
-sound_vol = 0.4
+sound_vol = 0.5
 
 sounds = [conf_gain_SE, conf_lose_SE, cologne_SE, slap_SE, invalid_SE, slam_SE,
           info_SE, toilet_SE, invalid_2_SE, run_SE, select_SE, fight_SE,
           table_slam_SE, drum_roll_SE, gunshot_1_SE, gunshot_2_SE, panic_SE,
-          panic2_SE, cough_SE]
+          cough_SE]
 
 for i in sounds:
     i.set_volume(sound_vol)

@@ -11,7 +11,7 @@ pg.init()
 
 class Character:
     """
-    Create a new character
+    Create a new Character
 
     """
 
@@ -127,7 +127,7 @@ def confusion(person: Character) -> int:
 
 def funny(person: Character) -> int:
     """
-    Return a positive/negative integer, simulating the user's reaction to
+    Return a positive/negative/zero integer, simulating the user's reaction to
     <person> laughing at/with the user.
 
     """
@@ -141,8 +141,8 @@ def funny(person: Character) -> int:
 
 def sincere_laugh(person: Character) -> int:
     """
-    Return a positive integer, simulating the user's reaction to
-    <person> laughing with the user.
+    Return a positive integer, simulating the user's reaction to <person>
+    laughing with the user.
 
     This is a more generalized version of the funny function (haha).
 
@@ -170,7 +170,7 @@ def loves_energy(person: Character) -> int:
     Return a positive integer, simulating the user's reaction to <person>'s
     adoration for the "energy" the user outputs.
 
-    This function is typically reserved for ActiveCharacter classes.
+    This function is typically reserved for ActiveCharacter instances.
 
     """
 
@@ -183,7 +183,7 @@ def lack_energy(person: Character) -> int:
     Return a negative integer, simulating the user's reaction to <person>
     disapproving of the user's lack of energy.
 
-    This function is typically reserved for ActiveCharacter classes.
+    This function is typically reserved for ActiveCharacter instances.
 
     """
 
@@ -238,11 +238,10 @@ def badass(person: Character) -> int:
 
 def pathetic(person: Character) -> int:
     """
-    Return a tiny positive/negative integer, simulating the user's response
-    to <person> taking pleasure in their uselessness
-    (a mixed response really).
+    Return a tiny positive/negative/zero integer, simulating the user's response
+    to <person> taking pleasure in their uselessness (a mixed response really).
 
-    This function is reserved for NegativeCharacter classes.
+    This function is reserved for NegativeCharacter instances.
 
     """
 
@@ -251,7 +250,7 @@ def pathetic(person: Character) -> int:
     return randint(NEUTRAL, MINOR_POS)
 
 
-# Functions that use other functions
+# Functions that use other functions (that have been previously created by me)
 
 
 def person_is_profession(person: Character) -> int:
@@ -261,9 +260,9 @@ def person_is_profession(person: Character) -> int:
     user insulted.
 
     If <person>'s true_pers is OBJECTIVE then return the output of 
-    unimpressed(person). If <person>'s true_pers is NEGATIVE, then
+    unimpressed(<person>). If <person>'s true_pers is NEGATIVE, then
     print some text and return a positive int. Otherwise, return the
-    output of slap(person).
+    output of slap(<person>).
 
     """
 
@@ -294,6 +293,9 @@ def crowd_silence_effects(person: Character) -> int:
     """
     Return a large negative integer, simulating the user's reaction to
     <person>'s response after the restaurant is silenced by the user's actions.
+
+    If <person>'s true_pers is ACTIVE, return a medium negative/positive
+    integer or 0.
 
     """
 
@@ -341,8 +343,8 @@ def crowd_silence_child_B(person: Character) -> int:
 
 def choke(person: Character) -> None:
     """
-    Print the user's date successfully coughing out the food
-    she was choking on.
+    Print the user's date, referred to as <person>, successfully coughing out,
+    the food she was choking on.
 
     """
     cough_SE.play()
@@ -381,7 +383,7 @@ def choke_neg_pos(person: Character) -> int:
     Return a positive integer, simulating the user's reaction to <person>
     admiring how useless the user is when <person> is choking.
 
-    This function is reserved for NegativeCharacter classes.
+    This function is reserved for NegativeCharacter instances.
 
     """
     
@@ -397,8 +399,8 @@ def choke_neg_pos(person: Character) -> int:
 def weights(person: Character) -> int:
     """
     If <person>'s true_pers is ACTIVE, return a positive integer. Otherwise,
-    return the output of unimpressed(person) that is lower than what
-    is typically expected of the function.
+    return the output of unimpressed(<person>) that is a lower int than what
+    is typically expected of that function.
 
     """
 
@@ -412,11 +414,11 @@ def weights(person: Character) -> int:
 
 def lies(person: Character) -> int:
     """
-    If the user gets lucky, return the output of badass(person). Otherwise,
-    return the output of unimpressed(person).
+    If the user gets lucky, return the output of badass(<person>). Otherwise,
+    return the output of unimpressed(<person>).
 
     Furthermore, if <person>'s true_pers method is OBJECTIVE, return
-    unimpressed(person), as well.
+    unimpressed(<person>) as well.
 
     """
 
@@ -444,11 +446,11 @@ def fap_confused(person: Character) -> int:
 
 def event_remembers_B(person: Character) -> int:
     """
-    If the user gets lucky, return the output of remembers(person).
+    If the user gets lucky, return the output of remembers(<person>).
     Otherwise, return the output of not_remember().
 
     Furthermore, if <person>'s true_pers method is OBJECTIVE, then
-    return the output of not_remember(), as well.
+    return the output of not_remember() as well.
 
     """
 
@@ -459,8 +461,8 @@ def event_remembers_B(person: Character) -> int:
 
 def event_remembers_C(person: Character) -> int:
     """
-    If the user gets lucky, return the output of confusion(person).
-    Otherwise, return the output of distasteful(person).
+    If the user gets lucky, return the output of confusion(<person>).
+    Otherwise, return the output of distasteful(<person>).
 
     """
     with open(path.abspath(r'text_files\Other\memories.txt')) as mem_txt:
@@ -475,10 +477,10 @@ def event_remembers_C(person: Character) -> int:
 
 def event_blind_C(person: Character) -> int:
     """
-    If <person>'s true_pers is NEGATIVE, then return some
-    integer. Otherwise, if they are not OBJECTIVE, then
-    return the output of distasteful(person) and return the
-    output of confusion(person) if they are.
+    If <person>'s true_pers is NEGATIVE, then return some minor positive 
+    integer. Otherwise, if they are not OBJECTIVE, then return the output of
+    distasteful(<person>) and return the output of confusion(<person>) if
+    they are.
 
     """
 
@@ -494,9 +496,9 @@ def event_blind_C(person: Character) -> int:
 
 def event_blind_D(person: Character) -> int:
     """
-    If <person>'s true_pers is NORMAL or ACTIVE, then return
-    the output of understanding(person). Otherwise, print a message
-    and return the output of distasteful(person).
+    If <person>'s true_pers is NORMAL or ACTIVE, then return the output of
+    understanding(<person>). Otherwise, print a message and return the output of
+    distasteful(<person>).
     
     """
 
@@ -511,10 +513,10 @@ def event_blind_D(person: Character) -> int:
 
 def chess(person: Character) -> int:
     """
-    Return a positive integer simulating the user's reaction to
+    Return a the output of impressed(<person>) simulating the user's reaction to
     <person>'s response to the user challenging them to a chess match.
 
-    This function is reserved for ObjectiveCharacter classes.
+    This function is reserved for ObjectiveCharacter instances.
 
     """
 
@@ -526,15 +528,124 @@ def chess(person: Character) -> int:
 
 def event_video_A(person: Character) -> int:
     """
-    Return a negative integer simulating the user's reaction to
-    <person>'s response to the user explicitly saying
-    "[insert thing here]." What a PSYCHO.
+    Return the output of confusion(<person>) simulating the user's reaction to
+    <person>'s response to the user explicitly saying "[insert thing here]."
+    What a PSYCHO.
 
     """
 
     input(f'{person.first_name} doesn\'t really know what you mean when you'\
            ' explicitly say "[insert thing here]."\n')
     return confusion(person)
+
+
+def event_blind_A(person: Character) -> int:
+    """
+    If <person>'s true_pers is NEGATIVE, return the output of
+    pathetic(<person>). Otherwise, return a negative integer.
+    
+    These integers simulate the user's reaction to <person> reacting
+    to the user underestimating a "blind old woman."
+
+    """
+    input('It turns out, the blind old woman was actually an undercover'\
+          ' agent trying to lure criminals into taking advantage of her.\n')
+    input('Immediately, you get tackled by the old woman and are read'\
+          f' your rights.\nIt is only until {person.first_name} somehow'\
+          ' explains that you thought the agent was an "old friend" that'\
+          ' you are released from custody.\n')
+    if person.true_pers == NEGATIVE:
+        return pathetic(person)
+    return randint(EXTREME_NEG, LARGE_NEG)
+
+
+def event_friend_ignore(person: Character) -> int:
+    """
+    Return the output of unimpressed(<person>), simulating the user's reaction
+    to <person> not being very pleased with the user's history.
+
+    If <person>'s true_pers is NORMAL, return a positive integer
+    instead.
+
+    """
+
+    input('Your supposed "friend" ignores your presence and keeps talking.\n')
+    input('He goes on to explain how you were telling him of your'\
+          ' plan to vomit on a person\'s bed years ago by consuming an entire '
+          'sleeve of Oreos.\n')
+    if person.true_pers == NORMAL:
+        input(f'{person.first_name} gives you a sympathetic look.\n')
+        print('At least she understands how hard it is to not vomit on'\
+              ' other peoples\' beds.')
+        return randint(MINOR_POS, SMALL_POS)
+    return unimpressed(person)
+
+
+def event_fight_win(person: Character) -> int:
+    """
+    If <person>'s true_pers is ACTIVE, return the output of
+    badass(<person>). Otherwise, return a considerable negative
+    integer after printing some text.
+
+    """
+
+    fight_SE.play()
+    input('Unexpectedly, you win the fight against your friend.\n')
+
+    if person.true_pers == ACTIVE:
+        return badass(person)
+    input(f'Despite this, {person.first_name} is mortified,'\
+           ' especially with all of the people looking at you and her.\n')
+    return randint(LARGE_NEG, MED_NEG)
+
+
+def event_robbery_B(person: Character) -> int:
+    """
+    If <person>'s true_pers is NORMAL, then return the output
+    of understanding(<person>). Otherwise, return the output of
+    distasteful(<person>)
+
+    """
+
+    input('Technically, both of you are already hostages.\n')
+    fight_SE.play()
+    input('So, the intruder just whacks you unconscious.\n')
+    pg.mixer.music.play(-1, 0, 2000)
+    input('After regaining consciousness, you realize that you\'re still '
+          f'in the restaurant with {person.first_name}, for some reason.\n')
+    input('Apparently you just dozed off in the middle of your date with'\
+          f' {person.first_name}. Great work.\n')
+    if person.true_pers == NORMAL:
+        return understanding(person)
+    return distasteful(person)
+
+
+def abs_muscles(person: Character) -> int:
+    """
+    If <person>'s true_pers is NEGATIVE, return the output of
+    pathetic(<person>). If <person>'s true_pers is ACTIVE, then return
+    a positive integer. Otherwise, return a negative integer.
+
+    These integers simulate the user's response to <person> reacting
+    to the user slapping their "abs"
+
+    """
+
+    slap_SE.play()
+    input(f'You reveal your grotesque stomach to {person.first_name} and'\
+           ' slap it, for some reason.\n')
+    input('It jiggles upon impact.\n')
+
+    if person.true_pers == NEGATIVE:
+        return pathetic(person)
+
+    elif person.true_pers == ACTIVE:
+        print(f'{person.first_name} admires what effort you try to put into'\
+               ' your body!')
+        return randint(MINOR_POS, SMALL_POS)
+
+    print(f'{person.first_name} is disgusted.')
+    return randint(MED_NEG, SMALL_NEG)
 
 
 # Unique Functions
@@ -553,9 +664,13 @@ def not_remember() -> int:
 
 def fight(person: Character) -> int:
     """
-    If <person>'s true_pers is ACTIVE, return a neutral/positive integer
-    after showing some text. Otherwise, return a considerable negative integer
-    after showing some text.
+    If <person>'s true_pers is ACTIVE, return a positive/zero integer after
+    showing some text. If <person>'s true_pers is NEGATIVE, return a
+    negative integer after showing some text. Otherwise, return a
+    considerable negative integer after showing some text.
+
+    These integers simulate the user's reaction to <person>'s response to
+    the user engaging in a fight.
 
     """
 
@@ -576,15 +691,18 @@ def fight(person: Character) -> int:
 
 def remembers(person: Character) -> int:
     """
-    Return a small negative integer simulating the user's reaction
-    after <person> remembers the user, but doesn't actually appreciate
-    the user's presence.
+    If <person>'s true_pers is NEGATIVE, return a positive/zero integer.
+    If <person>'s true_pers is NORMAL, return a negative integer.
+    Otherwise, return a negative integer that is greater in magnitude.
+
+    These integers simulate the user's reaction to <person>'s response
+    to the user asking if <person> remembers the user or not.
 
     """
 
     print(f'Thankfully, {person.first_name} remembers you.')
     if person.true_pers == NEGATIVE:
-        input(f'{person.true_pers} laughs.\n')
+        input(f'{person.first_name} laughs.\n')
         input(f'She\'s probably thinking about how stupid you were in the'\
                ' past, rather than your "fond" memories with each'\
                ' other...\n')
@@ -602,27 +720,13 @@ def remembers(person: Character) -> int:
     return randint(MED_NEG, SMALL_NEG)
 
 
-def event_blind_A(person: Character) -> int:
-    """
-    Return a negative integer simulating the user's reaction after
-    underestimating a "blind old woman."
-
-    """
-    input('It turns out, the blind old woman was actually an undercover'\
-          ' agent trying to lure criminals into taking advantage of her.\n')
-    input('Immediately, you get tackled by the old woman and are read'\
-          f' your rights.\nIt is only until {person.first_name} somehow'\
-          ' explains that you thought the agent was an "old friend" that'\
-          ' you are released from custody.\n')
-    if person.true_pers == NEGATIVE:
-        return pathetic(person)
-    return randint(EXTREME_NEG, LARGE_NEG)
-
-
 def event_blind_B(person: Character) -> int:
     """
-    Return a negative integer simulating the user's reaction after
-    the people around the user accuse the user of stealing.
+    If <person>'s true_pers is NEGATIVE, return a positive/zero integer.
+    Otherwise, return a negative integer.
+    
+    These integers simulate the user's reaction to the reaction of <person>
+    after the people around the user accuse the user of stealing.
 
     """
     input('After picking up the wallet, you are accused of stealing'\
@@ -632,7 +736,7 @@ def event_blind_B(person: Character) -> int:
           f' sit back down, you notice that {person.first_name} has had'\
           ' her head down on the table for the entire ordeal.\n')
     if person.true_pers == NEGATIVE:
-        print(f'Taking into account {person.true_pers}\'s personality, '\
+        print(f'Taking into account {person.first_name}\'s personality, '\
                'it\'s probably safe to assume that it\'s due to laughter'\
                ' rather than embarassment...')
         return randint(NEUTRAL, MINOR_POS)
@@ -645,7 +749,7 @@ def event_video_C(person: Character) -> int:
     <person> enjoying arguing with the user.
 
     This function is reserved for ActiveCharacter and NegativeCharacter
-    classes.
+    instances.
 
     """
 
@@ -656,10 +760,10 @@ def event_video_C(person: Character) -> int:
 
 def arm_wrestle(person: Character) -> int:
     """
-    Return a positive integer simulating the user's reaction to
-    <person> enjoying the arm-wrestling match with the user.
+    Return a positive integer simulating the user's reaction to <person>
+    enjoying the arm-wrestling match with the user.
 
-    This function is reserved for ActiveCharacter classes.
+    This function is reserved for ActiveCharacter instances.
 
     """
 
@@ -670,35 +774,13 @@ def arm_wrestle(person: Character) -> int:
     return randint(SMALL_POS, MED_POS)
 
 
-def event_friend_ignore(person: Character) -> int:
-    """
-    Return a negative integer simulating the user's reaction
-    to <person> not being very pleased with the user's history.
-
-    If <person>'s true_pers is NORMAL, return a positive integer
-    instead.
-
-    """
-
-    input('Your supposed "friend" ignores your presence and keeps talking.\n')
-    input('He goes on to explain how you were telling him of your'\
-          ' plan to vomit on a person\'s bed years ago by consuming an entire '
-          'sleeve of Oreos.\n')
-    if person.true_pers == NORMAL:
-        input(f'{person.true_pers} gives you a sympathetic look.\n')
-        print('At least she understands how hard it is to not vomit on'\
-              ' other peoples\' beds.')
-        return randint(MINOR_POS, SMALL_POS)
-    return unimpressed(person)
-
-
 def event_friend_buzz_neg(person: Character) -> int:
     """
     Return a positive integer simulating the user's reaction
     to <person> being impressed with the user's mannerisms.
 
     This function is unique to NegativeCharacter and
-    ActiveCharacter classes and should only be used for
+    ActiveCharacter instances and should only be used for
     OPTION_D in question 19.
 
     """
@@ -714,24 +796,6 @@ def event_friend_buzz_neg(person: Character) -> int:
     input('He runs away crying. How despicable..\n')
     print(f'Just the way {person.first_name} likes it.')
     return randint(SMALL_POS, MED_POS)
-
-
-def event_fight_win(person: Character) -> int:
-    """
-    If <person>'s true_pers is ACTIVE, return the output of
-    badass(person). Otherwise, return a considerable negative
-    integer after printing some text.
-
-    """
-
-    fight_SE.play()
-    input('Unexpectedly, you win the fight against your friend.\n')
-
-    if person.true_pers == ACTIVE:
-        return badass(person)
-    input(f'Despite this, {person.first_name} is mortified,'\
-           ' especially with all of the people looking at you and her.\n')
-    return randint(LARGE_NEG, MED_NEG)
 
 
 def event_robbery_A(person: Character) -> int:
@@ -770,29 +834,8 @@ def event_robbery_A(person: Character) -> int:
 
     pg.mixer.music.play(-1, 0, 2000)
     input(f'However, {person.first_name} questions your sanity for 30 minutes\n'
-           'straight once you meet each other.')
+           'straight once you meet each other again.\n')
     return EXTREME_NEG
-
-
-def event_robbery_B(person: Character) -> int:
-    """
-    If <person>'s true_pers is NORMAL, then return the output
-    of understanding(person). Otherwise, return the output of
-    distasteful(person)
-
-    """
-
-    input('Technically, both of you are already hostages.\n')
-    fight_SE.play()
-    input('So, the intruder just whacks you unconscious.\n')
-    pg.mixer.music.play(-1, 0, 2000)
-    input('After regaining consciousness, you realize that you\'re still '
-          f'in the restaurant with {person.first_name}, for some reason.\n')
-    input('Apparently you just dozed off in the middle of your date with'\
-          f' {person.first_name}. Great work.\n')
-    if person.true_pers == NORMAL:
-        return understanding(person)
-    return distasteful(person)
     
 
 def event_robbery_C(person: Character) -> None:
@@ -814,6 +857,9 @@ def event_robbery_D(person: Character) -> int:
     positive integer.
     Otherwise, return a negative integer.
 
+    These integers simulate the user's reactions to how <person>
+    responds to the user's actions.
+
     """
 
     input('You decide to stay down to avoid getting shot.\n')
@@ -834,27 +880,3 @@ def event_robbery_D(person: Character) -> int:
            ' your pants throughout the whole ordeal.\n')
     print('Although not true, her mockery of you still stings a bit...')
     return randint(SMALL_NEG, MINOR_NEG)
-
-def abs_muscles(person: Character) -> int:
-    """
-    If <person>'s true_pers is NEGATIVE, return the output of
-    pathetic(person). If <person>'s true_pers is ACTIVE, then return
-    a positive integer. Otherwise, return a negative integer.
-
-    """
-
-    slap_SE.play()
-    input(f'You reveal your grotesque stomach to {person.first_name} and'\
-           ' slap it, for some reason.\n')
-    input('It jiggles upon impact.\n')
-
-    if person.true_pers == NEGATIVE:
-        return pathetic(person)
-
-    elif person.true_pers == ACTIVE:
-        print(f'{person.first_name} admires what effort you try to put into'\
-               ' your body!')
-        return randint(MINOR_POS, SMALL_POS)
-
-    print(f'{person.first_name} is disgusted.')
-    return randint(MED_NEG, SMALL_NEG)

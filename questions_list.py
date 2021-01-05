@@ -8,7 +8,9 @@ import os
 
 def questions(person: Character) -> List[Dict]:
     """ 
-    Return a dictionary of questions that the user has to answer randomly.
+    Return a dictionary of questions that the user has to answer randomly,
+    occasionally referring to <person> when talking about the user's
+    date.
 
     """
 
@@ -226,12 +228,3 @@ def questions(person: Character) -> List[Dict]:
         }
     ]
     return questions
-
-
-def intro_q() -> List[Dict]:
-    quest = []
-    pass
-
-def concluding_q() -> List[Dict]:
-    quest = []
-    pass

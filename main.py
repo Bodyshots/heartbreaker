@@ -1,14 +1,15 @@
-""" Maybe I could do something like this??? """
+""" (Not) Super Seducer: The Bootleg Version - The Main File That Runs the Game """
 
-import sys
+from sys import exit
 import doctest
 import re
 import pygame as pg
+import subprocess, platform
 from os.path import abspath
 import doctest
 from time import sleep
 from random import choice, randint
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple, Union, Dict, Callable
 from character_classes import (Character, NormalCharacter, ActiveCharacter,
                                ObjectiveCharacter, NegativeCharacter)
 from constants import (OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
@@ -18,7 +19,7 @@ from constants import (OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
                        YES, NO, OPTION_E, conf_gain_SE, conf_lose_SE,
                        cologne_SE, slap_SE, invalid_SE, invalid_2_SE, info_SE,
                        toilet_SE, run_SE, select_SE, drum_roll_SE, gunshot_1_SE,
-                       gunshot_2_SE, panic2_SE, sounds, OPTION_F)
+                       gunshot_2_SE, panic_SE, sounds, OPTION_F)
 from questions_list import questions
 from prompts import (decision_prompt, menu_prompt, item_prompt, options_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
@@ -40,13 +41,13 @@ with open(fst_nms_file) as fst, open(lst_nms_file) as last:
     fst_nmes, last_nmes = fst.read().split('\n'), last.read().split('\n')
 
 bsic_file = abspath(r'text_files\Personalities'\
-                            r'\basic_personality.txt')
+                    r'\basic_personality.txt')
 active_file = abspath(r'text_files\Personalities'\
-                              r'\active_personality.txt')
+                      r'\active_personality.txt')
 ngtive_file = abspath(r'text_files\Personalities'\
-                              r'\negative_personality.txt')
+                      r'\negative_personality.txt')
 ojctive_file = abspath(r'text_files\Personalities'\
-                               r'\objective_personality.txt')
+                       r'\objective_personality.txt')
 
 with open(bsic_file) as bsic, open(active_file) as active,\
 open(ngtive_file) as ngtive, open(ojctive_file) as objctive:
@@ -67,7 +68,7 @@ music_path = r'Sounds\Music'
 
 # Game Ready
 
-print('Welcome to the game!')
+print('Welcome to (Not) Super Seducer: The Bootleg Version!')
 input('Enter any key to start!\n')
 
 
@@ -78,19 +79,19 @@ def main_game() -> None:
     """
 
     menu_choice = ''
-    pg.mixer.music.set_volume(0.5)
     music_vol = 0.5
+    pg.mixer.music.set_volume(music_vol)
     sound_vol = slap_SE.get_volume()
-    select_SE.play()
+    select_SE.play(), clear_term()
 
     while True:
-        music_loop(abspath(music_path + '\BGM.wav'), 500, 100)
+        music_loop(abspath(music_path + '\menu.wav'), 500, 250, 0)
         menu_options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D, OPTION_E, 
                         OPTION_F)
         menu_choice = prompt_select(menu_prompt(), menu_options).upper()
 
         while menu_choice.upper() in (OPTION_B, OPTION_C, OPTION_D, OPTION_E):
-            select_SE.play()
+            select_SE.play(), clear_term()
 
             if menu_choice.upper() == OPTION_B:
                 prompt_select(story_prompt(), OPTION_A)
@@ -101,18 +102,22 @@ def main_game() -> None:
                 select_SE.play()
 
             elif menu_choice.upper() == OPTION_D:
-                music_loop(music_path + r'\new_options_men.wav', 500, 100)
+                music_loop(music_path + r'\new_options_menu.ogg', 500, 1000, 78)
                 options = (OPTION_A, OPTION_B, OPTION_C)
                 menu_choice = prompt_select(options_prompt(), options).upper()
+                clear_term()
                 while menu_choice.upper() in (OPTION_A, OPTION_B):
                     if menu_choice == OPTION_A:
-                        music_vol = music_vol_change(music_vol)
+                        music_vol = vol_change(music_vol, music_lvl_prompt)
+                        pg.mixer.music.set_volume(music_vol)
                     elif menu_choice == OPTION_B:
-                        sound_vol = sound_vol_change(sound_vol)
+                        sound_vol = vol_change(sound_vol, sound_lvl_prompt)
+                        for i in sounds:
+                            i.set_volume(sound_vol)
                     select_SE.play()
                     menu_choice = prompt_select(options_prompt(), options).upper()
                 select_SE.play()
-                music_loop(music_path + '\BGM.wav', 500, 100)
+                music_loop(music_path + '\menu.wav', 500, 250, 0.0)
 
             elif menu_choice.upper() == OPTION_E:
                 prompt_select(credits_prompt(credit_str), OPTION_A)
@@ -125,58 +130,33 @@ def main_game() -> None:
             battle(person)
 
         elif menu_choice.upper() == OPTION_F:
-            select_SE.play(), print('Quitting...')
-            sys.exit()
+            select_SE.play(), clear_term(), print('Quitting...')
+            exit()
 
 
-def music_vol_change(volume: float) -> float:
+def vol_change(volume: float, prompt: Callable[[float], str]) -> float:
     """
-    Display the current music <volume> and return the valid
-    volume that the user has chosen.
+    Display the current <volume>, displaying the appropriate <prompt> given, 
+    and return the valid volume that the user has chosen.
 
     A valid volume must be a float that is between 0 and 1.0
     inclusive.
 
     """
 
-    music_choice = -1
+    vol_choice = -1
     select_SE.play()
 
-    while not (0 <= music_choice <= 1.0):
-        music_choice = input(f'{music_lvl_prompt(volume)}\n')
-        if (not music_choice.replace('.', '0', 1).isdigit()
-            or music_choice == '.'):
-             music_choice = -1
-        music_choice = float(music_choice)
+    while not (0 <= vol_choice <= 1.0):
+        clear_term()
+        vol_choice = input(f'{prompt(volume)}\n')
+        if (not vol_choice.replace('.', '0', 1).isdigit()
+            or vol_choice == '.'):
+             invalid_SE.play()
+             vol_choice = -1
+        vol_choice = float(vol_choice)
 
-    pg.mixer.music.set_volume(music_choice)
-    return music_choice
-
-
-def sound_vol_change(volume: float) -> float:
-    """
-    Display the current sound <volume> and return the valid
-    volume that the user has chosen.
-
-    A valid volume must be a float that is between 0 and 1.0
-    inclusive.
-
-    """
-
-    sound_choice = -1
-    select_SE.play()
-
-    while not (0 <= sound_choice <= 1.0):
-        sound_choice = input(f'{sound_lvl_prompt(volume)}\n')
-        if (not sound_choice.replace('.', '0', 1).isdigit()
-            or sound_choice == '.'):
-             sound_choice = -1
-        sound_choice = float(sound_choice)
-
-    for i in sounds:
-        i.set_volume(sound_choice)
-
-    return sound_choice
+    return vol_choice
 
 
 def battle(person: Character) -> None:
@@ -193,22 +173,23 @@ def battle(person: Character) -> None:
         battle_actions, yes_no = (TALK, ITEM, INFO, RUN), (YES, NO)
         options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
 
-        info_SE.play()
+        info_SE.play(), clear_term()
         input(f'You are dating:\n{person}\nEnter any button to continue.\n')
-        music_loop(music_path + '\godot_loop_w_chatter.wav', 500, 500)
+        music_loop(music_path + '\loop.ogg', 500, 500, 219)
 
         decision = prompt_select(decision_prompt(confidence, turns),
                                  battle_actions).upper()
 
         while decision.upper() in battle_actions:
+            clear_term()
 
             if decision == TALK:
-                select_SE.play()
+                select_SE.play(), clear_term()
                 turns -= 1
                 question_q_and_a = choice(question_lst)
                 question_nums = question_pick(question_lst, question_q_and_a)
                 if question_nums[0] == 17:
-                    gunshot_1_SE.play(1), panic2_SE.play()
+                    gunshot_1_SE.play(1), panic_SE.play()
                     pg.mixer.music.fadeout(1000)
                 decision = prompt_select(question_format(question_q_and_a),
                                          options).upper()
@@ -216,18 +197,22 @@ def battle(person: Character) -> None:
                                           question_nums[0])
                 question_lst.pop(question_nums[1])
 
-            elif decision == ITEM:
+            while decision == ITEM:
                 select_SE.play()
-                decision = prompt_select(item_prompt(cologne_amt, excuses_amt),
-                                         options).upper()
-                if valid_item_option(cologne_amt, excuses_amt, decision):
-                    if decision == OPTION_A:
+                item_dec = prompt_select(item_prompt(cologne_amt, excuses_amt,
+                                                     confidence),
+                                                     options).upper()
+                if valid_item_option(cologne_amt, excuses_amt, item_dec):
+                    clear_term()
+                    if item_dec == OPTION_A:
                         cologne_amt = decrease_item_amt(cologne_amt)
-                    elif decision == OPTION_B:
+                    elif item_dec == OPTION_B:
                         excuses_amt = decrease_item_amt(excuses_amt)
-                    confidence = item_effect(decision, confidence)
+                    confidence = item_effect(item_dec, confidence)
+                if item_dec == OPTION_D:
+                    decision = item_dec
 
-            elif decision == INFO:
+            if decision == INFO:
                 info_SE.play()
                 prompt_select(information_prompt(person), OPTION_A)
                 select_SE.play()
@@ -284,7 +269,7 @@ def question_pick(question_lst: List[Dict],
 
     if question != sorted(list(question_lst[i].keys()))[1]:
         print('Error 1: Question not found')
-        sys.exit()
+        exit()
 
     return (int(re.search(r'[0-9]+', question).group()), i)
 
@@ -299,10 +284,9 @@ def game_over_lose() -> str:
     pg.mixer.music.load(music_path + r'\jingle_07.mp3')
     pg.mixer.music.play()
 
-    print('You became so unconfident that you ran away from the'\
-          ' restaurant.\nYou have lost!')
+    message = 'You became so unconfident that you ran away from the'\
+          ' restaurant.\nYou have lost!\nWould you like to play again?'
 
-    message = 'Would you like the play again?'
     return prompt_select(yes_no_prompt(message), (YES, NO)).upper()
 
 
@@ -314,18 +298,23 @@ def game_over_win(confidence: int) -> None:
 
     """
 
+    user_dec = ''
     pg.mixer.music.stop(), pg.mixer.music.unload()
-    pg.mixer.music.load(music_path + r'\results.mp3')
-    pg.mixer.music.play()
+    pg.mixer.music.load(music_path + r'\results.mp3'), pg.mixer.music.play()
 
-    input('You have survived all 15 turns!\n')
-    select_SE.play()
-    input('However, how does your date feel?\n')
-    print('Your date says...')
-    drum_roll_SE.play(), sleep(4.5), pg.mixer.music.unload()
+    input('You have survived all 15 turns!\n'), select_SE.play()
+    input('However, how does your date feel?\n'), clear_term()
+    print('Your date says...'), drum_roll_SE.play(), sleep(4.5)
+    pg.mixer.music.unload()
     nums = win_results_music(confidence)
     pg.mixer.music.load(music_path + r'\{}.mp3'.format(nums[0]))
-    pg.mixer.music.play(), input(win_results_text(nums[1]))
+    pg.mixer.music.play()
+    
+    while user_dec != 'a':
+        invalid_SE.play()
+        user_dec = input(win_results_text(nums[1]) + 'Enter in "a"'\
+                                                     ' to continue\n').lower()
+        clear_term()
 
 
 def win_results_music(confidence: int) -> Tuple[int, int]:
@@ -408,7 +397,7 @@ def win_results_text(conf_key: int) -> str:
     if not conf_states.get(conf_key):
         return ''
 
-    return conf_states.get(conf_key) + '\n'
+    return conf_states.get(conf_key) + '\n' * 2
 
 
 def prompt_select(prompt: str, options: tuple) -> str:
@@ -420,11 +409,12 @@ def prompt_select(prompt: str, options: tuple) -> str:
 
     """
 
+    clear_term()
     prompt += '\n'
     selection = input(prompt)
     while (selection.strip().upper() not in options or
            selection.strip().upper() == ''):
-        invalid_SE.play()
+        invalid_SE.play(), clear_term()
         selection = input(f'Invalid choice\n{prompt}')
 
     return selection.strip()
@@ -442,13 +432,13 @@ def valid_item_option(cologne: int, excuses: int, decision: str) -> bool:
 
     if decision.upper() == OPTION_A and cologne <= 0:
         invalid_2_SE.play()
-        print('You don\'t have any cologne left!')
+        input('You don\'t have any cologne left!\n')
         return False
 
     elif decision.upper() == OPTION_B and excuses <= 0:
         invalid_2_SE.play()
-        print('Your date doesn\'t think that you are actually going to the'\
-              ' washroom and forces you to stay put!')
+        input('Your date doesn\'t think that you are actually going to the'\
+              ' washroom and forces you to stay put!\n')
         return False
 
     return True
@@ -500,13 +490,13 @@ def item_effect(decision: str, confidence: int) -> int:
         select_SE.play()
         return confidence
 
-    confidence_gain_lost(amt_gain)
+    confidence_gain_lost(amt_gain), clear_term()
     return min(confidence, 100)
 
 
 def person_creator() -> Character:
     """ 
-    Return a unique Character class.
+    Return a unique subclass of the Character class.
 
     This includes creating the Character's true_pers, pers, name, first_name,
     last_name, and prof.
@@ -546,9 +536,8 @@ def rand_pers() -> Tuple[str, str]:
     - Negative
     - Normal
 
-    To spice things up a bit, each category has a list
-    of synomnyms that belong to it. Return the category
-    and the synonym as a tuple.
+    To spice things up a bit, each category has a list of synomnyms that
+    belong to it. Return the category and the synonym as a tuple.
 
     """
 
@@ -561,7 +550,7 @@ def talk_effects(decision: str, person: Character, confidence: int,
                  question_num: int) -> int:
     """
     Return the user's modified <confidence>, based on their <decision>, their
-    randomly chosen <question_index> and their randomly selected <person>.
+    randomly chosen <question_index>, and their randomly selected <person>.
 
     """
 
@@ -589,19 +578,36 @@ def confidence_gain_lost(amount_gained_lost: int) -> None:
         input(f'You have lost {abs(amount_gained_lost)}% confidence!\n')
     else:
         input('Nothing interesting happens to your confidence.\n')
+    
+    clear_term()
 
 
-def music_loop(song: str, ms_out: int, ms_in: int) -> None:
+def music_loop(song: str, ms_out: int, ms_in: int, start: float) -> None:
     """
     Fadeout the current music playing by a certain number of milliseconds,
     represented by <ms_out>. Unload the song, and load and play the
-    new <song> for an indefinite amount of times, making it fade in for a
-    certain number of milliseconds, represented by <ms_in>.
+    new <song> at <start> (in seconds) for an indefinite amount of times,
+    making it fade in for a certain number of milliseconds, 
+    represented by <ms_in>.
 
     """
 
     pg.mixer.music.fadeout(ms_out), pg.mixer.music.unload()
-    pg.mixer.music.load(song), pg.mixer.music.play(-1, 0, ms_in)
+    pg.mixer.music.load(song), pg.mixer.music.play(-1, start, ms_in)
+
+
+def clear_term() -> None:
+    """
+    Clear the user's screen for Windows, Linux, and MacOS only.
+
+    Credit to Brōtsyorfuzthrāx here:
+    https://stackoverflow.com/questions/2084508/clear-terminal-in-python
+
+    """
+    if platform.system()=="Windows":
+        subprocess.Popen("cls", shell=True).communicate()
+    else:
+        print("\033c", end="")
 
 
 main_game()

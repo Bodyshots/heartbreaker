@@ -1,6 +1,6 @@
 class Credit:
     """
-    Create a credit for a credit roll
+    Create a new Credit.
 
     """
 
@@ -92,22 +92,17 @@ credits_all = []
 
 # Music
 
-mus1 = Credit('BGM #04 (Beta Mix) - Simple DS Series Vol. 01 - The Mahjong',
-              'SilvaGunner', 'https://www.youtube.com/watch?v=mXvR7Qvf3cA')
-mus2 = Credit('Sad song', 'Darkman007', 'http://darkman007.untergrund.net'\
-              '/chiptune.php, from the album "Chiptunes 2012"')
+mus1 = Credit('Sad Song', 'Darkman007', 'https://modarchive.org/')
+mus2 = Credit('Romantic', 'Benjamin Tissot (also known as Bensound)',
+              'www.bensound.com')
 mus3 = Credit('Jingles #1-10', 'Zophar\'s Music Domain', 'https://www.zopha'\
               'r.net/music/nintendo-ds-2sf/simple-ds-series-vol-01-the-mahjong')
-mus4 = Credit('Turnabout Jazz Soul - Track 8 - Godot - The Fragrance of '\
-              'Dark Coffee', 'Capcom, provided by Bloogeyz', 'https://www.yo'\
-              'utube.com/watch?v=HMnrl0tmd3k')
+mus4 = Credit('Bossa vieja!', 'MadBrain', 'https://modarchive.org/')
 
 music_credits = CreditRoll('Music')
 all_music = [mus1, mus2, mus3, mus4]
 for i in all_music:
     music_credits.add(i)
-
-credits_all.append(music_credits)
 
 # Sound Effects
 
@@ -132,17 +127,26 @@ se9 = Credit('Woman Coughing', 'Visual & Sound FX', 'https://www.youtube.com'\
              '/watch?v=ORLWyWQteV0')
 se10 = Credit('Gunshots', 'Fesliyanstudios', 'https://www.fesliyanstudios.'\
               'com/royalty-free-sound-effects-download/gun-shooting-300')
-se11 = Credit('Crowd Scream 1', 'Dadda Digital', 'https://www.youtube.com/'\
+se11 = Credit('Crowd Scream', 'Dadda Digital', 'https://www.youtube.com/'\
               'watch?v=5Irt2ABKeqc')
-se12 = Credit('Crowd Scream 2', 'euronews', 'https://www.youtube.com'\
-              '/watch?v=yDJvnWgREQw')
 
 se_credits = CreditRoll('Sound Effects')
-all_se = [se1, se2, se3, se4, se5, se6, se7, se8, se9, se10, se11, se12]
+all_se = [se1, se2, se3, se4, se5, se6, se7, se8, se9, se10, se11]
 for i in all_se:
     se_credits.add(i)
 
-credits_all.append(se_credits)
+# Code
+
+code1 = Credit('Clear the Terminal Programmatically!', 'Brōtsyorfuzthrāx',
+               'https://stackoverflow.com/questions/2084508/clea'\
+               'r-terminal-in-python')
+code_credits = CreditRoll('Code Assistance')
+all_code = [code1]
+for i in all_code:
+    code_credits.add(i)
+
+credits_all.append(music_credits), credits_all.append(se_credits)
+credits_all.append(code_credits)
 
 credit_str = ''
 for i in credits_all:

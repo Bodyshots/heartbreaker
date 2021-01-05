@@ -8,8 +8,8 @@ from typing import Dict
 
 def decision_prompt(confidence: float, turns: int) -> str:
     """ 
-    Return a prompt for the user to decide what they
-    want to do.
+    Return a prompt for the user to decide what they want to do, displaying
+    the user's <confidence> and the number of <turns> they have left.
 
     """
     prompt = 'What do you want to do?\n'\
@@ -25,8 +25,8 @@ def decision_prompt(confidence: float, turns: int) -> str:
 
 def menu_prompt() -> str:
     """
-    Return a prompt for the user to decide if they want
-    to play the game or quit.
+    Return a prompt for the user to decide if they want to play the game or
+    quit.
 
     """
     prompt = 'Main Menu:\n'\
@@ -40,24 +40,25 @@ def menu_prompt() -> str:
     return prompt
 
 
-def item_prompt(cologne: int, excuses: int) -> str:
+def item_prompt(cologne: int, excuses: int, confidence: int) -> str:
     """
-    Return a prompt for the user to decide what item to use.
+    Return a prompt for the user to decide what item to use, displaying
+    the user's <confidence> and the user's number of <cologne> and <excuses>.
 
     """
-    prompt = 'Items:\n'\
-            f'[{OPTION_A}] - Cologne: {cologne}\n'\
-            f'[{OPTION_B}] - Washroom Break Excuses: {excuses}\n'\
-            f'[{OPTION_C}] - Show Off!\n'\
-            f'[{OPTION_D}] - Back'
+    prompt = f'Your Confidence: {confidence}%\n'\
+              'Items:\n'\
+             f'[{OPTION_A}] - Cologne: {cologne}\n'\
+             f'[{OPTION_B}] - Washroom Break Excuses: {excuses}\n'\
+             f'[{OPTION_C}] - Show Off!\n'\
+             f'[{OPTION_D}] - Back'
 
     return prompt
 
 
 def yes_no_prompt(message: str) -> str:
     """
-    Return a prompt that prints <message> and gives the user
-    a Yes/No prompt.
+    Return a prompt that prints <message> and gives the user a Yes/No prompt.
 
     Occurs whether the user has won/lost.
 
@@ -69,15 +70,15 @@ def yes_no_prompt(message: str) -> str:
     return prompt
 
 
-def question_format(question: Dict) -> str:
+def question_format(questions: Dict) -> str:
     """
     Return a prompt for the user to decide how to respond to a random question
     from <questions>.
 
     """
-    answers = question.get('Answers')
-    print(question.get(sorted(list(question.keys()))[1]))
-    prompt = f'[{OPTION_A}] - {answers.get(OPTION_A)}\n'\
+    answers = questions.get('Answers')
+    prompt = f'{(questions.get(sorted(list(questions.keys()))[1]))}\n'\
+             f'[{OPTION_A}] - {answers.get(OPTION_A)}\n'\
              f'[{OPTION_B}] - {answers.get(OPTION_B)}\n'\
              f'[{OPTION_C}] - {answers.get(OPTION_C)}\n'\
              f'[{OPTION_D}] - {answers.get(OPTION_D)}'
@@ -102,8 +103,8 @@ def options_prompt() -> str:
 
 def music_lvl_prompt(music_vol: float) -> str:
     """
-    Return a prompt that displays what the current <music_vol> is and
-    what is a valid music volume to change to.
+    Return a prompt that displays what the current <music_vol> is and what is
+    a valid music volume to change to.
 
     """
 
@@ -112,8 +113,8 @@ def music_lvl_prompt(music_vol: float) -> str:
 
 def sound_lvl_prompt(sound_vol: float) -> str:
     """
-    Return a prompt that displays what the current <sound_vol> is and
-    what is a valid sound volume to change to.
+    Return a prompt that displays what the current <sound_vol> is and what is
+    a valid sound volume to change to.
 
     """
 
@@ -122,8 +123,8 @@ def sound_lvl_prompt(sound_vol: float) -> str:
 
 def credits_prompt(credits_all: str) -> str:
     """
-    Return a prompt that displays <credits_all> and gives the user
-    the option to go back to the main menu.
+    Return a prompt that displays <credits_all> and gives the user the option to
+    go back to the main menu.
 
     """
 
@@ -168,8 +169,7 @@ def instructions_prompt() -> str:
 
 def story_prompt() -> str:
     """
-    Return a prompt that delivers the context surrounding
-    the game.
+    Return a prompt that delivers the context surrounding the game.
 
     """
     prompt = 'Story:\n\n'\

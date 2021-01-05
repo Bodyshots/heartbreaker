@@ -15,7 +15,8 @@ from typing import Dict
 
 class NormalCharacter(Character):
     """
-    Create a Normal Character.
+    Create a Normal Character, a subclass of Character
+
     """
     
     def __init__(self, name: str, true_pers: str=NORMAL,
@@ -107,7 +108,7 @@ class NormalCharacter(Character):
 
 class ActiveCharacter(Character):
     """ 
-    Create an Active Character.
+    Create an Active Character, a subclass of Character
 
     """
     def __init__(self, name: str, true_pers: str=NORMAL,
@@ -199,7 +200,7 @@ class ActiveCharacter(Character):
 
 class NegativeCharacter(Character):
     """ 
-    Create a Negative Character.
+    Create a Negative Character, a subclass of Character
 
     """
 
@@ -292,7 +293,7 @@ class NegativeCharacter(Character):
 
 class ObjectiveCharacter(Character):
     """ 
-    Create an Objective Character.
+    Create an Objective Character, a subclass of Character
 
     """
 
