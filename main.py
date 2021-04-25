@@ -25,44 +25,12 @@ from prompts import (decision_prompt, menu_prompt, item_prompt, options_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
                      question_format, sound_lvl_prompt, instructions_prompt,
                      story_prompt, information_prompt)
-from all_credits import credit_str
-
-fst_nmes, last_nmes = [], []
-personalities = {NORMAL: [], OBJECTIVE: [], ACTIVE: [], NEGATIVE: []}
+from all_credits import creds
+from file_init import game_setup
 
 
-# Initializing Files
-
-fst_nms_file = abspath(r'text_files\Names\women_first_names.txt')
-lst_nms_file = abspath(r'text_files\Names\last_names.txt')
-
-
-with open(fst_nms_file) as fst, open(lst_nms_file) as last:
-    fst_nmes, last_nmes = fst.read().split('\n'), last.read().split('\n')
-
-bsic_file = abspath(r'text_files\Personalities'\
-                    r'\basic_personality.txt')
-active_file = abspath(r'text_files\Personalities'\
-                      r'\active_personality.txt')
-ngtive_file = abspath(r'text_files\Personalities'\
-                      r'\negative_personality.txt')
-ojctive_file = abspath(r'text_files\Personalities'\
-                       r'\objective_personality.txt')
-
-with open(bsic_file) as bsic, open(active_file) as active,\
-open(ngtive_file) as ngtive, open(ojctive_file) as objctive:
-    for line in bsic:
-        personalities.get(NORMAL).append(line.strip())
-    for line in ngtive:
-        personalities.get(NEGATIVE).append(line.strip())
-    for line in active:
-        personalities.get(ACTIVE).append(line.strip())
-    for line in objctive:
-        personalities.get(OBJECTIVE).append(line.strip())
-
-
-# Initializing Music
-
+# Initializing
+fst_nmes, last_nmes, personalities = game_setup()
 pg.init()
 music_path = r'Sounds\Music'
 
@@ -80,6 +48,7 @@ def main_game() -> None:
 
     menu_choice = ''
     music_vol = 0.5
+    credit_str = creds()
     pg.mixer.music.set_volume(music_vol)
     sound_vol = slap_SE.get_volume()
     select_SE.play(), clear_term()
@@ -248,7 +217,7 @@ def battle(person: Character) -> None:
                                          battle_actions).upper()
 
 
-def question_pick(question_lst: List[Dict],
+def question_pick(question_lst: List[Dict[str, Union[str, Dict[str, str]]]],
                   question_q_and_a) -> Tuple[int, int]:
     """
     Return the question number of <question_q_and_a> by searching
@@ -271,7 +240,7 @@ def question_pick(question_lst: List[Dict],
         print('Error 1: Question not found')
         exit()
 
-    return (int(re.search(r'[0-9]+', question).group()), i)
+    return int(re.search(r'[0-9]+', question).group()), i
 
 
 def game_over_lose() -> str:
@@ -359,7 +328,7 @@ def win_results_music(confidence: int) -> Tuple[int, int]:
     key_lst = sorted(list(conf_states.keys()), reverse=True)
     while confidence < key_lst[i] and i < len(key_lst) - 1:
         i += 1
-    return (conf_states.get(key_lst[i]), key_lst[i])
+    return conf_states.get(key_lst[i]), key_lst[i]
 
 
 def win_results_text(conf_key: int) -> str:
@@ -543,7 +512,7 @@ def rand_pers() -> Tuple[str, str]:
 
     key = choice(list(personalities.keys()))
     value = choice(personalities.get(key))
-    return (key, value)
+    return key, value
 
 
 def talk_effects(decision: str, person: Character, confidence: int,
@@ -609,5 +578,5 @@ def clear_term() -> None:
     else:
         print("\033c", end="")
 
-
-main_game()
+if __name__ == '__main__':
+    main_game()

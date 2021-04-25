@@ -6,6 +6,8 @@ from constants import (NORMAL, OBJECTIVE, ACTIVE, NEGATIVE,
                        run_SE, cough_SE, gunshot_2_SE, panic_SE)
 import pygame as pg
 from os import path
+from typing import Dict, Callable
+from file_init import file_lst_return
 
 pg.init()
 
@@ -13,7 +15,15 @@ class Character:
     """
     Create a new Character
 
+    === Attributes ===
+    name: The Character's name
+    true_pers: The straightforward personality of this Character
+    personality: The ambiguous display personality of this character
+
     """
+    name: str
+    true_pers: str
+    personality: str
 
     def __init__(self, name: str, true_pers: str=NORMAL, 
                  personality:str='Indifferent'):
@@ -43,6 +53,13 @@ class Character:
         else:
             self.first_name = name
 
+    def reactions(self) -> Dict[str, Callable]:
+        """
+        Return a dictionary filled with a Character's unique
+        reactions to the game's questions.
+        """
+        raise NotImplementedError
+
     def __str__(self):
         """
         Display the known information about the character to the user
@@ -54,14 +71,10 @@ class Character:
 
     def rand_prof(self):
         """
-        Return a random profession after reading a text file of professions.
+        Return a random profession.
 
         """
-
-        with open(path.abspath(r'text_files\Other'
-                               r'\professions.txt')) as pro_txt:
-            profession = pro_txt.read().split('\n')
-        return choice(profession)
+        return choice(file_lst_return('professions'))
 
 
 # General Reactions
@@ -465,10 +478,7 @@ def event_remembers_C(person: Character) -> int:
     Otherwise, return the output of distasteful(<person>).
 
     """
-    with open(path.abspath(r'text_files\Other\memories.txt')) as mem_txt:
-        mems = mem_txt.read().split('\n')
-    memory = choice(mems)
-    print(f'{memory}')
+    print(f'{choice(file_lst_return("memories"))}')
 
     if randint(0, 20) >= 15:
         return distasteful(person)

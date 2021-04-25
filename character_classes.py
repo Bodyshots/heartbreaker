@@ -18,10 +18,6 @@ class NormalCharacter(Character):
     Create a Normal Character, a subclass of Character
 
     """
-    
-    def __init__(self, name: str, true_pers: str=NORMAL,
-                 personality:str='Indifferent'):
-        super().__init__(name, true_pers, personality)
 
     def reactions(self) -> Dict:
         react_dict = {0: {OPTION_A: confusion,
@@ -111,9 +107,6 @@ class ActiveCharacter(Character):
     Create an Active Character, a subclass of Character
 
     """
-    def __init__(self, name: str, true_pers: str=NORMAL,
-                 personality:str='Indifferent'):
-        super().__init__(name, true_pers, personality)
 
     def reactions(self) -> Dict:
         react_dict = {0: {OPTION_A: badass,
@@ -203,10 +196,6 @@ class NegativeCharacter(Character):
     Create a Negative Character, a subclass of Character
 
     """
-
-    def __init__(self, name: str, true_pers: str=NORMAL,
-                 personality:str='Indifferent'):
-        super().__init__(name, true_pers, personality)
     
     def reactions(self) -> Dict:
         react_dict = {0: {OPTION_A: unimpressed,
@@ -296,10 +285,6 @@ class ObjectiveCharacter(Character):
     Create an Objective Character, a subclass of Character
 
     """
-
-    def __init__(self, name: str, true_pers: str=NORMAL,
-                 personality:str='Indifferent'):
-        super().__init__(name, true_pers, personality)
 
     def reactions(self) -> Dict:
         react_dict = {0: {OPTION_A: confusion,

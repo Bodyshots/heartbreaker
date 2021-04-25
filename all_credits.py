@@ -1,8 +1,30 @@
+""" Module for setting up credits """
+
+from typing import Tuple, List
+
 class Credit:
     """
     Create a new Credit.
 
+    === Attributes ===
+    title: The name of the work.
+    author: The author of the work.
+    link: The website where the client may view the work.
+
+    === Example Use ===
+    >>> credit = \
+        Credit('poopy', 'my bum', 'http://youtube.com/watch?v=7upgaUAcjbc')
+    >>> # str(credit) will return the following:
+    >>> #'poopy:'
+    >>> #'http://youtube.com/watch?v=7upgaUAcjbc'
+    >>> #'By my bum.'
+    >>> #
+    >>> #
+    >>> # End of example.
     """
+    title: str
+    author: str
+    link: str
 
     def __init__(self, title: str, author: str, link: str):
         """
@@ -21,7 +43,9 @@ class Credit:
 
         """
         
-        self.title, self.link, self.author = title, link, author
+        self.title = title
+        self.link = link
+        self.author = author
 
     def __str__(self):
         """
@@ -41,7 +65,31 @@ class CreditRoll:
     """
     Create a new CreditRoll
 
+    === Attributes ===
+    title: The name of this credit roll (ie. Music, Sound Effects, etc.)
+
+    === Example Use ===
+    >>> credit = \
+        Credit('poopy', 'my bum', 'http://youtube.com/watch?v=7upgaUAcjbc')
+    >>> credit2 = \
+        Credit('pee', 'my nonozone', 'https://www.youtube.com/watch?v=iik25wqIuFo')
+    >>> creditroll = CreditRoll('Music')
+    >>> creditroll.add(credit)
+    >>> creditroll.add(credit2)
+    >>> # str(creditroll) will return the following
+    >>> #'poopy:'
+    >>> #'http://youtube.com/watch?v=7upgaUAcjbc'
+    >>> #'By my bum.'
+    >>> #
+    >>> #
+    >>> #'pee:'
+    >>> #'https://www.youtube.com/watch?v=iik25wqIuFo'
+    >>> #'By my nonozone'
+    >>> #
+    >>> #
+    >>> # End of example.
     """
+    title: str
 
     def __init__(self, title: str):
         """
@@ -82,75 +130,84 @@ class CreditRoll:
             'Vol. 01 - The Mahjong', 'SilvaGunner', 'https://www.youtube.co'\
             'm/watch?v=mXvR7Qvf3cA')
         >>> creditroll = CreditRoll('Music')
+        >>> creditroll.credits == []
+        True
         >>> creditroll.add(test)
+        >>> creditroll.credits != []
+        True
 
         """
         self.credits.append(credit)
 
+def creds() -> str:
+    """ 
+    Return a string that details all CreditRolls, which are (in order):
 
-credits_all = []
+    - Music CreditRoll
+    - Sound Effect CreditRoll
+    - Code CreditRoll
+    """
+    credits_all, credit_str = [], ''
 
-# Music
+    # Music
 
-mus1 = Credit('Sad Song', 'Darkman007', 'https://modarchive.org/')
-mus2 = Credit('Romantic', 'Benjamin Tissot (also known as Bensound)',
-              'www.bensound.com')
-mus3 = Credit('Jingles #1-10', 'Zophar\'s Music Domain', 'https://www.zopha'\
-              'r.net/music/nintendo-ds-2sf/simple-ds-series-vol-01-the-mahjong')
-mus4 = Credit('Bossa vieja!', 'MadBrain', 'https://modarchive.org/')
+    mus1 = Credit('Sad Song', 'Darkman007', 'https://modarchive.org/')
+    mus2 = Credit('Romantic', 'Benjamin Tissot (also known as Bensound)',
+                'www.bensound.com')
+    mus3 = Credit('Jingles #1-10', 'Zophar\'s Music Domain', 'https://www.zopha'\
+                'r.net/music/nintendo-ds-2sf/simple-ds-series-vol-01-the-mahjong')
+    mus4 = Credit('Bossa vieja!', 'MadBrain', 'https://modarchive.org/')
 
-music_credits = CreditRoll('Music')
-all_music = [mus1, mus2, mus3, mus4]
-for i in all_music:
-    music_credits.add(i)
+    music_credits = CreditRoll('Music')
+    all_music = [mus1, mus2, mus3, mus4]
+    for i in all_music:
+        music_credits.add(i)
 
-# Sound Effects
+    # Sound Effects
 
-se1 = Credit('Item and Confidence Gain/Loss', 'Jagex, provided by'\
-             ' Enzo Willems', 'https://www.youtube.com/watch?v=w9IsTb9yPoQ')
-se2 = Credit('Invalid and Breaking Table Noises', 'Valve, provided by'\
-             ' Darkrai64', 'https://www.youtube.com/playlist?list=PLNl6VjQ8'\
-             'AltzVT3vDkenZx3NcaC3fpgtG')
-se3 = Credit('Slap and Table Slam', 'All Sounds', 'https://youtu.be/NJesYXP71'\
-             '44?t=21 and https://youtu.be/0HwyOSfaOPc?t=50 respectively.')
-se4 = Credit('Escape, Select, and Information Select', 'Toby Fox, provided '\
-             'by carpathia808', 'https://www.youtube.com/watch?v=dkk6t9iywKA')
-se5 = Credit('Toilet Flush', 'JonGallagher1', 'https://www.youtube.com/watch'\
-             '?v=hwxNVnPKaPE')
-se6 = Credit('Invalid Item Use', 'CorrectAndWrong', 'https://www.youtube.co'\
-             'm/watch?v=worclOeTALw')
-se7 = Credit('Restaurant Chatter', 'The Corner of Ambient Sounds & ASMR',
-             'https://www.youtube.com/watch?v=Knt974Y3Cqc')
-se8 = Credit('Drum Roll', 'Gaming Sound FX', 'https://www.youtube.com/'\
-             'watch?v=Ek56AgxwybI')
-se9 = Credit('Woman Coughing', 'Visual & Sound FX', 'https://www.youtube.com'\
-             '/watch?v=ORLWyWQteV0')
-se10 = Credit('Gunshots', 'Fesliyanstudios', 'https://www.fesliyanstudios.'\
-              'com/royalty-free-sound-effects-download/gun-shooting-300')
-se11 = Credit('Crowd Scream', 'Dadda Digital', 'https://www.youtube.com/'\
-              'watch?v=5Irt2ABKeqc')
+    se1 = Credit('Item and Confidence Gain/Loss', 'Jagex, provided by'\
+                ' Enzo Willems', 'https://www.youtube.com/watch?v=w9IsTb9yPoQ')
+    se2 = Credit('Invalid and Breaking Table Noises', 'Valve, provided by'\
+                ' Darkrai64', 'https://www.youtube.com/playlist?list=PLNl6VjQ8'\
+                'AltzVT3vDkenZx3NcaC3fpgtG')
+    se3 = Credit('Slap and Table Slam', 'All Sounds', 'https://youtu.be/NJesYXP71'\
+                '44?t=21 and https://youtu.be/0HwyOSfaOPc?t=50 respectively.')
+    se4 = Credit('Escape, Select, and Information Select', 'Toby Fox, provided '\
+                'by carpathia808', 'https://www.youtube.com/watch?v=dkk6t9iywKA')
+    se5 = Credit('Toilet Flush', 'JonGallagher1', 'https://www.youtube.com/watch'\
+                '?v=hwxNVnPKaPE')
+    se6 = Credit('Invalid Item Use', 'CorrectAndWrong', 'https://www.youtube.co'\
+                'm/watch?v=worclOeTALw')
+    se7 = Credit('Restaurant Chatter', 'The Corner of Ambient Sounds & ASMR',
+                'https://www.youtube.com/watch?v=Knt974Y3Cqc')
+    se8 = Credit('Drum Roll', 'Gaming Sound FX', 'https://www.youtube.com/'\
+                'watch?v=Ek56AgxwybI')
+    se9 = Credit('Woman Coughing', 'Visual & Sound FX', 'https://www.youtube.com'\
+                '/watch?v=ORLWyWQteV0')
+    se10 = Credit('Gunshots', 'Fesliyanstudios', 'https://www.fesliyanstudios.'\
+                'com/royalty-free-sound-effects-download/gun-shooting-300')
+    se11 = Credit('Crowd Scream', 'Dadda Digital', 'https://www.youtube.com/'\
+                'watch?v=5Irt2ABKeqc')
 
-se_credits = CreditRoll('Sound Effects')
-all_se = [se1, se2, se3, se4, se5, se6, se7, se8, se9, se10, se11]
-for i in all_se:
-    se_credits.add(i)
+    se_credits = CreditRoll('Sound Effects')
+    all_se = [se1, se2, se3, se4, se5, se6, se7, se8, se9, se10, se11]
+    for i in all_se:
+        se_credits.add(i)
 
-# Code
+    # Code
 
-code1 = Credit('Clear the Terminal Programmatically!', 'Brōtsyorfuzthrāx',
-               'https://stackoverflow.com/questions/2084508/clea'\
-               'r-terminal-in-python')
-code_credits = CreditRoll('Code Assistance')
-all_code = [code1]
-for i in all_code:
-    code_credits.add(i)
+    code1 = Credit('Clear the Terminal Programmatically!', 'Brōtsyorfuzthrāx',
+                'https://stackoverflow.com/questions/2084508/clea'\
+                'r-terminal-in-python')
+    code_credits = CreditRoll('Code Assistance')
+    all_code = [code1]
+    for i in all_code:
+        code_credits.add(i)
 
-credits_all.append(music_credits), credits_all.append(se_credits)
-credits_all.append(code_credits)
-
-credit_str = ''
-for i in credits_all:
-    credit_str += str(i)
+    credits_all = [music_credits, se_credits, code_credits]
+    for i in credits_all:
+        credit_str += str(i)
+    return credit_str
 
 if __name__ == '__main__':
     import doctest

@@ -3,6 +3,7 @@
 from random import choice, randint
 from typing import List, Dict
 from reactions import Character
+from file_init import file_lst_return
 import doctest
 import os
 
@@ -13,14 +14,8 @@ def questions(person: Character) -> List[Dict]:
     date.
 
     """
-
-    with open(os.path.abspath(r'text_files\Other'
-                              r'\tragedies.txt')) as sad_txt:
-        sad = sad_txt.read().split('\n')
-
-    with open(os.path.abspath(r'text_files\Other'
-                              r'\good_peeps_i_think.txt')) as gud_txt:
-        gud_people = gud_txt.read().split('\n')
+    sad = file_lst_return('tragedies')
+    gud_people = file_lst_return('good_peeps_i_think')
 
     gud_peeps = []
     while len(gud_peeps) != 3:
