@@ -19,7 +19,8 @@ from constants import (OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
                        YES, NO, OPTION_E, conf_gain_SE, conf_lose_SE,
                        cologne_SE, slap_SE, invalid_SE, invalid_2_SE, info_SE,
                        toilet_SE, run_SE, select_SE, drum_roll_SE, gunshot_1_SE,
-                       gunshot_2_SE, panic_SE, sounds, OPTION_F)
+                       gunshot_2_SE, panic_SE, sounds, OPTION_F, TURNS,
+                       CONFIDENCE, COLOGNE_AMT, WSHROOM_AMT)
 from questions_list import questions
 from prompts import (decision_prompt, menu_prompt, item_prompt, options_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
@@ -136,8 +137,8 @@ def battle(person: Character) -> None:
     """
 
     while True:
-        excuses_amt, cologne_amt, confidence, decision = 3, 3, 100, ''
-        turns = 15
+        excuses_amt, cologne_amt = WSHROOM_AMT, COLOGNE_AMT
+        confidence, turns, decision = CONFIDENCE, TURNS, ''
         msg, question_lst = '', questions(person)
         battle_actions, yes_no = (TALK, ITEM, INFO, RUN), (YES, NO)
         options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
@@ -178,6 +179,8 @@ def battle(person: Character) -> None:
                     elif item_dec == OPTION_B:
                         excuses_amt = decrease_item_amt(excuses_amt)
                     confidence = item_effect(item_dec, confidence)
+                    if confidence <= 0:
+                        decision = 'butthole'
                 if item_dec == OPTION_D:
                     decision = item_dec
 

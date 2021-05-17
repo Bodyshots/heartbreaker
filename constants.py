@@ -11,6 +11,8 @@ OPTION_C = 'C'
 OPTION_D = 'D'
 OPTION_E = 'E'
 OPTION_F = 'F'
+TURNS = 10
+CONFIDENCE = 100
 
 # Menu Options
 
@@ -24,6 +26,8 @@ NO = 'N'
 # Item Usage and Lower Bounds and Higher Bounds for Items
 
 USAGE_DEC = 1
+COLOGNE_AMT = 1
+WSHROOM_AMT = 1
 COLOGNE_LOWER, COLOGNE_HIGHER = 5, 15
 WASHROOM_LOWER, WASHROOM_HIGHER = 15, 25
 SHOW_OFF_LOWER, SHOW_OFF_HIGHER = -30, 20
