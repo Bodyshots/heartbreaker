@@ -287,9 +287,9 @@ def game_over_lose() -> str:
 
 def game_over_win(confidence: int) -> None:
     """
-    Print the reaction of the users' date after they 15 turns have
+    Print the reaction of the users' date after they 10 turns have
     passed. Their reaction is determined by the user's total <confidence>
-    after these 15 turns.
+    after these 10 turns.
 
     """
 
@@ -297,7 +297,7 @@ def game_over_win(confidence: int) -> None:
     pg.mixer.music.stop(), pg.mixer.music.unload()
     pg.mixer.music.load(music_path + r'\results.mp3'), pg.mixer.music.play()
 
-    input('You have survived all 15 turns!\n'), select_SE.play()
+    input('You have survived all 10 turns!\n'), select_SE.play()
     input('However, how does your date feel?\n'), clear_term()
     print('Your date says...'), drum_roll_SE.play(), sleep(4.5)
     pg.mixer.music.unload()
