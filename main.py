@@ -20,9 +20,11 @@ from constants import (OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
                        cologne_SE, slap_SE, invalid_SE, invalid_2_SE, info_SE,
                        toilet_SE, run_SE, select_SE, drum_roll_SE, gunshot_1_SE,
                        gunshot_2_SE, panic_SE, sounds, OPTION_F, TURNS,
-                       CONFIDENCE, COLOGNE_AMT, WSHROOM_AMT)
+                       CONFIDENCE, E_COLOGNE_AMT, E_WSHROOM_AMT,
+                       N_COLOGNE_AMT, N_WSHROOM_AMT, H_COLOGNE_AMT,
+                       H_WSHROOM_AMT, DIF_EASY, DIF_NORM, DIF_HARD)
 from questions_list import questions
-from prompts import (decision_prompt, menu_prompt, item_prompt, options_prompt,
+from prompts import (decision_prompt, diff_prompt, menu_prompt, item_prompt, options_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
                      question_format, sound_lvl_prompt, instructions_prompt,
                      story_prompt, information_prompt)
@@ -46,9 +48,9 @@ def main_game() -> None:
     The main menu of the game.
 
     """
-
     menu_choice = ''
     music_vol = 0.5
+    difficulty = DIF_NORM
     credit_str = creds()
     pg.mixer.music.set_volume(music_vol)
     sound_vol = slap_SE.get_volume()
@@ -60,7 +62,8 @@ def main_game() -> None:
                         OPTION_F)
         menu_choice = prompt_select(menu_prompt(), menu_options).upper()
 
-        while menu_choice.upper() in (OPTION_B, OPTION_C, OPTION_D, OPTION_E):
+        while menu_choice.upper() in (OPTION_B, OPTION_C, OPTION_D,
+                                      OPTION_E, OPTION_F):
             select_SE.play(), clear_term()
 
             if menu_choice.upper() == OPTION_B:
@@ -73,10 +76,10 @@ def main_game() -> None:
 
             elif menu_choice.upper() == OPTION_D:
                 music_loop(music_path + r'\new_options_menu.ogg', 500, 1000, 78)
-                options = (OPTION_A, OPTION_B, OPTION_C)
+                options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
                 menu_choice = prompt_select(options_prompt(), options).upper()
                 clear_term()
-                while menu_choice.upper() in (OPTION_A, OPTION_B):
+                while menu_choice.upper() in (OPTION_A, OPTION_B, OPTION_C):
                     if menu_choice == OPTION_A:
                         music_vol = vol_change(music_vol, music_lvl_prompt)
                         pg.mixer.music.set_volume(music_vol)
@@ -84,6 +87,16 @@ def main_game() -> None:
                         sound_vol = vol_change(sound_vol, sound_lvl_prompt)
                         for i in sounds:
                             i.set_volume(sound_vol)
+                    elif menu_choice == OPTION_C:
+                        dif_choice = ''
+                        select_SE.play()
+                        dif_choice = prompt_select(diff_prompt(difficulty), options)
+                        if dif_choice.upper() == OPTION_A:
+                            difficulty = DIF_EASY
+                        elif dif_choice.upper() == OPTION_B:
+                            difficulty = DIF_NORM
+                        elif dif_choice.upper() == OPTION_C:
+                            difficulty = DIF_HARD
                     select_SE.play()
                     menu_choice = prompt_select(options_prompt(), options).upper()
                 select_SE.play()
@@ -92,16 +105,21 @@ def main_game() -> None:
             elif menu_choice.upper() == OPTION_E:
                 prompt_select(credits_prompt(credit_str), OPTION_A)
                 select_SE.play()
+            
+            elif menu_choice.upper() == OPTION_F:
+                select_SE.play(), clear_term()
+                menu_choice = prompt_select(yes_no_prompt('Are you sure you want to quit?'),
+                                            (YES, NO)).upper()
+                if menu_choice == YES:
+                    clear_term()
+                    print('Quitting...')
+                    exit()
 
             menu_choice = prompt_select(menu_prompt(), menu_options).upper()
 
         if menu_choice.upper() == OPTION_A:
             person = person_creator()
-            battle(person)
-
-        elif menu_choice.upper() == OPTION_F:
-            select_SE.play(), clear_term(), print('Quitting...')
-            exit()
+            battle(person, difficulty)
 
 
 def vol_change(volume: float, prompt: Callable[[float], str]) -> float:
@@ -129,15 +147,19 @@ def vol_change(volume: float, prompt: Callable[[float], str]) -> float:
     return vol_choice
 
 
-def battle(person: Character) -> None:
+def battle(person: Character, difficulty: str) -> None:
     """
     Begins the actual game, featuring the user 'battling' against
-    <person>.
+    <person> with <difficulty>.
 
     """
 
     while True:
-        excuses_amt, cologne_amt = WSHROOM_AMT, COLOGNE_AMT
+        excuses_amt, cologne_amt = N_WSHROOM_AMT, N_COLOGNE_AMT
+        if difficulty == DIF_EASY:
+            excuses_amt, cologne_amt = E_WSHROOM_AMT, E_COLOGNE_AMT
+        elif difficulty == DIF_HARD:
+            excuses_amt, cologne_amt = H_WSHROOM_AMT, H_COLOGNE_AMT
         confidence, turns, decision = CONFIDENCE, TURNS, ''
         msg, question_lst = '', questions(person)
         battle_actions, yes_no = (TALK, ITEM, INFO, RUN), (YES, NO)

@@ -1,7 +1,8 @@
 """ Module for the game's prompts """
 
 from constants import (TALK, ITEM, INFO, RUN, OPTION_A, OPTION_B, OPTION_C,
-                       OPTION_D, OPTION_E, OPTION_F, YES, NO)
+                       OPTION_D, OPTION_E, OPTION_F, YES, NO, DIF_EASY,
+                       DIF_NORM, DIF_HARD)
 from character_classes import Character
 from typing import Dict
 
@@ -96,7 +97,8 @@ def options_prompt() -> str:
     prompt = 'What would you like to change?\n'\
             f'[{OPTION_A}] - Music Volume\n'\
             f'[{OPTION_B}] - Sound Effect (SE) Volume\n'\
-            f'[{OPTION_C}] - Back'
+            f'[{OPTION_C}] - Difficulty\n'\
+            f'[{OPTION_D}] - Back'
 
     return prompt
 
@@ -160,7 +162,7 @@ def instructions_prompt() -> str:
              ' It\'s the only "item" that can also decrease your confidence.\n'\
              'It may even cause you to lose the game in some situations.'\
              ' Show off wisely!\n\nInfo and Run are a bit self-explanatory:'\
-             '\n\n3. Info gives you the person\'s name and'\
+             '\n\n3. Info gives you the person\'s name and '\
              'personality.\n\n4. Run ends the game prematurely '\
              '(using it results in a loss).\n\nGood Luck!\n\n'\
              f'[{OPTION_A}] - Back'
@@ -193,3 +195,23 @@ def information_prompt(person: Character) -> str:
     """
 
     return f'Information:\n{person}\n[{OPTION_A}] - Back'
+
+
+def diff_prompt(current_dif: str) -> str:
+    """
+    Show the <current_dif> (current difficulty) of the game
+    and show a list of difficulties that the user can
+    choose from. These are:
+
+    - Easy
+    - Medium
+    - Hard
+    """
+    prompt = 'Select your difficulty below.\n'\
+            f'Current difficulty: {current_dif}\n'\
+            f'[{OPTION_A}] - {DIF_EASY}\n'\
+            f'[{OPTION_B}] - {DIF_NORM}\n'\
+            f'[{OPTION_C}] - {DIF_HARD}\n'\
+            f'[{OPTION_D}] - Back'
+
+    return prompt

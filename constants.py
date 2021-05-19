@@ -3,7 +3,7 @@ from os.path import abspath
 
 pg.init()
 
-# Battle Options
+### Battle Options
 
 OPTION_A = 'A'
 OPTION_B = 'B'
@@ -11,10 +11,16 @@ OPTION_C = 'C'
 OPTION_D = 'D'
 OPTION_E = 'E'
 OPTION_F = 'F'
+OPTION_G = 'G'
 TURNS = 10
-CONFIDENCE = 100
+CONFIDENCE = 50
 
-# Menu Options
+# Difficulties (default is DIF_NORM)
+DIF_EASY = 'Easy'
+DIF_NORM = 'Normal'
+DIF_HARD = 'Hard'
+
+### Menu Options
 
 RUN = 'R'
 ITEM = 'I'
@@ -23,16 +29,28 @@ TALK = 'T'
 YES = 'Y'
 NO = 'N'
 
-# Item Usage and Lower Bounds and Higher Bounds for Items
+### Item Usage and Lower Bounds and Higher Bounds for Items
 
 USAGE_DEC = 1
-COLOGNE_AMT = 1
-WSHROOM_AMT = 1
+
+# Easy
+E_COLOGNE_AMT = 2
+E_WSHROOM_AMT = 2
+
+# Normal
+N_COLOGNE_AMT = 1
+N_WSHROOM_AMT = 1
+
+# Hard
+H_COLOGNE_AMT = 0
+H_WSHROOM_AMT = 0
+
+# Chances
 COLOGNE_LOWER, COLOGNE_HIGHER = 5, 15
 WASHROOM_LOWER, WASHROOM_HIGHER = 15, 25
 SHOW_OFF_LOWER, SHOW_OFF_HIGHER = -30, 20
 
-# Reactions
+### Reactions Gains
 
 EXTREME_NEG = -40
 LARGE_NEG = -30
@@ -46,14 +64,14 @@ MED_POS = 20
 LARGE_POS = 30
 EXTREME_POS = 40
 
-# Personalities
+### Personalities
 
 NORMAL = 'Normal'
 OBJECTIVE = 'Objective'
 ACTIVE = 'Active'
 NEGATIVE = 'Negative'
 
-# Sounds
+### Sounds
 
 conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\437.wav'))
 conf_gain_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain.wav'))
