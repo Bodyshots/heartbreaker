@@ -107,13 +107,14 @@ def main_game() -> None:
                 select_SE.play()
             
             elif menu_choice.upper() == OPTION_F:
-                select_SE.play(), clear_term()
                 menu_choice = prompt_select(yes_no_prompt('Are you sure you want to quit?'),
                                             (YES, NO)).upper()
                 if menu_choice == YES:
                     clear_term()
                     print('Quitting...')
                     exit()
+
+                select_SE.play()
 
             menu_choice = prompt_select(menu_prompt(), menu_options).upper()
 
