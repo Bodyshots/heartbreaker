@@ -25,7 +25,7 @@ By only knowing your date's personality, it seems that you'll just have to survi
 
 ## 1. I just want to run the game
 
-Want just the .exe of the game and its required files? Here: https://mega.nz/file/g1AmjZRB#WridoSbLGj-gX4tCzMw6-MxopwzoGsYYdoEdfB1o4B4 (Updated 1/5/2021)
+Want just the .exe of the game and its required files? Here: https://mega.nz/file/ohZXQapY#J-U8pVcWBM_3Al85I_NUy-LbZE7pG7hETP9RwmdFTLg (Updated 5/19/2021)
 
 Depending on your anti-virus software, the program may get labelled as a trojan. Of course, it's safe to assume that this is a false positive. Take a look at the source code and see for yourself if you don't believe me.
 
