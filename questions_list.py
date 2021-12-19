@@ -16,6 +16,8 @@ def questions(person: Character) -> List[Dict]:
     """
     sad = file_lst_return('tragedies')
     gud_people = file_lst_return('good_peeps_i_think')
+    chosen_console = choice(file_lst_return('consoles'))
+
 
     gud_peeps = []
     while len(gud_peeps) != 3:
@@ -84,7 +86,7 @@ def questions(person: Character) -> List[Dict]:
                           'you do in response?',
              'Answers': {'A': 'Politely shake his hand in approval and proceed'\
                               ' to engage in fisticuffs',
-                         'B': 'Sincerely say "Epic. My favourite flavour!"',
+                         'B': '"Epic."',
                          'C': 'Continue talking to your date',
                          'D': 'Take off your shirt and put it back on once it'\
                               ' dries'}
@@ -112,9 +114,8 @@ def questions(person: Character) -> List[Dict]:
                            ' comes to your table demanding that you leave '\
                            f'{person.first_name} alone. Apparently this man is'\
                            ' your date\'s ex!\nHow do you respond?',
-             'Answers': {'A': 'Winners are always first! Stand up and punch him'\
-                              ' before he gets the first blow. Then, proceed to'\
-                              ' beat him up',
+             'Answers': {'A': 'Punch him before he gets the first blow.'
+                              ' Then, proceed to beat him up',
                          'B': '"You dated her???"',
                          'C': '"Don\'t worry, we\'re really just friends"',
                          'D': 'Cry'}
@@ -187,8 +188,8 @@ def questions(person: Character) -> List[Dict]:
              'Answers': {'A': '"Oh, isn\'t that where they do [insert thing'\
                               ' here]?"',
                          'B': 'Don\'t bother and keep listening to her',
-                         'C': 'Smirk, cross your arms, and say "That video'\
-                              ' SUCKS"',
+                         'C': 'Smirk and cross your arms while saying'\
+                              ' "That video SUCKS"',
                          'D': 'Suggest that she watches your Youtube channel'}
         },
         {
@@ -216,10 +217,267 @@ def questions(person: Character) -> List[Dict]:
                             ' goes on about your experiences you shared '\
                             'together. How do you respond?',
              'Answers': {'A': 'Let him talk. Sending him away would be rude',
-                         'B': 'FISTICUFFS. NOW',
+                         'B': 'Beat them up',
                          'C': 'Try to steer the conversation towards a ' 
                               'different topic',
                          'D': 'Tell him to buzz off'}
-        }
+        },
+        {
+            'Question 20': f'As a hypothetical, {person.first_name} wonders'\
+                            ' what you would do when you encounter a homeless'\
+                            ' person on the side of the road.',
+             'Answers': {'A': '"Homeless? Tell them to just get a house, duh"',
+                         'B': 'Steal their belongings',
+                         'C': 'Give them some money',
+                         'D': '"I, too, am homeless."'}
+        },
+        {
+            'Question 21': f'To test your intelligence, {person.first_name}'\
+                            ' poses the following math question:\n'\
+                            '"Find the antiderivative of\n'
+                            'dy/dx = e^(2y)(2x-x^2),'
+                            ' where y(0) = 3.1510690248564.\n\nThen, find '\
+                            'x when y = -ln(209484)/2. Ensure your final '\
+                            'answer is in the real numbers."',
+             'Answers': {'A': '"what"',
+                         'B': 'Try to answer the question',
+                         'C': 'How about I give you a math question?',
+                         'D': 'Ignore them and continue eating your food'}
+        },
+        {
+            'Question 22': 'Your date decides to go to the washroom.\nWhat'\
+                           ' do you do?',
+            'Answers': {'A': 'Join them',
+                        'B': 'Wait patiently for their return',
+                        'C': 'Eat their food while you wait',
+                        'D': 'Use this as an opportunity to take a break'}
+        },
+        {
+            'Question 23': f'While talking with {person.first_name}, you'\
+                            ' realize that you accidentally left your oven'\
+                            ' on.\n\nIn short, your house is in danger of'\
+                            ' burning down!\n\nWhat do you do?',
+            'Answers': {'A': '"SHIT MY HOUSE IS BURNING DOWN"',
+                        'B': 'Hope that your house will be alright when'\
+                             ' you get back',
+                        'C': 'Call one of your buds to turn it off',
+                        'D': 'Postpone your date to quickly head back and'\
+                             ' turn it off'}
+        },
+        {
+            'Question 24':  'Thanks to your waning attention span,'\
+                           f' you space out while {person.first_name}'\
+                            ' asks you a question.\n\What is your response?',
+            'Answers': {'A': '"Yes"',
+                        'B': '"No"',
+                        'C': '"Huh?"',
+                        'D': '"Sorry, I wasn\'t paying attention."'}
+        },
+        {
+            'Question 25':  f'{person.first_name} tells you to spell'\
+                             '"ICUP".',
+            'Answers': {'A': '"Seriously?"',
+                        'B': 'Spell it out',
+                        'C': '"How do you spell it?"',
+                        'D': '"No"'}
+        },
+        {
+            'Question 26':  'Your date asks you how they look today.',
+            'Answers': {'A': '"Hot"',
+                        'B': '"Pretty good"',
+                        'C': '"Your outfit SUCKS"',
+                        'D': '"This is a text-based video game.'\
+                             ' I literally don\'t know."'}
+        },
+        {
+            'Question 27':  '"Do you eat ass?"',
+            'Answers': {'A': '"Of course I do!"',
+                        'B': '"Do you?"',
+                        'C': '"What?"',
+                        'D': '"No"'}
+        },
+        {
+            'Question 28':  'Movie discussion time! Your date fervently'\
+                            ' talks about the Lord of the Rings trilogy'\
+                            ' and asks about your favourite quote from'\
+                            ' the series.',
+            'Answers': {'A': '"Obstacles do not exist to be surrendered'\
+                             ' to, but only to be broken"',
+                        'B': '"I believe in one thing only, the power'\
+                             ' of human will"',
+                        'C': '"All\'s well that ends better"',
+                        'D': '"Inactivity is death"'}
+        },
+        # {
+        #     'Question 29':  f'{person.first_name} looks visibly bored! You'\
+        #                      ' try to tell a joke to lighten the mood, but'\
+        #                      ' what should the joke be about?',
+        #     'Answers': {'A': 'Cars',
+        #                 'B': 'Shakespeare',
+        #                 'C': 'Kidney stones',
+        #                 'D': 'Water'}
+        # },
+        # {
+        #     'Question 30':  '"Would you kill a puppy for ten million US dollars?"',
+        #     'Answers': {'A': 'Hell yeah',
+        #                 'B': 'Dumb question. Next',
+        #                 'C': 'Nah',
+        #                 'D': 'A puppy, no. A different animal though...'}
+        # },
+        # {
+        #     'Question 31':  'Though your food is of excellent quality, you'\
+        #                     ' suddenly realize your wallet isn\'t as so.'\
+        #                     ' You\'re too poor to pay for both'\
+        #                    f'{person.first_name}\'s meal as well as your'\
+        #                     'meal!\n\nWhat do you do?',
+        #     'Answers': {'A': f'Persuade {person.first_name} to split the'\
+        #                       ' bill. It is your first date together after'\
+        #                       ' all.',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 32':  'Out of the corner of your eye, you spot a big,'\
+        #                     ' red, jolly man munching down on some cookies'\
+        #                     ' and milk. Slowly, it all clicks together...\n\n'\
+        #                     'It\'s Santa Claus! How do you act in this'\
+        #                     ' situation?',
+        #     'Answers': {'A': '"Eat a salad, fat man"',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 33':  f'{person.first_name} asks you about your day job.'\
+        #                      '\nWhat do you say?',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 34':  '"As part of a team, what role would you prefer?"',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 35':  'You\'ve ignored it for a while now, but now'\
+        #                     'it\'s really starting to bug you: Your chair'\
+        #                     ' is terribly uneven.\n\nWhat do you do to handle'\
+        #                     ' this ordeal?',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 36':  f'someone pickpockets you blah blah',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 37':  '"If you had to describe yourself in one word'\
+        #                    f' what would it be?", {person.first_name} asks.',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 38':  f'{person.first_name} asks if you have any'\
+        #                      ' tattoos.',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 39':  f'tow truck tows your car ',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 40':  f'"What do you think about the {chosen_console}?',
+        #     'Answers': {'A': 'the {chosen_console} fucking sucks lmao',
+        #                 'B': '"What's that?"',
+        #                 'C': '"It's alright"',
+        #                 'D': '"Pretty based ngl"'} (based on what? joke)
+        # },
+        # {
+        #     'Question 41':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 42':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 43':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 44':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 45':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 46':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 47':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 48':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 49':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
+        # },
+        # {
+        #     'Question 50':  f'',
+        #     'Answers': {'A': '',
+        #                 'B': '',
+        #                 'C': '',
+        #                 'D': ''}
     ]
     return questions

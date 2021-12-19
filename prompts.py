@@ -4,7 +4,7 @@ from constants import (TALK, ITEM, INFO, RUN, OPTION_A, OPTION_B, OPTION_C,
                        OPTION_D, OPTION_E, OPTION_F, YES, NO, DIF_EASY,
                        DIF_NORM, DIF_HARD)
 from character_classes import Character
-from typing import Dict
+from typing import Dict, List
 
 
 def decision_prompt(confidence: float, turns: int) -> str:
@@ -14,7 +14,7 @@ def decision_prompt(confidence: float, turns: int) -> str:
 
     """
     prompt = 'What do you want to do?\n'\
-             f'Turns left: {turns}\n'\
+             f'Turns left: {turns}\n\n'\
              f'[{TALK}] - Talk\n'\
              f'[{ITEM}] - Items\n'\
              f'[{INFO}] - Info\n'\
@@ -30,7 +30,7 @@ def menu_prompt() -> str:
     quit.
 
     """
-    prompt = 'Main Menu:\n'\
+    prompt = 'Main Menu:\n\n'\
             f'[{OPTION_A}] - Play the game!\n'\
             f'[{OPTION_B}] - Story\n'\
             f'[{OPTION_C}] - Instructions\n'\
@@ -48,7 +48,7 @@ def item_prompt(cologne: int, excuses: int, confidence: int) -> str:
 
     """
     prompt = f'Your Confidence: {confidence}%\n'\
-              'Items:\n'\
+              'Items:\n\n'\
              f'[{OPTION_A}] - Cologne: {cologne}\n'\
              f'[{OPTION_B}] - Washroom Break Excuses: {excuses}\n'\
              f'[{OPTION_C}] - Show Off!\n'\
@@ -71,20 +71,21 @@ def yes_no_prompt(message: str) -> str:
     return prompt
 
 
-def question_format(questions: Dict) -> str:
+def question_format(questions: Dict, answers: List[str]) -> str:
     """
     Return a prompt for the user to decide how to respond to a random question
     from <questions>.
 
     """
-    answers = questions.get('Answers')
-    prompt = f'{(questions.get(sorted(list(questions.keys()))[1]))}\n'\
-             f'[{OPTION_A}] - {answers.get(OPTION_A)}\n'\
-             f'[{OPTION_B}] - {answers.get(OPTION_B)}\n'\
-             f'[{OPTION_C}] - {answers.get(OPTION_C)}\n'\
-             f'[{OPTION_D}] - {answers.get(OPTION_D)}'
+    options = [OPTION_A, OPTION_B, OPTION_C, OPTION_D]
+    i = 0
 
-    return prompt
+    prompt = f'{(questions.get(sorted(list(questions.keys()))[1]))}\n\n'
+    for answer in answers:
+        prompt += f'[{options[i]}] - {answer}\n'
+        i += 1
+
+    return prompt.rstrip()
 
 
 def options_prompt() -> str:
@@ -94,7 +95,7 @@ def options_prompt() -> str:
 
     """
 
-    prompt = 'What would you like to change?\n'\
+    prompt = 'What would you like to change?\n\n'\
             f'[{OPTION_A}] - Music Volume\n'\
             f'[{OPTION_B}] - Sound Effect (SE) Volume\n'\
             f'[{OPTION_C}] - Difficulty\n'\
@@ -203,15 +204,25 @@ def diff_prompt(current_dif: str) -> str:
     and show a list of difficulties that the user can
     choose from. These are:
 
-    - Easy
-    - Medium
-    - Hard
+    - Literal Chad (DIF_EASY)
+    - Normal (DIF_NORMAL)
+    - Fucking WEEB (DIF_HARD)
     """
-    prompt = 'Select your difficulty below.\n'\
+    prompt = 'Select your difficulty below.\n\n'\
             f'Current difficulty: {current_dif}\n'\
-            f'[{OPTION_A}] - {DIF_EASY}\n'\
-            f'[{OPTION_B}] - {DIF_NORM}\n'\
-            f'[{OPTION_C}] - {DIF_HARD}\n'\
-            f'[{OPTION_D}] - Back'
+            f'[{OPTION_A}] - Literal Chad \n'\
+            f'[{OPTION_B}] - Normie \n'\
+            f'[{OPTION_C}] - Fucking WEEB \n'\
+            f'[{OPTION_D}] - Back\n\n'\
+            'Difficulty levels determine the number of '\
+            'turns and confidence gains/losses throughout the date.'
 
+    return prompt
+
+def jukebox_prompt(song: str) -> str:
+    prompt = f'Current song: {song}'\
+             f'[{OPTION_A}] - Next'\
+             f'[{OPTION_B}] - Back'\
+             f'[{OPTION_C}] - Exit'
+    
     return prompt

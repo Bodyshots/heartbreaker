@@ -12,13 +12,21 @@ OPTION_D = 'D'
 OPTION_E = 'E'
 OPTION_F = 'F'
 OPTION_G = 'G'
-TURNS = 10
-CONFIDENCE = 50
+
+# Turn Amounts
+EASY_TURNS = 15
+NORM_TURNS = 12
+HARD_TURNS = 8
+
+# Confidence Amounts
+EASY_CONF = 100
+NORM_CONF = 50
+HARD_CONF = 25
 
 # Difficulties (default is DIF_NORM)
-DIF_EASY = 'Easy'
-DIF_NORM = 'Normal'
-DIF_HARD = 'Hard'
+DIF_EASY = 'Literal Chad'
+DIF_NORM = 'Normie'
+DIF_HARD = 'Fucking WEEB'
 
 ### Menu Options
 
@@ -71,26 +79,26 @@ OBJECTIVE = 'Objective'
 ACTIVE = 'Active'
 NEGATIVE = 'Negative'
 
-### Sounds
+### Sounds and Music
 
-conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\437.wav'))
-conf_gain_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain.wav'))
-cologne_SE = pg.mixer.Sound(abspath(r'Sounds\SE\cologne.wav'))
-slap_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slap.wav'))
-invalid_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid.wav'))
-invalid_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_2.wav'))
-slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\break_table.wav'))
-select_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_item.wav'))
-toilet_SE = pg.mixer.Sound(abspath(r'Sounds\SE\toilet.wav'))
-run_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_escaped.wav'))
-info_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_heal_c.wav'))
+MUSIC_PATH = r'Sounds\Music'
+JINGLE_PATH = r'Sounds\Music\Jingles'
+
+conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\437.wav')) # done
+conf_gain_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain.wav')) # done
+cologne_SE = pg.mixer.Sound(abspath(r'Sounds\SE\cologne.wav')) # done
+slap_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slap.wav')) 
+invalid_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid.wav')) # done
+invalid_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_2.wav')) # done
+slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\break_table.wav')) # done
+select_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_item.wav')) # done
+toilet_SE = pg.mixer.Sound(abspath(r'Sounds\SE\toilet.wav')) # done
+run_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_escaped.wav')) # done
+info_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_heal_c.wav')) # done
 fight_SE = pg.mixer.Sound(abspath(r'Sounds\SE\fight.wav'))
 table_slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\table_slam.wav'))
 drum_roll_SE = pg.mixer.Sound(abspath(r'Sounds\SE\drum_roll.wav'))
-gunshot_1_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshot.wav'))
-gunshot_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshot_2.wav'))
-panic_SE = pg.mixer.Sound(abspath(r'Sounds\SE\crowd_panic.wav'))
-cough_SE = pg.mixer.Sound(abspath(r'Sounds\SE\cough.wav'))
+gunshot_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\new sound effects\gunshots - LittleRobotSoundFactory.wav'))
 
 # Making all sounds have a consistent volume of around 0.5
 
@@ -98,8 +106,7 @@ sound_vol = 0.5
 
 sounds = [conf_gain_SE, conf_lose_SE, cologne_SE, slap_SE, invalid_SE, slam_SE,
           info_SE, toilet_SE, invalid_2_SE, run_SE, select_SE, fight_SE,
-          table_slam_SE, drum_roll_SE, gunshot_1_SE, gunshot_2_SE, panic_SE,
-          cough_SE]
+          table_slam_SE, drum_roll_SE]
 
 for i in sounds:
     i.set_volume(sound_vol)

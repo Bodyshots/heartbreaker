@@ -3,7 +3,8 @@ from constants import (NORMAL, OBJECTIVE, ACTIVE, NEGATIVE,
                        EXTREME_NEG, LARGE_NEG, MED_NEG, SMALL_NEG, NEUTRAL,
                        SMALL_POS, MED_POS, LARGE_POS, EXTREME_POS, MINOR_NEG,
                        MINOR_POS, slap_SE, slam_SE, fight_SE, table_slam_SE,
-                       run_SE, cough_SE, gunshot_2_SE, panic_SE)
+                       run_SE, gunshot_2_SE, WASHROOM_LOWER,
+                       WASHROOM_HIGHER, toilet_SE)
 import pygame as pg
 from os import path
 from typing import Dict, Callable
@@ -222,7 +223,8 @@ def honesty(person: Character) -> int:
 
     """
 
-    print(f'{person.first_name} appears to value your honesty.')
+    print('Though a bit disgruntled,'\
+         f' {person.first_name} appears to value your honesty.')
     return randint(MINOR_POS, SMALL_POS)
 
 
@@ -233,7 +235,8 @@ def impressed(person: Character) -> int:
 
     """
 
-    print(f'You have, somehow, made {person.first_name} admire you a bit more.')
+    print(f'You have, somehow with your wit, made {person.first_name}'\
+           ' admire you a bit more.')
     return randint(SMALL_POS, MED_POS)
 
 
@@ -263,7 +266,20 @@ def pathetic(person: Character) -> int:
     return randint(NEUTRAL, MINOR_POS)
 
 
-# Functions that use other functions (that have been previously created by me)
+def boring(person: Character) -> int:
+    """
+    Return a negative int, simulating the user's reaction to their date's
+    boredom.
+
+    This function is typically for ActiveCharacter instances.
+    """
+    print(f'It seems {person.first_name} is disappointed by your'\
+           ' boring answer...')
+    return randint(MED_NEG, SMALL_NEG)
+
+
+############ Functions that use this module's other ############
+########################## functions ##########################
 
 
 def person_is_profession(person: Character) -> int:
@@ -290,18 +306,6 @@ def person_is_profession(person: Character) -> int:
     return slap(person)
 
 
-def crowd_silence() -> None:
-    """
-    Print the awkwardness of crowd silence.
-
-    """
-
-    pg.mixer.music.fadeout(1000)
-    input('The restaurant is stunned into silence.\n')
-    input('Quickly, the staff try to escort you out of the establishment,'\
-          ' but you quickly apologize and sit back down.\n')
-
-
 def crowd_silence_effects(person: Character) -> int:
     """
     Return a large negative integer, simulating the user's reaction to
@@ -312,15 +316,11 @@ def crowd_silence_effects(person: Character) -> int:
 
     """
 
-    crowd_silence()
-
     if person.true_pers == ACTIVE:
         print(f'Despite this, {person.first_name} admires your courage!')
         print('A win/lose situation for your confidence, I guess?')
-        pg.mixer.music.play(-1, 0, 2000)
         return randint(MED_NEG, MED_POS)
     input(f'{person.first_name} covers her head in shame.\n')
-    pg.mixer.music.play(-1, 0, 2000)
     return randint(EXTREME_NEG, LARGE_NEG)
 
 
@@ -333,12 +333,10 @@ def crowd_silence_child_B(person: Character) -> int:
 
     """
 
-    slam_SE.play(), crowd_silence()
+    slam_SE.play()
     input(f'{person.first_name} is flushed with embarrassment.\n')
-    pg.mixer.music.play(-1, 0, 2000)
-    input('Later, after most of the restaurant stop looking at you,'\
-          ' you explain why you ABSOLUTELY had to bodyslam the child to'\
-         f' {person.first_name}.\n')
+    input('Later, after most of the restaurant stops looking at you,'\
+          ' you try to explain why you had to bodyslam the child to\n')
 
     input('"I see..." your date ponders.\n')
 
@@ -360,7 +358,6 @@ def choke(person: Character) -> None:
     the food she was choking on.
 
     """
-    cough_SE.play()
     input(f'{person.first_name} successfully coughs out the piece of her ribs'\
            ' she was choking on!\n')
 
@@ -408,7 +405,6 @@ def choke_neg_pos(person: Character) -> int:
     return randint(MINOR_POS, SMALL_POS)
 
 
-
 def weights(person: Character) -> int:
     """
     If <person>'s true_pers is ACTIVE, return a positive integer. Otherwise,
@@ -436,9 +432,13 @@ def lies(person: Character) -> int:
     """
 
     if person.true_pers == OBJECTIVE or randint(0, 20) >= 7:
-        print('The more you lied, the deeper the hole you dug became.'\
-              ' Eventually, you got caught up in your lies...')
+        if person.true_pers == NEGATIVE:
+            print('"Fucking liar..."')
+        else:
+            print('The more you lied, the deeper the hole you dug became.'\
+                  ' Eventually, you got caught up in your lies...')
         return unimpressed(person)
+
     print('Through your masterful lies, you have managed to somehow'\
           f' convince {person.first_name} that you\'re actually'\
            ' "cooler" than you are!')
@@ -499,6 +499,7 @@ def event_blind_C(person: Character) -> int:
     if person.true_pers == NEGATIVE:
         input(f'{person.first_name} laughs at how useless you are.')
         return randint(NEUTRAL, MINOR_POS)
+
     if person.true_pers != OBJECTIVE:
         return distasteful(person)
     return confusion(person)
@@ -512,11 +513,13 @@ def event_blind_D(person: Character) -> int:
     
     """
 
-    input('Blind people can\'t actually see what you\'re referring to...\n')
+    input('You suddenly realize that blind people can\'t actually see.\n')
     if person.true_pers == NORMAL:
         return understanding(person)
+
     elif person.true_pers == NEGATIVE:
         return pathetic(person)
+
     print(f'Despite your true intentions, ', end='')
     return distasteful(person)
 
@@ -559,11 +562,12 @@ def event_blind_A(person: Character) -> int:
 
     """
     input('It turns out, the blind old woman was actually an undercover'\
-          ' agent trying to lure criminals into taking advantage of her.\n')
-    input('Immediately, you get tackled by the old woman and are read'\
-          f' your rights.\nIt is only until {person.first_name} somehow'\
-          ' explains that you thought the agent was an "old friend" that'\
-          ' you are released from custody.\n')
+          ' agent.\n')
+    input('Immediately, you get tackled by the old woman\n')
+    input(f'It is only after {person.first_name} somehow'\
+           ' explains that you thought the agent was an "old friend" that'\
+           ' you are released from custody.\n')
+
     if person.true_pers == NEGATIVE:
         return pathetic(person)
     return randint(EXTREME_NEG, LARGE_NEG)
@@ -604,12 +608,13 @@ def event_fight_win(person: Character) -> int:
 
     if person.true_pers == ACTIVE:
         return badass(person)
+
     input(f'Despite this, {person.first_name} is mortified,'\
            ' especially with all of the people looking at you and her.\n')
     return randint(LARGE_NEG, MED_NEG)
 
 
-def event_robbery_B(person: Character) -> int:
+def event_robbery_B(person: Character) -> int: # terrible
     """
     If <person>'s true_pers is NORMAL, then return the output
     of understanding(<person>). Otherwise, return the output of
@@ -620,11 +625,11 @@ def event_robbery_B(person: Character) -> int:
     input('Technically, both of you are already hostages.\n')
     fight_SE.play()
     input('So, the intruder just whacks you unconscious.\n')
-    pg.mixer.music.play(-1, 0, 2000)
     input('After regaining consciousness, you realize that you\'re still '
           f'in the restaurant with {person.first_name}, for some reason.\n')
     input('Apparently you just dozed off in the middle of your date with'\
           f' {person.first_name}. Great work.\n')
+    
     if person.true_pers == NORMAL:
         return understanding(person)
     return distasteful(person)
@@ -658,7 +663,54 @@ def abs_muscles(person: Character) -> int:
     return randint(MED_NEG, SMALL_NEG)
 
 
-# Unique Functions
+def math_question(person: Character) -> int:
+    """
+    math question LUL
+
+    - If <person>'s true_pers is OBJECTIVE, return a positive integer
+    only if the correct answer is entered. Return a negative int otherwise.
+    - If <person>'s true_pers is ACTIVE, return a negative integer
+    - If <person>'s true_pers is anything else, return a non-negative int.
+    """
+    answer = input('"Find the antiderivative of:\n'
+                    'dy/dx = e^(2y)(2x-x^2),'
+                    ' where y(0) = 3.1510690248564.\n\nThen, find '\
+                    'x when y = -ln(209484)/2. Ensure your final '\
+                    'answer is in the real numbers."\n\n'\
+                    'Enter your answer here: ')
+    if person.true_pers == OBJECTIVE:
+        if answer == '69':
+            return badass(person)
+        return unimpressed(person)
+    
+    elif person.true_pers == ACTIVE:
+        input('"You actually tried to answer the problem? Ugh..."\n'\
+             f'It seems that {person.first_name} hates nerds like you...')
+        return revulsion(person)
+    
+    elif person.true_pers == NEGATIVE:
+        print('Regardless of whether your answer was right, ', end='')
+        return pathetic(person)
+    
+    input(f'Right or not, {person.first_name} admires how you'\
+           ' tried to solve the problem.')
+    return appreciate(person)
+
+
+def join_washroom(person: Character) -> int:
+    """
+    Print some text about the user going to the same washroom,
+    as their date, then return the result of revulsion(<person>)
+    (negative int).
+
+    """
+    print(f'After the both of you are finished, you begin to'\
+           ' realize why there are specifically "Men" and'\
+           ' "Women" washrooms...')
+    return revulsion(person)
+
+
+############ Unique Functions ############
 
 
 def not_remember() -> int:
@@ -686,15 +738,17 @@ def fight(person: Character) -> int:
 
     fight_SE.play()
     if person.true_pers == ACTIVE:
-        input('Although you painfully lose your fight against the man,'\
+        input('Although you painfully lose your fight,'\
           f' {person.first_name} seems to appreciate your effort.\n')
         return randint(NEUTRAL, MINOR_POS)
+
     elif person.true_pers == NEGATIVE:
         input(f'As you lay on the floor, you {person.first_name} giggles'\
                ' at your misfortune.\n')
         print('That didn\'t feel very nice.')
         return randint(MED_NEG, SMALL_NEG)
-    input('Expectedly, you lose your fight against the man. Your adversary'\
+
+    input('Expectedly, you lose the fight. Your adversary'\
          f' nor your date seem very pleased.\n')
     return randint(LARGE_NEG, MED_NEG)
 
@@ -717,6 +771,7 @@ def remembers(person: Character) -> int:
                ' past, rather than your "fond" memories with each'\
                ' other...\n')
         return randint(NEUTRAL, MINOR_POS)
+
     elif person.true_pers == NORMAL:
         input('"I do! I\'m actually glad I got to see you again!"\n')
         input('"People really do change, huh?"\n')
@@ -726,6 +781,7 @@ def remembers(person: Character) -> int:
         input('"Sorry."\n')
         print('Ouch.')
         return randint(SMALL_NEG, MINOR_NEG)
+
     input('However, she doesn\'t seem very pleased about it...\n')
     return randint(MED_NEG, SMALL_NEG)
 
@@ -740,16 +796,16 @@ def event_blind_B(person: Character) -> int:
 
     """
     input('After picking up the wallet, you are accused of stealing'\
-          ' the "poor old woman\'s wallet" and are placed under '\
-          'citizen\'s arrest.\n')
-    input('Even though you eventually explain the situation and'\
-          f' sit back down, you notice that {person.first_name} has had'\
-          ' her head down on the table for the entire ordeal.\n')
+          ' the "poor, old woman\'s wallet" and are arrested.\n')
+    input(f'You notice that {person.first_name} has her head down, while '\
+           'you try to explain the situation to the other restaurant-goers.\n')
+
     if person.true_pers == NEGATIVE:
         print(f'Taking into account {person.first_name}\'s personality, '\
                'it\'s probably safe to assume that it\'s due to laughter'\
                ' rather than embarassment...')
         return randint(NEUTRAL, MINOR_POS)
+
     return randint(EXTREME_NEG, LARGE_NEG)
 
 
@@ -803,7 +859,7 @@ def event_friend_buzz_neg(person: Character) -> int:
 
     input(f'Oddly enough, {person.first_name} joins in. The both of you'\
            ' harass your friend to the point of tears.\n')
-    input('He runs away crying. How despicable..\n')
+    input('He runs away crying.\n')
     print(f'Just the way {person.first_name} likes it.')
     return randint(SMALL_POS, MED_POS)
 
@@ -818,16 +874,16 @@ def event_robbery_A(person: Character) -> int:
 
     """
 
-    gunshot_2_SE.play(), panic_SE.play()
+    gunshot_2_SE.play()
+
     if randint(0, 100) >= 95:
         print('You somehow manage to tackle the intruder and steal the'\
               ' money he was carrying.')
-        input('Unluckily for you, having taken the place of the intruder,'\
+        input('Having taken the place of the intruder,'\
               ' you are placed under citizen\'s arrest and are sentenced to'\
               f'{randint(5, 13)} years in prison.\n')
         input(f'By the time you meet {person.first_name} and arrange another'\
                ' date, she has completely forgotten who you were.\n')
-        pg.mixer.music.play(-1, 0, 2000)
         return EXTREME_NEG
 
     input('Though you got shot, you at least managed to distract the intruder'\
@@ -839,10 +895,8 @@ def event_robbery_A(person: Character) -> int:
     if person.true_pers == ACTIVE:
         print(f'{person.first_name} praises your fearlessness and daring'\
                ' nature.')
-        pg.mixer.music.play(-1, 0, 2000)
         return MED_POS
 
-    pg.mixer.music.play(-1, 0, 2000)
     input(f'However, {person.first_name} questions your sanity for 30 minutes\n'
            'straight once you meet each other again.\n')
     return EXTREME_NEG
@@ -857,7 +911,6 @@ def event_robbery_C(person: Character) -> None:
 
     run_SE.play()
     input(f'You run, leaving {person.first_name} to live another day\n')
-    input('You know what that means...\n')
 
 
 def event_robbery_D(person: Character) -> int:
@@ -875,18 +928,136 @@ def event_robbery_D(person: Character) -> int:
     input('You decide to stay down to avoid getting shot.\n')
     input('Fortunately, the police arrive just in time to make '\
           'negotiations with the robber and send him off on his merry way.\n')
-    pg.mixer.music.play(-1, 0, 2000)
     input(f'You continue eating with {person.first_name} to discuss the'\
           ' event.\n')
+
     if person.true_pers == ACTIVE:
         print(f'{person.first_name} appears severely disappointed in your'\
                ' lack of heroism.')
         return randint(MED_NEG, SMALL_NEG)
+
     elif person.true_pers in (NORMAL, OBJECTIVE):
         print(f'{person.first_name} appreciates how you reacted'\
                ' during that situation!')
         return randint(SMALL_POS, MED_POS)
+
     input(f'{person.first_name} mockingly remarks about you apparently pissing'\
            ' your pants throughout the whole ordeal.\n')
     print('Although not true, her mockery of you still stings a bit...')
     return randint(SMALL_NEG, MINOR_NEG)
+
+
+def pseudo_washroom(person: Character) -> int:
+    """
+    Return a positive integer and some text, akin to using the
+    'washroom break' item. 
+    """
+    toilet_SE.play()
+    input(f'You went to the washroom while {person.first_name}'\
+           ' was away! Giving yourself a peptalk'\
+           ' has worked miracles!\n')
+    return randint(WASHROOM_LOWER, WASHROOM_HIGHER)
+
+
+def house_burning(person: Character) -> int:
+    input(f'{person.first_name} doesn\'t see how your house burning down'\
+           ' is relevant to your date...')
+
+    if person.true_pers == NEGATIVE:
+        print('However, ', end='')
+        return pathetic(person)
+
+    print(f'{person.first_name} allows you to head back, but'\
+           ' they don\'t seem pleased about your irresponsibility...')
+    return randint(MED_NEG, SMALL_NEG)
+
+
+def ignore_house_burn(person: Character) -> int:
+    input('You ignore the possibility of your house'\
+          ' burning down...')
+
+    if randint(0, 100) >= 35:
+        print(f'Because of this, you manage to smoothly conversate'\
+              f' with {person.first_name}.')
+        return appreciate(person)
+    
+    print('However, your guilty conscience severely affects your'\
+         f' dialogue! {person.first_name} doesn\'t know what to'\
+          ' make of your behaviour.')
+
+    if randint(0, 100) >= 35:
+        return confusion(person)
+    return distasteful(person)
+
+
+def atrocity(person: Character) -> None:
+    input(f'Apparently, {person.first_name} asked you whether'\
+           ' there should\'ve been three nuclear warheads dropped on Japan'\
+           ' instead of just two.')
+
+
+def atrocity_yes(person: Character) -> int:
+    atrocity(person)
+
+    if person.true_pers == NEGATIVE:
+        print('Agreed. Anime is a mistake, after all.\n')
+        return appreciate(person)
+    return revulsion(person)
+
+
+def atrocity_no(person: Character) -> int:
+    atrocity(person)
+
+    if person.true_pers != NEGATIVE:
+        return appreciate(person)
+    return slap(person)
+
+
+def icup_how_spell(person: Character) -> int:
+    if person.true_pers == OBJECTIVE:
+        return unimpressed(person)
+
+    input(f'Rather skillfully, you manage to get {person.first_name} to'\
+           ' fall into their own trap.')
+    return sincere_laugh(person)
+
+
+def movie_q_norm_act(person: Character) -> int:
+    """
+    Intended for Normal and Active Character Instances.
+    """
+    input(f'{person.first_name} has never heard that quote from the'\
+           ' trilogy before.')
+    if person.true_pers == NORMAL:
+        print(f'{person.first_name} admires your cultured insight!')
+        return randint(SMALL_POS, MED_POS)
+    print('"Fucking nerd..."')
+    return randint(MED_NEG, SMALL_NEG)
+
+
+def movie_q_obj_neg(person: Character) -> int:
+    """
+    
+    """
+    if person.true_pers == OBJECTIVE:
+        return unimpressed(person)
+
+    print('You\'re lucky that I admire that guy...')
+    return randint(MINOR_POS, SMALL_POS)
+
+
+def movie_q_A(person: Character) -> int:
+    """
+    """
+    input('"That quote was from Adolf Hitler..."')
+    return movie_q_obj_neg(person)
+
+
+def movie_q_B(person: Character) -> int:
+    input('"That quote was from Joseph Stalin..."')
+    return movie_q_obj_neg(person)
+
+
+def movie_q_D(person: Character) -> int:
+    input('"That quote was from Benito Mussolini..."')
+    return movie_q_obj_neg(person)

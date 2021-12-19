@@ -4,38 +4,37 @@ from sys import exit
 import doctest
 import re
 import pygame as pg
-import subprocess, platform
-from os.path import abspath
 import doctest
 from time import sleep
-from random import choice, randint
+from random import choice, randint, shuffle
 from typing import List, Tuple, Union, Dict, Callable
 from character_classes import (Character, NormalCharacter, ActiveCharacter,
                                ObjectiveCharacter, NegativeCharacter)
-from constants import (OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
+from constants import (EASY_TURNS, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, NORM_CONF, 
+                       OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
+                       SMALL_NEG, SMALL_POS,
                        TALK, USAGE_DEC, COLOGNE_LOWER, COLOGNE_HIGHER,
                        WASHROOM_LOWER, WASHROOM_HIGHER, SHOW_OFF_LOWER,
                        SHOW_OFF_HIGHER, NORMAL, OBJECTIVE, ACTIVE, NEGATIVE,
                        YES, NO, OPTION_E, conf_gain_SE, conf_lose_SE,
                        cologne_SE, slap_SE, invalid_SE, invalid_2_SE, info_SE,
-                       toilet_SE, run_SE, select_SE, drum_roll_SE, gunshot_1_SE,
-                       gunshot_2_SE, panic_SE, sounds, OPTION_F, TURNS,
-                       CONFIDENCE, E_COLOGNE_AMT, E_WSHROOM_AMT,
-                       N_COLOGNE_AMT, N_WSHROOM_AMT, H_COLOGNE_AMT,
-                       H_WSHROOM_AMT, DIF_EASY, DIF_NORM, DIF_HARD)
+                       toilet_SE, run_SE, select_SE, drum_roll_SE, sounds,
+                       OPTION_F, EASY_TURNS, EASY_CONF, E_COLOGNE_AMT, E_WSHROOM_AMT, NORM_TURNS,
+                       NORM_CONF, N_COLOGNE_AMT, N_WSHROOM_AMT, HARD_TURNS,
+                       HARD_CONF, H_COLOGNE_AMT, H_WSHROOM_AMT, DIF_EASY,
+                       DIF_NORM, DIF_HARD, MUSIC_PATH, JINGLE_PATH)
 from questions_list import questions
 from prompts import (decision_prompt, diff_prompt, menu_prompt, item_prompt, options_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
                      question_format, sound_lvl_prompt, instructions_prompt,
                      story_prompt, information_prompt)
 from all_credits import creds
-from file_init import game_setup
+from file_init import game_setup, music_loop, clear_term, q_prompt_select, prompt_select
 
 
 # Initializing
 fst_nmes, last_nmes, personalities = game_setup()
 pg.init()
-music_path = r'Sounds\Music'
 
 # Game Ready
 
@@ -50,23 +49,27 @@ def main_game() -> None:
     """
     menu_choice = ''
     music_vol = 0.5
-    difficulty = DIF_NORM
+    diff = DIF_NORM
     credit_str = creds()
     pg.mixer.music.set_volume(music_vol)
     sound_vol = slap_SE.get_volume()
     select_SE.play(), clear_term()
 
     while True:
-        music_loop(abspath(music_path + '\menu.wav'), 500, 250, 0)
+        music_loop(MUSIC_PATH + '\past_never_come_back.wav', 1000, 500, 0.0)
         menu_options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D, OPTION_E, 
                         OPTION_F)
         menu_choice = prompt_select(menu_prompt(), menu_options).upper()
 
-        while menu_choice.upper() in (OPTION_B, OPTION_C, OPTION_D,
-                                      OPTION_E, OPTION_F):
+        while menu_choice.upper() in menu_options:
             select_SE.play(), clear_term()
 
-            if menu_choice.upper() == OPTION_B:
+
+            if menu_choice.upper() == OPTION_A:
+                person = person_creator()
+                battle(person, diff)
+            
+            elif menu_choice.upper() == OPTION_B:
                 prompt_select(story_prompt(), OPTION_A)
                 select_SE.play()
 
@@ -75,7 +78,8 @@ def main_game() -> None:
                 select_SE.play()
 
             elif menu_choice.upper() == OPTION_D:
-                music_loop(music_path + r'\new_options_menu.ogg', 500, 1000, 78)
+                music_loop(MUSIC_PATH + '\which_brand_of_mustard_shall_i_buy.ogg',
+                           1000, 1000, 0.0)
                 options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
                 menu_choice = prompt_select(options_prompt(), options).upper()
                 clear_term()
@@ -83,28 +87,37 @@ def main_game() -> None:
                     if menu_choice == OPTION_A:
                         music_vol = vol_change(music_vol, music_lvl_prompt)
                         pg.mixer.music.set_volume(music_vol)
+
                     elif menu_choice == OPTION_B:
                         sound_vol = vol_change(sound_vol, sound_lvl_prompt)
                         for i in sounds:
                             i.set_volume(sound_vol)
+
                     elif menu_choice == OPTION_C:
                         dif_choice = ''
                         select_SE.play()
-                        dif_choice = prompt_select(diff_prompt(difficulty), options)
+                        dif_choice = prompt_select(diff_prompt(diff), options)
+
                         if dif_choice.upper() == OPTION_A:
-                            difficulty = DIF_EASY
+                            diff = DIF_EASY
+
                         elif dif_choice.upper() == OPTION_B:
-                            difficulty = DIF_NORM
+                            diff = DIF_NORM
+
                         elif dif_choice.upper() == OPTION_C:
-                            difficulty = DIF_HARD
+                            diff = DIF_HARD
+
                     select_SE.play()
                     menu_choice = prompt_select(options_prompt(), options).upper()
                 select_SE.play()
-                music_loop(music_path + '\menu.wav', 500, 250, 0.0)
+                music_loop(MUSIC_PATH + '\past_never_come_back.wav', 1000, 500, 0.0)
 
             elif menu_choice.upper() == OPTION_E:
-                prompt_select(credits_prompt(credit_str), OPTION_A)
+                music_loop(MUSIC_PATH + r'\falling_raindrops.wav', 1000, 1000, 0.0)
+                menu_choice = prompt_select(credits_prompt(credit_str), OPTION_A)
+                menu_choice = ''
                 select_SE.play()
+                music_loop(MUSIC_PATH + '\past_never_come_back.wav', 1000, 500, 0.0)
             
             elif menu_choice.upper() == OPTION_F:
                 menu_choice = prompt_select(yes_no_prompt('Are you sure you want to quit?'),
@@ -117,10 +130,6 @@ def main_game() -> None:
                 select_SE.play()
 
             menu_choice = prompt_select(menu_prompt(), menu_options).upper()
-
-        if menu_choice.upper() == OPTION_A:
-            person = person_creator()
-            battle(person, difficulty)
 
 
 def vol_change(volume: float, prompt: Callable[[float], str]) -> float:
@@ -148,27 +157,31 @@ def vol_change(volume: float, prompt: Callable[[float], str]) -> float:
     return vol_choice
 
 
-def battle(person: Character, difficulty: str) -> None:
+def battle(person: Character, diff: str) -> None:
     """
     Begins the actual game, featuring the user 'battling' against
-    <person> with <difficulty>.
+    <person> with <diff>.
 
     """
 
     while True:
+        confidence, turns = NORM_CONF, NORM_TURNS
         excuses_amt, cologne_amt = N_WSHROOM_AMT, N_COLOGNE_AMT
-        if difficulty == DIF_EASY:
+        if diff == DIF_EASY:
             excuses_amt, cologne_amt = E_WSHROOM_AMT, E_COLOGNE_AMT
-        elif difficulty == DIF_HARD:
+            confidence, turns = EASY_CONF, EASY_TURNS
+        elif diff == DIF_HARD:
             excuses_amt, cologne_amt = H_WSHROOM_AMT, H_COLOGNE_AMT
-        confidence, turns, decision = CONFIDENCE, TURNS, ''
+            confidence, turns = HARD_CONF, HARD_TURNS
+        decision = ''
         msg, question_lst = '', questions(person)
         battle_actions, yes_no = (TALK, ITEM, INFO, RUN), (YES, NO)
         options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
+        cologne_use, bath_use, slap_use = False, False, 0
 
         info_SE.play(), clear_term()
         input(f'You are dating:\n{person}\nEnter any button to continue.\n')
-        music_loop(music_path + '\loop.ogg', 500, 500, 219)
+        music_loop(MUSIC_PATH + r'\retrospective.wav', 1000, 0, 0.0)
 
         decision = prompt_select(decision_prompt(confidence, turns),
                                  battle_actions).upper()
@@ -179,31 +192,46 @@ def battle(person: Character, difficulty: str) -> None:
             if decision == TALK:
                 select_SE.play(), clear_term()
                 turns -= 1
-                question_q_and_a = choice(question_lst)
+
+                question_q_and_a = choice(question_lst) # {question #: words, answers: {options: words}}
                 question_nums = question_pick(question_lst, question_q_and_a)
-                if question_nums[0] == 17:
-                    gunshot_1_SE.play(1), panic_SE.play()
-                    pg.mixer.music.fadeout(1000)
-                decision = prompt_select(question_format(question_q_and_a),
-                                         options).upper()
+
+                random_answers = question_q_and_a.get('Answers')
+                if random_answers is None:
+                    input('Error 2: answers is None\n')
+                    exit()
+
+                random_answers = [answer for answer in random_answers.values()]
+                shuffle(random_answers)
+                decision = q_prompt_select(question_format(question_q_and_a,
+                                                           random_answers),
+                                           options, question_q_and_a).upper() ############### randomization point  ###############
+
                 confidence = talk_effects(decision, person, confidence,
-                                          question_nums[0])
-                question_lst.pop(question_nums[1])
+                                          question_nums[0], diff) # use question number to find question
+                question_lst.pop(question_nums[1]) # use index num to remove question
+                cologne_use, bath_use, slap_use = False, False, 0
 
             while decision == ITEM:
                 select_SE.play()
                 item_dec = prompt_select(item_prompt(cologne_amt, excuses_amt,
                                                      confidence),
                                                      options).upper()
-                if valid_item_option(cologne_amt, excuses_amt, item_dec):
+                if (valid_item_num(cologne_amt, excuses_amt, item_dec)
+                    and valid_item_use(cologne_use, bath_use, slap_use,
+                                       item_dec)):
                     clear_term()
                     if item_dec == OPTION_A:
                         cologne_amt = decrease_item_amt(cologne_amt)
+                        cologne_use = True
                     elif item_dec == OPTION_B:
                         excuses_amt = decrease_item_amt(excuses_amt)
-                    confidence = item_effect(item_dec, confidence)
+                        bath_use = True
+                    elif item_dec == OPTION_C:
+                        slap_use += 1
+                    confidence = item_effect(item_dec, confidence, diff)
                     if confidence <= 0:
-                        decision = 'butthole'
+                        decision = ''
                 if item_dec == OPTION_D:
                     decision = item_dec
 
@@ -228,7 +256,7 @@ def battle(person: Character, difficulty: str) -> None:
                 elif decision == NO:
                     select_SE.play()
             elif turns <= 0:
-                game_over_win(confidence)
+                game_over_win(confidence, diff)
                 msg = 'Do you want to play again?'
                 select_SE.play()
                 decision = prompt_select(yes_no_prompt(msg), yes_no).upper()
@@ -246,9 +274,8 @@ def battle(person: Character, difficulty: str) -> None:
 def question_pick(question_lst: List[Dict[str, Union[str, Dict[str, str]]]],
                   question_q_and_a) -> Tuple[int, int]:
     """
-    Return the question number of <question_q_and_a> by searching
-    for <question_q_and_a> in <question_lst> and return the index
-    of said question.
+    Return the question number of <question_q_and_a>
+    and return the index of said question.
 
     The 0th index of the tuple is the question number.
     The 1st index of the tuple is the question index.
@@ -276,37 +303,45 @@ def game_over_lose() -> str:
     """
 
     pg.mixer.music.stop(), pg.mixer.music.unload()
-    pg.mixer.music.load(music_path + r'\jingle_07.mp3')
-    pg.mixer.music.play()
+    pg.mixer.music.load(MUSIC_PATH + '\super_chicken_short.wav')
+    pg.mixer.music.play(0, 0, 200)
 
     message = 'You became so unconfident that you ran away from the'\
-          ' restaurant.\nYou have lost!\nWould you like to play again?'
+          ' restaurant.\n\nReally?\n\n'\
+          'Would you like to play again?'
 
     return prompt_select(yes_no_prompt(message), (YES, NO)).upper()
 
 
-def game_over_win(confidence: int) -> None:
+def game_over_win(confidence: int, diff: str) -> None:
     """
-    Print the reaction of the users' date after they 10 turns have
-    passed. Their reaction is determined by the user's total <confidence>
-    after these 10 turns.
+    Print the reaction of the users' date after a certain number of turns
+    have passed. The turn amount is determined by <diff>.
+    
+    The users' date's reaction is determined by the user's total <confidence>
+    after these number of turns.
 
     """
 
-    user_dec = ''
+    user_dec, turn_amt = '', NORM_TURNS
     pg.mixer.music.stop(), pg.mixer.music.unload()
-    pg.mixer.music.load(music_path + r'\results.mp3'), pg.mixer.music.play()
+    pg.mixer.music.load(MUSIC_PATH + r'\results.mp3'), pg.mixer.music.play()
 
-    input('You have survived all 10 turns!\n'), select_SE.play()
+    if diff == DIF_HARD:
+        turn_amt = HARD_TURNS
+    elif diff == DIF_EASY:
+        turn_amt = EASY_TURNS
+
+    input(f'You have survived all {turn_amt} turns as a {diff}!\n')
+    select_SE.play()
     input('However, how does your date feel?\n'), clear_term()
     print('Your date says...'), drum_roll_SE.play(), sleep(4.5)
     pg.mixer.music.unload()
     nums = win_results_music(confidence)
-    pg.mixer.music.load(music_path + r'\{}.mp3'.format(nums[0]))
+    pg.mixer.music.load(JINGLE_PATH + r'\{}.wav'.format(nums[0]))
     pg.mixer.music.play()
     
     while user_dec != 'a':
-        invalid_SE.play()
         user_dec = input(win_results_text(nums[1]) + 'Enter in "a"'\
                                                      ' to continue\n').lower()
         clear_term()
@@ -390,32 +425,12 @@ def win_results_text(conf_key: int) -> str:
                        ' an absolute and INSANE buffoon ever existed...'}
 
     if not conf_states.get(conf_key):
-        return ''
+        return 'Error 1: Missing confidence dialogue'
 
     return conf_states.get(conf_key) + '\n' * 2
 
 
-def prompt_select(prompt: str, options: tuple) -> str:
-    """ 
-    Repeatedly ask the user for a selection, according to <prompt>, until one of
-    the determined <options> are received from the user.
-
-    Return the user's input with leading and trailing whitespace removed.
-
-    """
-
-    clear_term()
-    prompt += '\n'
-    selection = input(prompt)
-    while (selection.strip().upper() not in options or
-           selection.strip().upper() == ''):
-        invalid_SE.play(), clear_term()
-        selection = input(f'Invalid choice\n{prompt}')
-
-    return selection.strip()
-
-
-def valid_item_option(cologne: int, excuses: int, decision: str) -> bool:
+def valid_item_num(cologne: int, excuses: int, item_dec: str) -> bool:
     """
     Return True or False when the user's <decision> to use an item is valid
     or not.
@@ -425,15 +440,52 @@ def valid_item_option(cologne: int, excuses: int, decision: str) -> bool:
 
     """
 
-    if decision.upper() == OPTION_A and cologne <= 0:
+    if item_dec.upper() == OPTION_A and cologne <= 0:
         invalid_2_SE.play()
         input('You don\'t have any cologne left!\n')
         return False
 
-    elif decision.upper() == OPTION_B and excuses <= 0:
+    elif item_dec.upper() == OPTION_B and excuses <= 0:
         invalid_2_SE.play()
         input('Your date doesn\'t think that you are actually going to the'\
               ' washroom and forces you to stay put!\n')
+        return False
+
+    return True
+
+
+def valid_item_use(cologne_use: bool, bath_use: bool, slap_use: int,
+                   item_dec: str) -> bool:
+    """
+    Return False and the correct message (dependent on <decision>)
+    if the user has:
+
+    - <cologne_use> is True (Used the cologne item at least once)
+    - <bath_use> is True (Used the bathroom break item at least once)
+    - slap_use > 2
+
+    Otherwise, return True.
+    """
+    if item_dec == OPTION_A and cologne_use:
+        invalid_2_SE.play()
+        input('Your date remarks of how putrid you smell.\n'\
+              'You probably need to wait a while before using your'\
+              ' cologne again...')
+        return False
+
+    elif item_dec == OPTION_B and bath_use:
+        invalid_2_SE.play()
+        input('As you get up to leave, your date openly questions'\
+              ' whether you have bladder problems or not.\n'\
+              'It seems that you need to go to the washroom at a'\
+              ' later time...')
+        return False
+
+    elif item_dec == OPTION_C and slap_use > 2:
+        invalid_2_SE.play()
+        input('Your arm is visibly red from all of the slapping you\'ve'\
+              ' done!\nYou need to give your arm a rest before attempting'\
+              ' to impress your date again.')
         return False
 
     return True
@@ -448,7 +500,7 @@ def decrease_item_amt(item: int) -> int:
     return item - USAGE_DEC
 
 
-def item_effect(decision: str, confidence: int) -> int:
+def item_effect(decision: str, confidence: int, diff: str) -> int:
     """
     Increase the <confidence> of the user, depending on their item <decision>.
 
@@ -485,7 +537,7 @@ def item_effect(decision: str, confidence: int) -> int:
         select_SE.play()
         return confidence
 
-    confidence_gain_lost(amt_gain), clear_term()
+    confidence_gain_lost(amt_gain, diff), clear_term()
     return min(confidence, 100)
 
 
@@ -542,10 +594,13 @@ def rand_pers() -> Tuple[str, str]:
 
 
 def talk_effects(decision: str, person: Character, confidence: int,
-                 question_num: int) -> int:
+                 question_num: int, diff: str) -> int:
     """
     Return the user's modified <confidence>, based on their <decision>, their
     randomly chosen <question_index>, and their randomly selected <person>.
+
+    The amount of confidence gained/lost will also be determined by
+    the player's <diff> difficulty.
 
     """
 
@@ -553,56 +608,53 @@ def talk_effects(decision: str, person: Character, confidence: int,
     amt_gain = person.reactions().get(question_num).get(decision)(person)
     if amt_gain == None:
         return 0
-    confidence_gain_lost(amt_gain)
+    confidence_gain_lost(amt_gain, diff)
 
     return min(confidence + amt_gain, 100)
     
 
-def confidence_gain_lost(amount_gained_lost: int) -> None:
+def confidence_gain_lost(amt_gain: int, diff: str) -> None:
     """
     Print how much confidence the user has gained or lost, as determined
-    by <amount_gained_lost>.
+    by <amt_gain>.
 
     """
+    amt_gain = conf_gain_adj(amt_gain, diff)
 
-    if amount_gained_lost > 0:
+    if amt_gain > 0:
         conf_gain_SE.play()
-        input(f'You have gained {amount_gained_lost}% confidence!\n')
-    elif amount_gained_lost < 0:
+        input(f'You have gained {amt_gain}% confidence!\n')
+    elif amt_gain < 0:
         conf_lose_SE.play()
-        input(f'You have lost {abs(amount_gained_lost)}% confidence!\n')
+        input(f'You have lost {abs(amt_gain)}% confidence!\n')
     else:
         input('Nothing interesting happens to your confidence.\n')
     
     clear_term()
 
-
-def music_loop(song: str, ms_out: int, ms_in: int, start: float) -> None:
+def conf_gain_adj(amt_gain: int, diff: str) -> int:
     """
-    Fadeout the current music playing by a certain number of milliseconds,
-    represented by <ms_out>. Unload the song, and load and play the
-    new <song> at <start> (in seconds) for an indefinite amount of times,
-    making it fade in for a certain number of milliseconds, 
-    represented by <ms_in>.
-
+    Return the modified <amt_gain> value after taking note of the
+    user's <diff> difficulty.
     """
 
-    pg.mixer.music.fadeout(ms_out), pg.mixer.music.unload()
-    pg.mixer.music.load(song), pg.mixer.music.play(-1, start, ms_in)
+    if diff == DIF_EASY:
+        if amt_gain > 0:
+            amt_gain += SMALL_POS
 
+        elif amt_gain < -5:
+            amt_gain += MINOR_POS
+        elif amt_gain < -10:
+            amt_gain += SMALL_POS
 
-def clear_term() -> None:
-    """
-    Clear the user's screen for Windows, Linux, and MacOS only.
+    elif diff == DIF_HARD:
+        if amt_gain < 0:
+            amt_gain += SMALL_NEG
+        elif amt_gain > 5:
+            amt_gain += MINOR_NEG
 
-    Credit to Brōtsyorfuzthrāx here:
-    https://stackoverflow.com/questions/2084508/clear-terminal-in-python
+    return amt_gain
 
-    """
-    if platform.system()=="Windows":
-        subprocess.Popen("cls", shell=True).communicate()
-    else:
-        print("\033c", end="")
 
 if __name__ == '__main__':
     main_game()
