@@ -333,7 +333,7 @@ def questions(person: Character) -> List[Dict]:
         #     'Answers': {'A': f'Persuade {person.first_name} to split the'\
         #                       ' bill. It is your first date together after'\
         #                       ' all.',
-        #                 'B': '',
+        #                 'B': 'Pickpocket the waiter',
         #                 'C': '',
         #                 'D': ''}
         # },
@@ -344,34 +344,33 @@ def questions(person: Character) -> List[Dict]:
         #                     'It\'s Santa Claus! How do you act in this'\
         #                     ' situation?',
         #     'Answers': {'A': '"Eat a salad, fat man"',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #                 'B': '"HOLY SHIT"',
+        #                 'C': '"Diabetes in the flesh, huh...',
+        #                 'D': 'FUCK SANTA CLAUS'}
         # },
         # {
-        #     'Question 33':  f'{person.first_name} asks you about your day job.'\
-        #                      '\nWhat do you say?',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 33':  f'{person.first_name} asks you about work.'\
+        #                      '\nWhat\'s your job?',
+        #     'Answers': {'A': '"Plumber"',
+        #                 'B': '"I'm unemployed"',
+        #                 'C': '"Lawyer"',
+        #                 'D': '"Coach"'}
         # },
         # {
-        #     'Question 34':  '"As part of a team, what role would you prefer?"',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 34':  '"As part of a team, what role do you prefer?"',
+        #     'Answers': {'A': '"A leader"',
+        #                 'B': '"I'm pretty much the idea guy"',
+        #                 'C': '"Just your average worker"',
+        #                 'D': '"I work alone"'}
         # },
         # {
-        #     'Question 35':  'You\'ve ignored it for a while now, but now'\
-        #                     'it\'s really starting to bug you: Your chair'\
-        #                     ' is terribly uneven.\n\nWhat do you do to handle'\
-        #                     ' this ordeal?',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 35':  'Your chair is terribly uneven and has been'\
+        #                     ' bugging you for a while now.\n\n'\
+        #                     'What do you do about this ordeal?',
+        #     'Answers': {'A': 'Use your table cloth to level the chair',
+        #                 'B': 'Get another chair from a nearby table',
+        #                 'C': 'Continue ignoring it',
+        #                 'D': 'Ask {person.first_name} to switch chairs with you'}
         # },
         # {
         #     'Question 36':  f'someone pickpockets you blah blah',
@@ -383,10 +382,10 @@ def questions(person: Character) -> List[Dict]:
         # {
         #     'Question 37':  '"If you had to describe yourself in one word'\
         #                    f' what would it be?", {person.first_name} asks.',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Answers': {'A': '"I can't be explained in one word"',
+        #                 'B': '"poggers"',
+        #                 'C': '"Pathetic"',
+        #                 'D': 'Pretty cool'}
         # },
         # {
         #     'Question 38':  f'{person.first_name} asks if you have any'\
@@ -411,25 +410,27 @@ def questions(person: Character) -> List[Dict]:
         #                 'D': '"Pretty based ngl"'} (based on what? joke)
         # },
         # {
-        #     'Question 41':  f'',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 41':  f'"Tell me your age without saying it", says\n'\
+        #                      '{person.first_name}.',
+        #     'Answers': {'A': '"Y\'all remember strawberry clock?"',
+        #                 'B': 'Type your age on your phone and show it to'\
+        #                      ' {person.first_name}',
+        #                 'C': '"amogus haha"',
+        #                 'D': '"Never ask someone their age", idiot'}
         # },
         # {
-        #     'Question 42':  f'',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 42':  f'"I know where you live"',
+        #     'Answers': {'A': '192.24.63.179',
+        #                 'B': '"monkaS"',
+        #                 'C': '""', (person's Name here)
+        #                 'D': '42.4338° N, 83.9845° W'}
         # },
         # {
-        #     'Question 43':  f'',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 43':  f'Ellos no saben Pepelaugh',
+        #     'Answers': {'A': 'Clueless',
+        #                 'B': 'What?',
+        #                 'C': 'Si',
+        #                 'D': 'I thought this was a dating game'}
         # },
         # {
         #     'Question 44':  f'',
