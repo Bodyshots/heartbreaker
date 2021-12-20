@@ -4,6 +4,7 @@ from random import choice, randint
 from typing import List, Dict
 from reactions import Character
 from file_init import file_lst_return
+from main import fst_nmes
 import doctest
 import os
 
@@ -29,7 +30,7 @@ def questions(person: Character) -> List[Dict]:
         {
             'Question 0': 'Suddenly, your phone starts to ring. What do you do?',
              'Answers': {'A': '"Sorry, my wives are expecting"',
-                         'B': 'Patiently hang up and focus on your date',
+                         'B': 'Hang up and focus on your date',
                          'C': '"Can you shut up for a sec?"',
                          'D': 'Keep it ringing for the next 30 seconds'}
         },
@@ -48,7 +49,7 @@ def questions(person: Character) -> List[Dict]:
              'Answers': {'A': 'Call 911',
                          'B': 'Perform the Heimlich Maneuver',
                          'C': 'SCREAM',
-                         'D': 'Continue talking, despite the rude interruption'}
+                         'D': 'Continue talking'}
         },
         {
             'Question 3': f'You and {person.first_name} notice that the '
@@ -56,8 +57,7 @@ def questions(person: Character) -> List[Dict]:
                           ' fact, it\'s getting harder for you and your date'\
                           ' to actually speak to each other without shouting!'\
                           ' What do you do?',
-             'Answers': {'A': 'Stand up and DEMAND the entire restaurant to'\
-                              ' be quiet',
+             'Answers': {'A': 'Demand the entire restaurant to be quiet',
                          'B': 'Attempt to speak to your date anyways',
                          'C': '"Thank God it\'s loud in here. Now I'\
                                 ' don\'t get to hear you speak"',
@@ -84,16 +84,14 @@ def questions(person: Character) -> List[Dict]:
             'Question 6': 'One of the restaurant\'s waiters accidentally trips'\
                           ' and spills a glass of wine on your shirt! What do '\
                           'you do in response?',
-             'Answers': {'A': 'Politely shake his hand in approval and proceed'\
-                              ' to engage in fisticuffs',
+             'Answers': {'A': 'Punch him',
                          'B': '"Epic."',
                          'C': 'Continue talking to your date',
                          'D': 'Take off your shirt and put it back on once it'\
                               ' dries'}
         },
         {
-            'Question 7': f'{person.first_name} asks: "So, what makes you unique'\
-                          ' from the previous men I\'ve dated?"',
+            'Question 7': f'{person.first_name} asks: "So, what makes you unique?"',
              'Answers': {'A': '"nothing lol"',
                          'B': 'Proceed to brag about how much you lift',
                          'C': '"Next question please"',
@@ -124,7 +122,7 @@ def questions(person: Character) -> List[Dict]:
             'Question 10': f'{person.first_name} asks: "Are you a virgin?"',
              'Answers': {'A': 'Outright admit to it',
                          'B': '"I\'ve been saving my virginity for you baby"',
-                         'C': 'Lie and proceed to talk about your experiences',
+                         'C': 'Proceed to talk about your experiences',
                          'D': '"What does that mean?"'}
         },
         {
@@ -133,8 +131,7 @@ def questions(person: Character) -> List[Dict]:
              'Answers': {'A': 'Grab her wallet, trip the old lady, and attempt to'\
                               ' steal the rest of her belongings',
                          'B': 'Get the wallet and try to give it back to her',
-                         'C': 'Pretend to be blind by closing your eyes and also'\
-                              ' try to find her wallet',
+                         'C': 'Close your eyes and also try to find her wallet',
                          'D': '"Ma\'am, you dropped your wallet. It\'s right'\
                               ' over there"'}
         },
@@ -155,14 +152,15 @@ def questions(person: Character) -> List[Dict]:
                             f' tables back.\nAs {person.first_name} talks, you'\
                             ' think of ways to get rid of this annoying bugger.',
              'Answers': {'A': 'Stare back at him',
-                         'B': 'BODYSLAM the child at his table',
-                         'C': '"HEY YOU, STOP LOOKING AT US!"',
+                         'B': 'Bodyslam the child',
+                         'C': 'Shout at the kid',
                          'D': 'Nothing. He really isn\'t bothering anyone'}
         },
         {
             'Question 14': 'After observing her for a while, you realize that'\
-                           f' {person.first_name} may actually be a childhood '\
-                            'friend! What should you do to remind her?',
+                          f' {person.first_name} may actually be someone you '\
+                           'knew from your childhood!\nWhat should you do to'
+                           ' remind her about yourself?',
              'Answers': {'A': '"Remember the kid who threw up in your mother\'s'\
                               ' bed after eating an entire sleeve of Oreos?"',
                          'B': '"Hey, remember me from your childhood?"',
@@ -177,7 +175,7 @@ def questions(person: Character) -> List[Dict]:
                                ' arm-wrestling match',
                          'B': f'Play chess with {person.first_name}',
                          'C': 'just walk past time lol',
-                         'D': '"Look at these ABS, babe"'}
+                         'D': 'Show her your abs'}
         },
         {
             'Question 16': f'{person.first_name} is reminded of a video she '
@@ -196,10 +194,8 @@ def questions(person: Character) -> List[Dict]:
             'Question 17': 'Suddenly, an armed robbery ensues and you and'\
                           f' {person.first_name} are forced to hide. How '\
                            'do you handle this situation?',
-             'Answers': {'A': 'Tackle the intruder and try to steal the '\
-                              'money for yourself',
-                         'B': f'Offer {person.first_name} as a hostage to'\
-                              ' get out without being harmed',
+             'Answers': {'A': 'Try to steal the money for yourself',
+                         'B': f'Offer {person.first_name} as a hostage',
                          'C': 'RUN',
                          'D': 'Continue staying down'}
         },
@@ -213,12 +209,12 @@ def questions(person: Character) -> List[Dict]:
         },
         {
             'Question 19': f'As you\'re chatting with {person.first_name},'\
-                            ' a lifelong friend approaches your table and'\
+                            ' an, apparently, lifelong friend approaches your table and'\
                             ' goes on about your experiences you shared '\
                             'together. How do you respond?',
              'Answers': {'A': 'Let him talk. Sending him away would be rude',
                          'B': 'Beat them up',
-                         'C': 'Try to steer the conversation towards a ' 
+                         'C': 'Steer the conversation towards a ' 
                               'different topic',
                          'D': 'Tell him to buzz off'}
         },
@@ -226,10 +222,10 @@ def questions(person: Character) -> List[Dict]:
             'Question 20': f'As a hypothetical, {person.first_name} wonders'\
                             ' what you would do when you encounter a homeless'\
                             ' person on the side of the road.',
-             'Answers': {'A': '"Homeless? Tell them to just get a house, duh"',
+             'Answers': {'A': '"Homeless? Tell them to just get a house"',
                          'B': 'Steal their belongings',
                          'C': 'Give them some money',
-                         'D': '"I, too, am homeless."'}
+                         'D': '"I, too, am homeless"'}
         },
         {
             'Question 21': f'To test your intelligence, {person.first_name}'\
@@ -319,10 +315,10 @@ def questions(person: Character) -> List[Dict]:
         # },
         # {
         #     'Question 30':  '"Would you kill a puppy for ten million US dollars?"',
-        #     'Answers': {'A': 'Hell yeah',
-        #                 'B': 'Dumb question. Next',
-        #                 'C': 'Nah',
-        #                 'D': 'A puppy, no. A different animal though...'}
+        #     'Answers': {'A': '"Hell yeah"',
+        #                 'B': '"Dumb question. Next"',
+        #                 'C': '"Nah"',
+        #                 'D': '"A puppy, no. A different animal though..."'}
         # },
         # {
         #     'Question 31':  'Though your food is of excellent quality, you'\
@@ -331,8 +327,7 @@ def questions(person: Character) -> List[Dict]:
         #                    f'{person.first_name}\'s meal as well as your'\
         #                     'meal!\n\nWhat do you do?',
         #     'Answers': {'A': f'Persuade {person.first_name} to split the'\
-        #                       ' bill. It is your first date together after'\
-        #                       ' all.',
+        #                       ' bill.',
         #                 'B': 'Pickpocket the waiter',
         #                 'C': '',
         #                 'D': ''}
@@ -382,10 +377,10 @@ def questions(person: Character) -> List[Dict]:
         # {
         #     'Question 37':  '"If you had to describe yourself in one word'\
         #                    f' what would it be?", {person.first_name} asks.',
-        #     'Answers': {'A': '"I can't be explained in one word"',
+        #     'Answers': {'A': '"No one can be explained in one word"',
         #                 'B': '"poggers"',
         #                 'C': '"Pathetic"',
-        #                 'D': 'Pretty cool'}
+        #                 'D': '"Pretty cool"'}
         # },
         # {
         #     'Question 38':  f'{person.first_name} asks if you have any'\
@@ -396,9 +391,12 @@ def questions(person: Character) -> List[Dict]:
         #                 'D': ''}
         # },
         # {
-        #     'Question 39':  f'tow truck tows your car ',
-        #     'Answers': {'A': '',
-        #                 'B': '',
+        #     'Question 39':  f'Out of the corner of your eye you spot '\
+        #                      'your illegally parked car being towed!\n\n'\
+        #                      'What do you do?,'
+        #     'Answers': {'A': 'Give the tow truck driver a couple of bucks',\
+        #                      ' to "look" the other way',
+        #                 'B': 'I didn\'t need my car anyways',
         #                 'C': '',
         #                 'D': ''}
         # },
@@ -416,7 +414,7 @@ def questions(person: Character) -> List[Dict]:
         #                 'B': 'Type your age on your phone and show it to'\
         #                      ' {person.first_name}',
         #                 'C': '"amogus haha"',
-        #                 'D': '"Never ask someone their age", idiot'}
+        #                 'D': '"Never ask someone their age, idiot"'}
         # },
         # {
         #     'Question 42':  f'"I know where you live"',
@@ -433,50 +431,51 @@ def questions(person: Character) -> List[Dict]:
         #                 'D': 'I thought this was a dating game'}
         # },
         # {
-        #     'Question 44':  f'',
+        #     'Question 44':  f'"What says the most about a person?" your date asks',
         #     'Answers': {'A': '',
         #                 'B': '',
         #                 'C': '',
         #                 'D': ''}
         # },
         # {
-        #     'Question 45':  f'',
+        #     'Question 45':  f'"What are you really proud of?", {person.first_name} asks',
         #     'Answers': {'A': '',
         #                 'B': '',
         #                 'C': '',
         #                 'D': ''}
         # },
         # {
-        #     'Question 46':  f'',
+        #     'Question 46':  f'Your date asks: "What would you do with a million dollars?"',
         #     'Answers': {'A': '',
         #                 'B': '',
         #                 'C': '',
         #                 'D': ''}
         # },
         # {
-        #     'Question 47':  f'',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 47':  f'"What\'s your favourite holiday?", {person.first_name} asks',
+        #     'Answers': {'A': '"Christmas"',
+        #                 'B': '"Valentine\'s Day"',
+        #                 'C': '"Halloween"',
+        #                 'D': '"Leg Day"'}
         # },
         # {
-        #     'Question 48':  f'',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 48':  f'{person.first_name} asks: "Are you the type of guy to do'\
+        #                      ' things on the fly?"',
+        #     'Answers': {'A': '"Yes"',
+        #                 'B': '"No"',
+        #                 'C': '"It depends"',
+        #                 'D': '"Are you?"'}
         # },
         # {
-        #     'Question 49':  f'',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 49':  f'"Do you remember my last name?", your date asks',
+        #     'Answers': {'A':  '"No"',
+        #                 'B': f'"{person.first_name}"',
+        #                 'C': f'"{person.last_name}"',
+        #                 'D': f'"{choice(fst_nmes)}"'}
         # },
         # {
-        #     'Question 50':  f'',
-        #     'Answers': {'A': '',
+        #     'Question 50':  f'Your date asks: "What do you care the least about?"',
+        #     'Answers': {'A': '"You"',
         #                 'B': '',
         #                 'C': '',
         #                 'D': ''}

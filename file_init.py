@@ -35,14 +35,10 @@ def game_setup() -> Tuple[List[str], List[str], Dict[str, str]]:
 
     with open(bsic_file) as bsic, open(active_file) as active,\
     open(ngtive_file) as ngtive, open(ojctive_file) as objctive:
-        for line in bsic:
-            personalities.get(NORMAL).append(line.strip())
-        for line in ngtive:
-            personalities.get(NEGATIVE).append(line.strip())
-        for line in active:
-            personalities.get(ACTIVE).append(line.strip())
-        for line in objctive:
-            personalities.get(OBJECTIVE).append(line.strip())
+        for line in bsic: personalities.get(NORMAL).append(line.strip())
+        for line in ngtive: personalities.get(NEGATIVE).append(line.strip())
+        for line in active: personalities.get(ACTIVE).append(line.strip())
+        for line in objctive: personalities.get(OBJECTIVE).append(line.strip())
     return (fst_nmes, last_nmes, personalities)
 
 

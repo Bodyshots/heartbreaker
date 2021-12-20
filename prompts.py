@@ -204,15 +204,15 @@ def diff_prompt(current_dif: str) -> str:
     and show a list of difficulties that the user can
     choose from. These are:
 
-    - Literal Chad (DIF_EASY)
+    - Gigachad (DIF_EASY)
     - Normal (DIF_NORMAL)
-    - Fucking WEEB (DIF_HARD)
+    - Weeb (DIF_HARD)
     """
     prompt = 'Select your difficulty below.\n\n'\
             f'Current difficulty: {current_dif}\n'\
-            f'[{OPTION_A}] - Literal Chad \n'\
+            f'[{OPTION_A}] - Gigachad \n'\
             f'[{OPTION_B}] - Normie \n'\
-            f'[{OPTION_C}] - Fucking WEEB \n'\
+            f'[{OPTION_C}] - Weeb \n'\
             f'[{OPTION_D}] - Back\n\n'\
             'Difficulty levels determine the number of '\
             'turns and confidence gains/losses throughout the date.'

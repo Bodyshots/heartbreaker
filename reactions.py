@@ -18,11 +18,15 @@ class Character:
 
     === Attributes ===
     name: The Character's name
+    first_name: The Character's first name
+    last_name: The Character's last name
     true_pers: The straightforward personality of this Character
     personality: The ambiguous display personality of this character
 
     """
     name: str
+    first_name: str
+    last_name: str
     true_pers: str
     personality: str
 

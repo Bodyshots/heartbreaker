@@ -24,9 +24,9 @@ NORM_CONF = 50
 HARD_CONF = 25
 
 # Difficulties (default is DIF_NORM)
-DIF_EASY = 'Literal Chad'
+DIF_EASY = 'Gigachad'
 DIF_NORM = 'Normie'
-DIF_HARD = 'Fucking WEEB'
+DIF_HARD = 'Weeb'
 
 ### Menu Options
 
