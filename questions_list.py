@@ -420,7 +420,7 @@ def questions(person: Character) -> List[Dict]:
         #     'Question 42':  f'"I know where you live"',
         #     'Answers': {'A': '192.24.63.179',
         #                 'B': '"monkaS"',
-        #                 'C': '""', (person's Name here)
+        #                 'C': '""', (player's Name here)
         #                 'D': '42.4338° N, 83.9845° W'}
         # },
         # {
@@ -432,24 +432,24 @@ def questions(person: Character) -> List[Dict]:
         # },
         # {
         #     'Question 44':  f'"What says the most about a person?" your date asks',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Answers': {'A': '"Their personality"',
+        #                 'B': '"Their looks"',
+        #                 'C': '"What their room looks like"',
+        #                 'D': '"How they act under pressure"'}
         # },
         # {
         #     'Question 45':  f'"What are you really proud of?", {person.first_name} asks',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Answers': {'A': '"My intellect"',
+        #                 'B': '"My \'grind\'"',
+        #                 'C': '"There\'s nothing to be proud of..."',
+        #                 'D': '"Eh, myself in general"'}
         # },
         # {
-        #     'Question 46':  f'Your date asks: "What would you do with a million dollars?"',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #     'Question 46':  f'Your date asks: "What would you spend a million dollars on?"',
+        #     'Answers': {'A': '"Probably some training equipment, nothing special"',
+        #                 'B': '"My crippling student loans"',
+        #                 'C': '"My gambling addiction"',
+        #                 'D': '"Investments"'}
         # },
         # {
         #     'Question 47':  f'"What\'s your favourite holiday?", {person.first_name} asks',
