@@ -383,8 +383,9 @@ def questions(person: Character) -> List[Dict]:
         #                 'D': '"Pretty cool"'}
         # },
         # {
-        #     'Question 38':  f'{person.first_name} asks if you have any'\
-        #                      ' tattoos.',
+        #     'Question 38':  f'{person.first_name} is feeling a bit bored and'\
+        #                      ' asks you for a random fact about yourself\n\n'\
+        #                      'What do you say?',
         #     'Answers': {'A': '',
         #                 'B': '',
         #                 'C': '',
@@ -476,8 +477,8 @@ def questions(person: Character) -> List[Dict]:
         # {
         #     'Question 50':  f'Your date asks: "What do you care the least about?"',
         #     'Answers': {'A': '"You"',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
+        #                 'B': '"To be honest, myself"',
+        #                 'C': '"My regrets"',
+        #                 'D': '"Society"'}
     ]
     return questions
