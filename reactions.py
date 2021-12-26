@@ -2,9 +2,9 @@ from random import randint, choice
 from constants import (NORMAL, OBJECTIVE, ACTIVE, NEGATIVE, 
                        EXTREME_NEG, LARGE_NEG, MED_NEG, SMALL_NEG, NEUTRAL,
                        SMALL_POS, MED_POS, LARGE_POS, EXTREME_POS, MINOR_NEG,
-                       MINOR_POS, slap_SE, slam_SE, fight_SE, table_slam_SE,
-                       run_SE, gunshot_2_SE, WASHROOM_LOWER,
-                       WASHROOM_HIGHER, toilet_SE)
+                       MINOR_POS, slap_SE, slam_SE, fight_SE,
+                       run_SE, gunshot_SE, WASHROOM_LOWER,
+                       WASHROOM_HIGHER)
 import pygame as pg
 from os import path
 from typing import Dict, Callable
@@ -72,7 +72,7 @@ class Character:
 
         """
 
-        return '{}\nPersonality: {}'.format(self.name, self.pers)
+        return '{}\nPersonality: {}\nProfession: {}'.format(self.name, self.pers, self.prof.capitalize())
 
     def rand_prof(self):
         """
@@ -537,7 +537,7 @@ def chess(person: Character) -> int:
 
     """
 
-    table_slam_SE.play()
+    slam_SE.play()
     print(f'You pull out a chess set and challenge {person.first_name} '\
            'to a match. Surprisingly, you put up quite a fight.')
     return impressed(person)
@@ -837,7 +837,7 @@ def arm_wrestle(person: Character) -> int:
 
     """
 
-    table_slam_SE.play()
+    slam_SE.play()
     print(f'You challenge {person.first_name} to an'\
            ' arm-wrestling match. Although you lose,'\
           f' {person.first_name} appreciates your enthusiasm!')
@@ -878,7 +878,7 @@ def event_robbery_A(person: Character) -> int:
 
     """
 
-    gunshot_2_SE.play()
+    gunshot_SE.play()
 
     if randint(0, 100) >= 95:
         print('You somehow manage to tackle the intruder and steal the'\
@@ -956,7 +956,6 @@ def pseudo_washroom(person: Character) -> int:
     Return a positive integer and some text, akin to using the
     'washroom break' item. 
     """
-    toilet_SE.play()
     input(f'You went to the washroom while {person.first_name}'\
            ' was away! Giving yourself a peptalk'\
            ' has worked miracles!\n')

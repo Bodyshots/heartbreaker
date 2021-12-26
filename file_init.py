@@ -4,25 +4,27 @@ from typing import Tuple, List, Dict
 import subprocess, platform
 import pygame as pg
 
-def game_setup() -> Tuple[List[str], List[str], Dict[str, str]]:
+def first_names_lst() -> List[str]:
     """
-    Return the objects necessary for the game to function.
-
-    These are (in order):
-    - First names
-    - Last names
-    - Personalities
-
+    Return a list of women first names from
+    "women_first_names.txt"
     """
-    fst_nmes, last_nmes = [], []
+    with open(abspath(r'text_files\Names\women_first_names.txt')) as fst:
+        return fst.read().split('\n')
+
+def last_names_lst() -> List[str]:
+    """
+    Return a list of women first names from
+    "last_names.txt"
+    """
+    with open(abspath(r'text_files\Names\last_names.txt')) as lst:
+        return lst.read().split('\n')
+
+def personalities_dict() -> List[str]:
+    """
+    Return a list of available personalities
+    """
     personalities = {NORMAL: [], OBJECTIVE: [], ACTIVE: [], NEGATIVE: []}
-
-    fst_nms_file = abspath(r'text_files\Names\women_first_names.txt')
-    lst_nms_file = abspath(r'text_files\Names\last_names.txt')
-
-
-    with open(fst_nms_file) as fst, open(lst_nms_file) as last:
-        fst_nmes, last_nmes = fst.read().split('\n'), last.read().split('\n')
 
     bsic_file = abspath(r'text_files\Personalities'\
                         r'\basic_personality.txt')
@@ -39,7 +41,20 @@ def game_setup() -> Tuple[List[str], List[str], Dict[str, str]]:
         for line in ngtive: personalities.get(NEGATIVE).append(line.strip())
         for line in active: personalities.get(ACTIVE).append(line.strip())
         for line in objctive: personalities.get(OBJECTIVE).append(line.strip())
-    return (fst_nmes, last_nmes, personalities)
+    
+    return personalities
+
+def game_setup() -> Tuple[List[str], List[str], Dict[str, str]]:
+    """
+    Return the objects necessary for the game to function.
+
+    These are (in order):
+    - First names
+    - Last names
+    - Personalities
+
+    """
+    return (first_names_lst(), last_names_lst(), personalities_dict())
 
 
 def file_lst_return(name: str) -> List[str]:

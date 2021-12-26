@@ -2,9 +2,9 @@
 
 from random import choice, randint
 from typing import List, Dict
-from reactions import Character
-from file_init import file_lst_return
-from main import fst_nmes
+from reactions import Character, choke_pos
+from file_init import (first_names_lst, last_names_lst, personalities_dict, 
+                       file_lst_return)
 import doctest
 import os
 
@@ -19,12 +19,21 @@ def questions(person: Character) -> List[Dict]:
     gud_people = file_lst_return('good_peeps_i_think')
     chosen_console = choice(file_lst_return('consoles'))
 
+    rand_prof1, rand_prof2 = '', ''
+    while rand_prof1 == person.prof: rand_prof1 = Character.rand_prof()
+    while rand_prof2 == person.prof: rand_prof2 = Character.rand_prof()
+
+    rand_pers1, rand_pers2 = '', ''
+    personalities = personalities_dict()
+    del personalities[person.true_pers]
+    personality_key_list = list(personalities.keys())
+    rand_pers1 = choice(personalities[choice(personality_key_list)])
+    rand_pers2 = choice(personalities[choice(personality_key_list)])
 
     gud_peeps = []
     while len(gud_peeps) != 3:
         gud_peep = choice(gud_people)
-        if gud_peep not in gud_peeps:
-            gud_peeps.append(gud_peep)
+        if gud_peep not in gud_peeps: gud_peeps.append(gud_peep)
 
     questions = [
         {
@@ -279,7 +288,7 @@ def questions(person: Character) -> List[Dict]:
         },
         {
             'Question 26':  'Your date asks you how they look today.',
-            'Answers': {'A': '"Hot"',
+            'Answers': {'A': '"Bloody gorgeous"',
                         'B': '"Pretty good"',
                         'C': '"Your outfit SUCKS"',
                         'D': '"This is a text-based video game.'\
@@ -304,181 +313,207 @@ def questions(person: Character) -> List[Dict]:
                         'C': '"All\'s well that ends better"',
                         'D': '"Inactivity is death"'}
         },
-        # {
-        #     'Question 29':  f'{person.first_name} looks visibly bored! You'\
-        #                      ' try to tell a joke to lighten the mood, but'\
-        #                      ' what should the joke be about?',
-        #     'Answers': {'A': 'Cars',
-        #                 'B': 'Shakespeare',
-        #                 'C': 'Kidney stones',
-        #                 'D': 'Water'}
-        # },
-        # {
-        #     'Question 30':  '"Would you kill a puppy for ten million US dollars?"',
-        #     'Answers': {'A': '"Hell yeah"',
-        #                 'B': '"Dumb question. Next"',
-        #                 'C': '"Nah"',
-        #                 'D': '"A puppy, no. A different animal though..."'}
-        # },
-        # {
-        #     'Question 31':  'Though your food is of excellent quality, you'\
-        #                     ' suddenly realize your wallet isn\'t as so.'\
-        #                     ' You\'re too poor to pay for both'\
-        #                    f'{person.first_name}\'s meal as well as your'\
-        #                     'meal!\n\nWhat do you do?',
-        #     'Answers': {'A': f'Persuade {person.first_name} to split the'\
-        #                       ' bill.',
-        #                 'B': 'Pickpocket the waiter',
-        #                 'C': '',
-        #                 'D': ''}
-        # },
-        # {
-        #     'Question 32':  'Out of the corner of your eye, you spot a big,'\
-        #                     ' red, jolly man munching down on some cookies'\
-        #                     ' and milk. Slowly, it all clicks together...\n\n'\
-        #                     'It\'s Santa Claus! How do you act in this'\
-        #                     ' situation?',
-        #     'Answers': {'A': '"Eat a salad, fat man"',
-        #                 'B': '"HOLY SHIT"',
-        #                 'C': '"Diabetes in the flesh, huh...',
-        #                 'D': 'FUCK SANTA CLAUS'}
-        # },
-        # {
-        #     'Question 33':  f'{person.first_name} asks you about work.'\
-        #                      '\nWhat\'s your job?',
-        #     'Answers': {'A': '"Plumber"',
-        #                 'B': '"I'm unemployed"',
-        #                 'C': '"Lawyer"',
-        #                 'D': '"Coach"'}
-        # },
-        # {
-        #     'Question 34':  '"As part of a team, what role do you prefer?"',
-        #     'Answers': {'A': '"A leader"',
-        #                 'B': '"I'm pretty much the idea guy"',
-        #                 'C': '"Just your average worker"',
-        #                 'D': '"I work alone"'}
-        # },
-        # {
-        #     'Question 35':  'Your chair is terribly uneven and has been'\
-        #                     ' bugging you for a while now.\n\n'\
-        #                     'What do you do about this ordeal?',
-        #     'Answers': {'A': 'Use your table cloth to level the chair',
-        #                 'B': 'Get another chair from a nearby table',
-        #                 'C': 'Continue ignoring it',
-        #                 'D': 'Ask {person.first_name} to switch chairs with you'}
-        # },
-        # {
-        #     'Question 36':  f'someone pickpockets you blah blah',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
-        # },
-        # {
-        #     'Question 37':  '"If you had to describe yourself in one word'\
-        #                    f' what would it be?", {person.first_name} asks.',
-        #     'Answers': {'A': '"No one can be explained in one word"',
-        #                 'B': '"poggers"',
-        #                 'C': '"Pathetic"',
-        #                 'D': '"Pretty cool"'}
-        # },
-        # {
-        #     'Question 38':  f'{person.first_name} is feeling a bit bored and'\
-        #                      ' asks you for a random fact about yourself\n\n'\
-        #                      'What do you say?',
-        #     'Answers': {'A': '',
-        #                 'B': '',
-        #                 'C': '',
-        #                 'D': ''}
-        # },
-        # {
-        #     'Question 39':  f'Out of the corner of your eye you spot '\
-        #                      'your illegally parked car being towed!\n\n'\
-        #                      'What do you do?,'
-        #     'Answers': {'A': 'Give the tow truck driver a couple of bucks',\
-        #                      ' to "look" the other way',
-        #                 'B': 'I didn\'t need my car anyways',
-        #                 'C': '',
-        #                 'D': ''}
-        # },
-        # {
-        #     'Question 40':  f'"What do you think about the {chosen_console}?',
-        #     'Answers': {'A': 'the {chosen_console} fucking sucks lmao',
-        #                 'B': '"What's that?"',
-        #                 'C': '"It's alright"',
-        #                 'D': '"Pretty based ngl"'} (based on what? joke)
-        # },
-        # {
-        #     'Question 41':  f'"Tell me your age without saying it", says\n'\
-        #                      '{person.first_name}.',
-        #     'Answers': {'A': '"Y\'all remember strawberry clock?"',
-        #                 'B': 'Type your age on your phone and show it to'\
-        #                      ' {person.first_name}',
-        #                 'C': '"amogus haha"',
-        #                 'D': '"Never ask someone their age, idiot"'}
-        # },
-        # {
-        #     'Question 42':  f'"I know where you live"',
-        #     'Answers': {'A': '192.24.63.179',
-        #                 'B': '"monkaS"',
-        #                 'C': '""', (player's Name here)
-        #                 'D': '42.4338° N, 83.9845° W'}
-        # },
-        # {
-        #     'Question 43':  f'Ellos no saben Pepelaugh',
-        #     'Answers': {'A': 'Clueless',
-        #                 'B': 'What?',
-        #                 'C': 'Si',
-        #                 'D': 'I thought this was a dating game'}
-        # },
-        # {
-        #     'Question 44':  f'"What says the most about a person?" your date asks',
-        #     'Answers': {'A': '"Their personality"',
-        #                 'B': '"Their looks"',
-        #                 'C': '"What their room looks like"',
-        #                 'D': '"How they act under pressure"'}
-        # },
-        # {
-        #     'Question 45':  f'"What are you really proud of?", {person.first_name} asks',
-        #     'Answers': {'A': '"My intellect"',
-        #                 'B': '"My \'grind\'"',
-        #                 'C': '"There\'s nothing to be proud of..."',
-        #                 'D': '"Eh, myself in general"'}
-        # },
-        # {
-        #     'Question 46':  f'Your date asks: "What would you spend a million dollars on?"',
-        #     'Answers': {'A': '"Probably some training equipment, nothing special"',
-        #                 'B': '"My crippling student loans"',
-        #                 'C': '"My gambling addiction"',
-        #                 'D': '"Investments"'}
-        # },
-        # {
-        #     'Question 47':  f'"What\'s your favourite holiday?", {person.first_name} asks',
-        #     'Answers': {'A': '"Christmas"',
-        #                 'B': '"Valentine\'s Day"',
-        #                 'C': '"Halloween"',
-        #                 'D': '"Leg Day"'}
-        # },
-        # {
-        #     'Question 48':  f'{person.first_name} asks: "Are you the type of guy to do'\
-        #                      ' things on the fly?"',
-        #     'Answers': {'A': '"Yes"',
-        #                 'B': '"No"',
-        #                 'C': '"It depends"',
-        #                 'D': '"Are you?"'}
-        # },
-        # {
-        #     'Question 49':  f'"Do you remember my last name?", your date asks',
-        #     'Answers': {'A':  '"No"',
-        #                 'B': f'"{person.first_name}"',
-        #                 'C': f'"{person.last_name}"',
-        #                 'D': f'"{choice(fst_nmes)}"'}
-        # },
-        # {
-        #     'Question 50':  f'Your date asks: "What do you care the least about?"',
-        #     'Answers': {'A': '"You"',
-        #                 'B': '"To be honest, myself"',
-        #                 'C': '"My regrets"',
-        #                 'D': '"Society"'}
+        {
+            'Question 29':  f'{person.first_name} looks visibly bored! You'\
+                             ' try to tell a joke to lighten the mood, but'\
+                             ' what should the joke be about?',
+            'Answers': {'A': 'Cars',
+                        'B': 'Shakespeare',
+                        'C': 'Kidney stones',
+                        'D': 'Water'}
+        },
+        {
+            'Question 30':  '"Would you kill a puppy for ten million US dollars?"',
+            'Answers': {'A': '"Hell yeah"',
+                        'B': '"Dumb question. Next"',
+                        'C': '"Nah"',
+                        'D': '"A puppy, no. A different animal though..."'}
+        },
+        {
+            'Question 31':  'Though your food is of excellent quality, you'\
+                            ' suddenly realize your wallet isn\'t as so.'\
+                            ' You\'re too poor to pay for both'\
+                           f'{person.first_name}\'s meal as well as yours!\n\n'\
+                            'What do you do?',
+            'Answers': {'A': f'Persuade {person.first_name} to split the'\
+                              ' bill.',
+                        'B': f'Pickpocket {person.first_name}',
+                        'C': 'Create money-themed art', #(draw w/ pencil new money)
+                        'D': 'Print money'}
+        },
+        {
+            'Question 32':  'Out of the corner of your eye, you spot a big,'\
+                            ' red, jolly man munching down on some cookies'\
+                            ' and milk. Slowly, it all clicks together...\n\n'\
+                            'It\'s Santa Claus! How do you act in this'\
+                            ' situation?',
+            'Answers': {'A': '"Eat a salad, fat man"',
+                        'B': '"HOLY SHIT"',
+                        'C': '"Diabetes in the flesh, huh...',
+                        'D': 'FUCK SANTA CLAUS'}
+        },
+        {
+            'Question 33':  f'{person.first_name} asks you about work.'\
+                             '\nWhat\'s your job?',
+            'Answers': {'A': '"Plumber"',
+                        'B': '"I\'m unemployed"',
+                        'C': '"Lawyer"',
+                        'D': '"Coach"'}
+        },
+        {
+            'Question 34':  '"As part of a team, what role do you prefer?"',
+            'Answers': {'A': '"A leader"',
+                        'B': '"I\'m pretty much the idea guy"',
+                        'C': '"Just your average worker"',
+                        'D': '"I work alone"'}
+        },
+        {
+            'Question 35':  'Your chair is terribly uneven and has been'\
+                            ' bugging you for a while now.\n\n'\
+                            'What do you do about this ordeal?',
+            'Answers': {'A':  'Use your table cloth to level the chair',
+                        'B':  'Get another chair from a nearby table',
+                        'C':  'Continue ignoring it',
+                        'D': f'Ask {person.first_name} to switch chairs with you'}
+        },
+        {
+            'Question 36':  f' You touch your pockets and seem to be missing'\
+                             ' something.\n\n You\'ve been pickpocketed!\n\n'\
+                             ' However, out of the corner of your eye, you spot'\
+                             ' a man walking rapidly. What do you do?',
+            'Answers': {'A': 'Confront the man',
+                        'B': 'Begrudingly continue on with your date',
+                        'C': 'Get some compensation',
+                        'D': 'Cope'}
+        },
+        {
+            'Question 37':  '"If you had to describe yourself in one word'\
+                           f' what would it be?", {person.first_name} asks.',
+            'Answers': {'A': '"No one can be explained in one word"',
+                        'B': '"poggers"',
+                        'C': '"Pathetic"',
+                        'D': '"Pretty cool"'}
+        },
+        {
+            'Question 38':  f'{person.first_name} is feeling a bit bored and'\
+                             ' asks you for a random fact about yourself\n\n'\
+                             'What do you say?',
+            'Answers': {'A': '"IMO, you\'re pretty hot"',
+                        'B': '"Fun fact: I volunteered at an animal shelter once."',
+                        'C': '"It isn\'t much, but I\'ve been going to the gym'\
+                              ' a lot more recently..."',
+                        'D': '"I\'m too busy to know anything pretty unique."'}
+        },
+        {
+            'Question 39':  'Out of the corner of your eye you spot '\
+                            'your illegally parked car being towed!\n\n'\
+                            'What do you do?',
+            'Answers': {'A': 'Persuade the towtruker to look the other way',
+                        'B': 'I didn\'t need my car anyways',
+                        'C': 'Block the tow truck from moving any further',
+                        'D': 'Actually, I parked in a legal spot'}
+        },
+        {
+            'Question 40':   f'"What do you think about the {chosen_console}?',
+            'Answers': {'A': f'the {chosen_console} fucking sucks lmao',
+                        'B': '"What\'s that?"',
+                        'C': '"It\'s alright"',
+                        'D': '"Pretty based ngl"'} #(based on what? joke)
+        },
+        {
+            'Question 41':  '"Tell me your age without saying it", says\n'\
+                            f'{person.first_name}.',
+            'Answers': {'A': '"Y\'all remember strawberry clock?"',
+                        'B': 'Type your age on your phone and show it to'\
+                            f' {person.first_name}',
+                        'C': '"amogus haha"',
+                        'D': '"Never ask someone their age, idiot"'}
+        },
+        {
+            'Question 42':  'I know where you live',
+            'Answers': {'A': '192.24.63.179',
+                        'B': 'monkaS',
+                        'C': 'Cthulhu fhtagn! Ph\'nglui mglw\'nfah '\
+                             'Cthulhu R\'lyeh wgah\'nagl fhtagn', #(alternatively, player's Name here)
+                        'D': '42.4338° N, 83.9845° W'}
+        },
+        {
+            'Question 43':  'Ellos no saben Pepelaugh',
+            'Answers': {'A': 'Clueless',
+                        'B': 'What?',
+                        'C': 'Si',
+                        'D': 'Isn\'t this a dating game?'}
+        },
+        {
+            'Question 44':  '"What says the most about a person?" your date asks',
+            'Answers': {'A': '"Their personality"',
+                        'B': '"Their looks"',
+                        'C': '"What their room looks like"',
+                        'D': '"How they act under pressure"'}
+        },
+        {
+            'Question 45':  '"What are you really proud of?", {person.first_name} asks',
+            'Answers': {'A': '"My intellect"',
+                        'B': '"My \'grind\'"',
+                        'C': '"There\'s nothing to be proud of..."',
+                        'D': '"Eh, myself in general"'}
+        },
+        {
+            'Question 46':  'Your date asks: "What would you spend a million dollars on?"',
+            'Answers': {'A': '"Probably some training equipment, nothing special"',
+                        'B': '"My crippling student loans"',
+                        'C': '"My gambling addiction"',
+                        'D': '"Investments"'}
+        },
+        {
+            'Question 47':  f'"What\'s your favourite holiday?", {person.first_name} asks',
+            'Answers': {'A': '"Christmas"',
+                        'B': '"Valentine\'s Day"',
+                        'C': '"Halloween"',
+                        'D': '"Leg Day"'}
+        },
+        {
+            'Question 48':  f'{person.first_name} asks: "Are you the type of guy to do'\
+                             ' things on the fly?"',
+            'Answers': {'A': '"Yes"',
+                        'B': '"No"',
+                        'C': '"It depends"',
+                        'D': '"Are you?"'}
+        },
+        {
+            'Question 49':  '"Do you remember my last name?", your date asks',
+            'Answers': {'A':  '"No"',
+                        'B': f'"{person.first_name}"',
+                        'C': f'"{person.last_name}"',
+                        'D': f'"{choice(last_names_lst())}"'}
+        },
+        {
+            'Question 50':  'Your date asks: "What do you care the least about?"',
+            'Answers': {'A': '"You"',
+                        'B': '"To be honest, myself"',
+                        'C': '"My regrets"',
+                        'D': '"Society"'}
+        },
+        {
+            'Question 51':  '"Do you remember my first name?", your date asks',
+            'Answers': {'A':  '"No"',
+                        'B': f'"{person.first_name}"',
+                        'C': f'"{person.last_name}"',
+                        'D': f'"{choice(first_names_lst())}"'}
+        },
+        {
+            'Question 52':  '"Do you remember what my job is?", your date asks',
+            'Answers': {'A':  '"No"',
+                        'B': f'"A {rand_prof1}"',
+                        'C': f'"A {rand_prof2}"',
+                        'D': f'"A {person.prof}"'}
+        },
+        {
+            'Question 53':  '"How would you describe me?", your date asks',
+            'Answers': {'A':  '"I don\'t know lmao"',
+                        'B': f'"A {rand_pers1}"',
+                        'C': f'"A {rand_pers2}"',
+                        'D': f'"A {person.personality}"'}
+        }
     ]
     return questions

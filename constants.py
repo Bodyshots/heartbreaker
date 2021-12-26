@@ -79,34 +79,41 @@ OBJECTIVE = 'Objective'
 ACTIVE = 'Active'
 NEGATIVE = 'Negative'
 
-### Sounds and Music
+### Sounds Effects and Music
 
 MUSIC_PATH = r'Sounds\Music'
 JINGLE_PATH = r'Sounds\Music\Jingles'
 
-conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\437.wav')) # done
-conf_gain_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain.wav')) # done
-cologne_SE = pg.mixer.Sound(abspath(r'Sounds\SE\cologne.wav')) # done
-slap_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slap.wav')) 
-invalid_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid.wav')) # done
-invalid_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_2.wav')) # done
-slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\break_table.wav')) # done
-select_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_item.wav')) # done
-toilet_SE = pg.mixer.Sound(abspath(r'Sounds\SE\toilet.wav')) # done
-run_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_escaped.wav')) # done
-info_SE = pg.mixer.Sound(abspath(r'Sounds\SE\snd_heal_c.wav')) # done
-fight_SE = pg.mixer.Sound(abspath(r'Sounds\SE\fight.wav'))
-table_slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\table_slam.wav'))
-drum_roll_SE = pg.mixer.Sound(abspath(r'Sounds\SE\drum_roll.wav'))
-gunshot_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\new sound effects\gunshots - LittleRobotSoundFactory.wav'))
+## Sound Effects
+conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_down - JavierZumer.wav'))
+conf_gain_small_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain_small - Komit.wav'))
+conf_gain_big_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain_big - Komit.wav'))
+slap_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slap - LittleRobotFactory.wav')) # needs to be done
+invalid_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_1 - Breviceps.wav'))
+invalid_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_2 - sgtpepperarc360.wav'))
+slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slam - LittleRobotSoundFactory.wav'))
+select_SE = pg.mixer.Sound(abspath(r'Sounds\SE\select - bfxr.wav'))
+run_SE = pg.mixer.Sound(abspath(r'Sounds\SE\run - Jofae.wav'))
+info_SE = pg.mixer.Sound(abspath(r'Sounds\SE\menu_1 - LittleRobotSoundFactory.wav'))
+fight_SE = pg.mixer.Sound(abspath(r'Sounds\SE\fight - LittleRobotSoundFactory.wav'))
+drum_roll_SE = pg.mixer.Sound(abspath(r'Sounds\SE\drum_roll - LittleRobotSoundFactory.wav'))
+gunshot_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshots - LittleRobotSoundFactory.wav'))
+
+## Music
+MENU_MUSIC = MUSIC_PATH + '\past_never_come_back.wav'
+OPTIONS_MUSIC = MUSIC_PATH + '\which_brand_of_mustard_shall_i_buy.ogg'
+CREDITS_MUSIC = MUSIC_PATH + r'\falling_raindrops.wav'
+BATTLE_MUSIC = MUSIC_PATH + r'\retrospective.wav'
+RESULTS_MUSIC = MUSIC_PATH + r'\results.mp3'
+GAME_OVER_MUSIC = MUSIC_PATH + '\super_chicken_short.wav'
+
 
 # Making all sounds have a consistent volume of around 0.5
 
 sound_vol = 0.5
 
-sounds = [conf_gain_SE, conf_lose_SE, cologne_SE, slap_SE, invalid_SE, slam_SE,
-          info_SE, toilet_SE, invalid_2_SE, run_SE, select_SE, fight_SE,
-          table_slam_SE, drum_roll_SE]
+sounds = [conf_lose_SE, conf_gain_small_SE, conf_gain_big_SE, slap_SE, invalid_SE, slam_SE,
+          info_SE, gunshot_SE, invalid_2_SE, run_SE, select_SE, fight_SE, drum_roll_SE]
 
 for i in sounds:
     i.set_volume(sound_vol)

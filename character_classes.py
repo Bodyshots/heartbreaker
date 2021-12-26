@@ -12,8 +12,11 @@ from reactions import (Character, atrocity_no, atrocity_yes, boring, distasteful
                        crowd_silence_child_B, event_robbery_C, pathetic,
                        event_friend_buzz_neg, choke_neg_pos, abs_muscles,
                        event_robbery_D, math_question)
-from constants import OPTION_A, OPTION_B, OPTION_C, OPTION_D, NORMAL
-from typing import Dict
+from constants import (OPTION_A, OPTION_B, OPTION_C, OPTION_D, NORMAL,
+                       OBJECTIVE, ACTIVE, NEGATIVE)
+from typing import Dict, Tuple
+from random import choice
+from file_init import first_names_lst, last_names_lst, personalities_dict
 
 class NormalCharacter(Character):
     """
@@ -866,3 +869,53 @@ class ObjectiveCharacter(Character):
                             OPTION_C: '',
                             OPTION_D: ''}}
         return react_dict
+
+
+def person_creator() -> Character:
+    """ 
+    Return a unique subclass of the Character class.
+
+    This includes creating the Character's true_pers, pers, name, first_name,
+    last_name, and prof.
+
+    """
+
+    behaviour, profile = '', ''
+    character_dict = {NORMAL: NormalCharacter,
+                      NEGATIVE: NegativeCharacter,
+                      ACTIVE: ActiveCharacter,
+                      OBJECTIVE: ObjectiveCharacter}
+    behaviour = rand_pers()
+    profile = character_dict.get(behaviour[0])(rand_nam(), behaviour[0],
+                                               behaviour[1])
+    return profile
+
+def rand_nam() -> str:
+    """
+    Create a random name to 'battle.'
+    This involves grabbing a random first and last name
+    from 'women_first_names.txt' and 'last_names.txt' respectively.
+
+    """
+    return choice(first_names_lst()) + ' ' + choice(last_names_lst())
+
+
+def rand_pers() -> Tuple[str, str]:
+    """
+    Assign a random personality to a character.
+
+    Personalities fall into one of four categories:
+
+    - Active
+    - Objective
+    - Negative
+    - Normal
+
+    To spice things up a bit, each category has a list of synomnyms that
+    belong to it. Return the category and the synonym as a tuple.
+
+    """
+    personalities = personalities_dict()
+    key = choice(list(personalities.keys()))
+    value = choice(personalities.get(key))
+    return key, value

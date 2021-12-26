@@ -9,20 +9,22 @@ from time import sleep
 from random import choice, randint, shuffle
 from typing import List, Tuple, Union, Dict, Callable
 from character_classes import (Character, NormalCharacter, ActiveCharacter,
-                               ObjectiveCharacter, NegativeCharacter)
-from constants import (EASY_TURNS, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, NORM_CONF, 
+                               ObjectiveCharacter, NegativeCharacter,
+                               person_creator)
+from constants import (EASY_TURNS, GAME_OVER_MUSIC, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, NORM_CONF, 
                        OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
                        SMALL_NEG, SMALL_POS,
                        TALK, USAGE_DEC, COLOGNE_LOWER, COLOGNE_HIGHER,
                        WASHROOM_LOWER, WASHROOM_HIGHER, SHOW_OFF_LOWER,
                        SHOW_OFF_HIGHER, NORMAL, OBJECTIVE, ACTIVE, NEGATIVE,
-                       YES, NO, OPTION_E, conf_gain_SE, conf_lose_SE,
-                       cologne_SE, slap_SE, invalid_SE, invalid_2_SE, info_SE,
-                       toilet_SE, run_SE, select_SE, drum_roll_SE, sounds,
-                       OPTION_F, EASY_TURNS, EASY_CONF, E_COLOGNE_AMT, E_WSHROOM_AMT, NORM_TURNS,
+                       YES, NO, OPTION_E, conf_gain_small_SE, conf_gain_big_SE, conf_lose_SE,
+                       slap_SE, invalid_SE, invalid_2_SE, info_SE, run_SE, select_SE,
+                       drum_roll_SE, sounds, OPTION_F, EASY_TURNS, EASY_CONF, 
+                       E_COLOGNE_AMT, E_WSHROOM_AMT, NORM_TURNS,
                        NORM_CONF, N_COLOGNE_AMT, N_WSHROOM_AMT, HARD_TURNS,
                        HARD_CONF, H_COLOGNE_AMT, H_WSHROOM_AMT, DIF_EASY,
-                       DIF_NORM, DIF_HARD, MUSIC_PATH, JINGLE_PATH)
+                       DIF_NORM, DIF_HARD, MENU_MUSIC, JINGLE_PATH, OPTIONS_MUSIC,
+                       CREDITS_MUSIC, BATTLE_MUSIC, RESULTS_MUSIC, GAME_OVER_MUSIC)
 from questions_list import questions
 from prompts import (decision_prompt, diff_prompt, menu_prompt, item_prompt, options_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
@@ -56,14 +58,13 @@ def main_game() -> None:
     select_SE.play(), clear_term()
 
     while True:
-        music_loop(MUSIC_PATH + '\past_never_come_back.wav', 1000, 500, 0.0)
+        music_loop(MENU_MUSIC, 1000, 500, 0.0)
         menu_options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D, OPTION_E, 
                         OPTION_F)
         menu_choice = prompt_select(menu_prompt(), menu_options).upper()
 
         while menu_choice.upper() in menu_options:
             select_SE.play(), clear_term()
-
 
             if menu_choice.upper() == OPTION_A:
                 person = person_creator()
@@ -78,8 +79,7 @@ def main_game() -> None:
                 select_SE.play()
 
             elif menu_choice.upper() == OPTION_D:
-                music_loop(MUSIC_PATH + '\which_brand_of_mustard_shall_i_buy.ogg',
-                           1000, 1000, 0.0)
+                music_loop(OPTIONS_MUSIC, 1000, 1000, 0.0)
                 options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
                 menu_choice = prompt_select(options_prompt(), options).upper()
                 clear_term()
@@ -110,14 +110,14 @@ def main_game() -> None:
                     select_SE.play()
                     menu_choice = prompt_select(options_prompt(), options).upper()
                 select_SE.play()
-                music_loop(MUSIC_PATH + '\past_never_come_back.wav', 1000, 500, 0.0)
+                music_loop(MENU_MUSIC, 1000, 500, 0.0)
 
             elif menu_choice.upper() == OPTION_E:
-                music_loop(MUSIC_PATH + r'\falling_raindrops.wav', 1000, 1000, 0.0)
+                music_loop(CREDITS_MUSIC, 1000, 1000, 0.0)
                 menu_choice = prompt_select(credits_prompt(credit_str), OPTION_A)
                 menu_choice = ''
                 select_SE.play()
-                music_loop(MUSIC_PATH + '\past_never_come_back.wav', 1000, 500, 0.0)
+                music_loop(MENU_MUSIC, 1000, 500, 0.0)
             
             elif menu_choice.upper() == OPTION_F:
                 menu_choice = prompt_select(yes_no_prompt('Are you sure you want to quit?'),
@@ -173,15 +173,15 @@ def battle(person: Character, diff: str) -> None:
         elif diff == DIF_HARD:
             excuses_amt, cologne_amt = H_WSHROOM_AMT, H_COLOGNE_AMT
             confidence, turns = HARD_CONF, HARD_TURNS
-        decision = ''
-        msg, question_lst = '', questions(person)
+        decision, msg = '', ''
+        question_lst, cologne_amt = questions(person, cologne_amt)
         battle_actions, yes_no = (TALK, ITEM, INFO, RUN), (YES, NO)
         options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
         cologne_use, bath_use, slap_use = False, False, 0
 
         info_SE.play(), clear_term()
         input(f'You are dating:\n{person}\nEnter any button to continue.\n')
-        music_loop(MUSIC_PATH + r'\retrospective.wav', 1000, 0, 0.0)
+        music_loop(BATTLE_MUSIC, 1000, 0, 0.0)
 
         decision = prompt_select(decision_prompt(confidence, turns),
                                  battle_actions).upper()
@@ -205,10 +205,11 @@ def battle(person: Character, diff: str) -> None:
                 shuffle(random_answers)
                 decision = q_prompt_select(question_format(question_q_and_a,
                                                            random_answers),
-                                           options, question_q_and_a).upper() ############### randomization point  ###############
+                                           options, question_q_and_a).upper() ##### randomization point #####
+                
+                confidence = quest_result(decision, person, confidence, question_nums[0],
+                                          diff)
 
-                confidence = talk_effects(decision, person, confidence,
-                                          question_nums[0], diff) # use question number to find question
                 question_lst.pop(question_nums[1]) # use index num to remove question
                 cologne_use, bath_use, slap_use = False, False, 0
 
@@ -282,7 +283,7 @@ def question_pick(question_lst: List[Dict[str, Union[str, Dict[str, str]]]],
 
     """
 
-    options, i = (OPTION_A, OPTION_B, OPTION_C, OPTION_D), 0
+    i = 0
     question = sorted(list(question_q_and_a.keys()))[1]
 
     while (question != sorted(list(question_lst[i].keys()))[1]
@@ -303,7 +304,7 @@ def game_over_lose() -> str:
     """
 
     pg.mixer.music.stop(), pg.mixer.music.unload()
-    pg.mixer.music.load(MUSIC_PATH + '\super_chicken_short.wav')
+    pg.mixer.music.load(GAME_OVER_MUSIC)
     pg.mixer.music.play(0, 0, 200)
 
     message = 'You became so unconfident that you ran away from the'\
@@ -325,7 +326,7 @@ def game_over_win(confidence: int, diff: str) -> None:
 
     user_dec, turn_amt = '', NORM_TURNS
     pg.mixer.music.stop(), pg.mixer.music.unload()
-    pg.mixer.music.load(MUSIC_PATH + r'\results.mp3'), pg.mixer.music.play()
+    pg.mixer.music.load(RESULTS_MUSIC), pg.mixer.music.play()
 
     if diff == DIF_HARD:
         turn_amt = HARD_TURNS
@@ -401,7 +402,7 @@ def win_results_text(conf_key: int) -> str:
     >>> win_results_text(20).strip()
     'Who matched us to date? That was terrible!'
     >>> win_results_text(30).strip()
-    'A waste of my time, though I am thankful for the free meal he provided.'
+    'A waste of my time, though I am thankful for the free dinner.'
     >>> win_results_text(34).strip()
     ''
 
@@ -419,7 +420,7 @@ def win_results_text(conf_key: int) -> str:
                    40: 'It wasn\'t the best date I\'ve ever had, but it was'\
                        ' far from the worst.',
                    30: 'A waste of my time, though I am thankful for the free'\
-                       ' meal he provided.',
+                       ' dinner.',
                    20: 'Who matched us to date? That was terrible!',
                     0: 'Awful. He was unbearably atrocious. Who knew that such'\
                        ' an absolute and INSANE buffoon ever existed...'}
@@ -509,13 +510,11 @@ def item_effect(decision: str, confidence: int, diff: str) -> int:
     amt_gain = 0
 
     if decision.upper() == OPTION_A:
-        cologne_SE.play()
         amt_gain = randint(COLOGNE_LOWER, COLOGNE_HIGHER)
         confidence += amt_gain
         input('You used cologne! You now smell excellent!\n')
 
     elif decision.upper() == OPTION_B:
-        toilet_SE.play()
         amt_gain = randint(WASHROOM_LOWER, WASHROOM_HIGHER)
         confidence += amt_gain
         input('You went to the washroom! Giving yourself a peptalk'\
@@ -541,59 +540,7 @@ def item_effect(decision: str, confidence: int, diff: str) -> int:
     return min(confidence, 100)
 
 
-def person_creator() -> Character:
-    """ 
-    Return a unique subclass of the Character class.
-
-    This includes creating the Character's true_pers, pers, name, first_name,
-    last_name, and prof.
-
-    """
-
-    behaviour, profile = '', ''
-    character_dict = {NORMAL: NormalCharacter,
-                      NEGATIVE: NegativeCharacter,
-                      ACTIVE: ActiveCharacter,
-                      OBJECTIVE: ObjectiveCharacter}
-    behaviour = rand_pers()
-    profile = character_dict.get(behaviour[0])(rand_nam(), behaviour[0],
-                                               behaviour[1])
-    return profile
-
-
-def rand_nam() -> str:
-    """
-    Create a random name to 'battle.'
-    This involves grabbing a random first and last name
-    from 'women_first_names.txt' and 'last_names.txt' respectively.
-
-    """
-
-    return choice(fst_nmes) + ' ' + choice(last_nmes)
-
-
-def rand_pers() -> Tuple[str, str]:
-    """
-    Assign a random personality to a character.
-
-    Personalities fall into one of four categories:
-
-    - Active
-    - Objective
-    - Negative
-    - Normal
-
-    To spice things up a bit, each category has a list of synomnyms that
-    belong to it. Return the category and the synonym as a tuple.
-
-    """
-
-    key = choice(list(personalities.keys()))
-    value = choice(personalities.get(key))
-    return key, value
-
-
-def talk_effects(decision: str, person: Character, confidence: int,
+def quest_result(decision: str, person: Character, confidence: int,
                  question_num: int, diff: str) -> int:
     """
     Return the user's modified <confidence>, based on their <decision>, their
@@ -604,13 +551,11 @@ def talk_effects(decision: str, person: Character, confidence: int,
 
     """
 
-    decision = decision.upper()
-    amt_gain = person.reactions().get(question_num).get(decision)(person)
-    if amt_gain == None:
-        return 0
-    confidence_gain_lost(amt_gain, diff)
+    amt_gain = confidence_gain_lost(person.reactions().get(question_num).get(decision.upper())(person), diff)
+    return min(amt_gain + confidence, 100)
 
-    return min(confidence + amt_gain, 100)
+def quest_side_effects():
+    pass
     
 
 def confidence_gain_lost(amt_gain: int, diff: str) -> None:
@@ -622,7 +567,10 @@ def confidence_gain_lost(amt_gain: int, diff: str) -> None:
     amt_gain = conf_gain_adj(amt_gain, diff)
 
     if amt_gain > 0:
-        conf_gain_SE.play()
+        if amt_gain > 15:
+            conf_gain_big_SE.play()
+        else:
+            conf_gain_small_SE.play()
         input(f'You have gained {amt_gain}% confidence!\n')
     elif amt_gain < 0:
         conf_lose_SE.play()
