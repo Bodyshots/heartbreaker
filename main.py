@@ -5,13 +5,14 @@ import doctest
 import re
 import pygame as pg
 import doctest
+import os
 from time import sleep
 from random import choice, randint, shuffle
 from typing import List, Tuple, Union, Dict, Callable, Optional
 from character_classes import (Character, NormalCharacter, ActiveCharacter,
                                ObjectiveCharacter, NegativeCharacter,
                                person_creator)
-from constants import (EASY_TURNS, GAME_OVER_MUSIC, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, NORM_CONF, 
+from constants import (BATTLE_MUSIC_INTROS_PATH, EASY_TURNS, GAME_OVER_MUSIC, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, MUSIC_END, NORM_CONF, 
                        OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
                        SMALL_NEG, SMALL_POS,
                        TALK, USAGE_DEC, COLOGNE_LOWER, COLOGNE_HIGHER,
@@ -54,6 +55,7 @@ def main_game() -> None:
     diff = DIF_NORM
     credit_str = creds()
     pg.mixer.music.set_volume(music_vol)
+    pg.mixer.music.set_endevent()
     sound_vol = slap_SE.get_volume()
     select_SE.play(), clear_term()
 
@@ -83,7 +85,7 @@ def main_game() -> None:
                 options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
                 menu_choice = prompt_select(options_prompt(), options).upper()
                 clear_term()
-                while menu_choice.upper() in (OPTION_A, OPTION_B, OPTION_C):
+                while menu_choice.upper() in (OPTION_A, OPTION_B):
                     if menu_choice == OPTION_A:
                         music_vol = vol_change(music_vol, music_lvl_prompt)
                         pg.mixer.music.set_volume(music_vol)
@@ -93,13 +95,6 @@ def main_game() -> None:
                         for i in sounds:
                             i.set_volume(sound_vol)
 
-                    elif menu_choice == OPTION_C:
-                        dif_choice = ''
-                        select_SE.play()
-                        dif_choice = prompt_select(diff_prompt(diff), options)
-                        if dif_choice.upper() == OPTION_A: diff = DIF_EASY
-                        elif dif_choice.upper() == OPTION_B: diff = DIF_NORM
-                        elif dif_choice.upper() == OPTION_C: diff = DIF_HARD
                     select_SE.play()
                     menu_choice = prompt_select(options_prompt(), options).upper()
                 select_SE.play()
@@ -159,7 +154,8 @@ def battle(person: Character, diff: str) -> None:
 
     while True:
         select_SE.play(), clear_term()
-        battle_track = music_select(BATTLE_MUSIC_LST)
+        battle_track_loc, battle_track = music_select(BATTLE_MUSIC_LST)
+        diff = diff_select()
 
         confidence, turns = NORM_CONF, NORM_TURNS
         excuses_amt, cologne_amt = N_WSHROOM_AMT, N_COLOGNE_AMT
@@ -176,11 +172,18 @@ def battle(person: Character, diff: str) -> None:
         cologne_use, bath_use, slap_use = False, False, 0
 
         input(f'You are dating:\n{person}\nEnter any button to continue.\n')
-        music_loop(battle_track, 1000, 0, 0.0)
+        intro_items = os.listdir(os.path.abspath(BATTLE_MUSIC_INTROS_PATH))
+        if f'{battle_track}_intro.wav' in intro_items:
+            pg.mixer.music.fadeout(1000)
+            pg.mixer.music.unload()
+            pg.mixer.music.load(BATTLE_MUSIC_INTROS_PATH + f'\{battle_track}_intro.wav')
+            pg.mixer.music.play(0)
+            pg.mixer.music.queue(battle_track_loc, loops=-1)
+        else:
+            music_loop(battle_track_loc, 1000, 0, 0)
 
         decision = prompt_select(decision_prompt(confidence, turns),
                                  battle_actions).upper()
-
         while decision.upper() in battle_actions:
             clear_term()
 
@@ -265,17 +268,14 @@ def battle(person: Character, diff: str) -> None:
                 decision = prompt_select(decision_prompt(confidence, turns),
                                          battle_actions).upper()
 
-# def dif_select() -> str:
-#     dif_choice = ''
-#     select_SE.play()
-#     dif_choice = prompt_select(diff_prompt(diff), options)
-#     if dif_choice.upper() == OPTION_A: diff = DIF_EASY
-#     elif dif_choice.upper() == OPTION_B: diff = DIF_NORM
-#     elif dif_choice.upper() == OPTION_C: diff = DIF_HARD
-#     select_SE.play()
-#     menu_choice = prompt_select(options_prompt(), options).upper()    
-#     return 
-
+def diff_select() -> str:
+    diff_choice, options = '', (OPTION_A, OPTION_B, OPTION_C)
+    select_SE.play()
+    diff_choice = prompt_select(diff_prompt(), options)
+    select_SE.play(), clear_term()
+    if diff_choice.upper() == OPTION_A: return DIF_EASY
+    elif diff_choice.upper() == OPTION_B: return DIF_NORM
+    return DIF_HARD
 
 def music_select(music_lst: List[str]) -> Optional[str]:
     if len(music_lst) < 0:
@@ -289,7 +289,8 @@ def music_select(music_lst: List[str]) -> Optional[str]:
         select_choice = prompt_select(music_select_prompt(music_lst[i]), options)
         if select_choice == OPTION_A:
             info_SE.play(), clear_term()
-            return BATTLE_MUSIC_PATH + f'\{music_lst[i]}.wav'
+            battle_track_loc, battle_track = BATTLE_MUSIC_PATH + f'\{music_lst[i]}.wav', music_lst[i]
+            return battle_track_loc, battle_track
         elif select_choice == OPTION_B:
             if i != len(music_lst) - 1: i += 1
             else: i = 0

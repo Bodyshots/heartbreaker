@@ -77,7 +77,7 @@ def question_format(questions: Dict, answers: List[str]) -> str:
     from <questions>.
 
     """
-    options = [OPTION_A, OPTION_B, OPTION_C, OPTION_D]
+    options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
     i = 0
 
     prompt = f'{(questions.get(sorted(list(questions.keys()))[1]))}\n\n'
@@ -98,8 +98,7 @@ def options_prompt() -> str:
     prompt = 'What would you like to change?\n\n'\
             f'[{OPTION_A}] - Music Volume\n'\
             f'[{OPTION_B}] - Sound Effect (SE) Volume\n'\
-            f'[{OPTION_C}] - Difficulty\n'\
-            f'[{OPTION_D}] - Back'
+            f'[{OPTION_C}] - Back'
 
     return prompt
 
@@ -198,10 +197,9 @@ def information_prompt(person: Character) -> str:
     return f'Information:\n{person}\n[{OPTION_A}] - Back'
 
 
-def diff_prompt(current_dif: str) -> str:
+def diff_prompt() -> str:
     """
-    Show the <current_dif> (current difficulty) of the game
-    and show a list of difficulties that the user can
+    Show a list of difficulties that the user can
     choose from. These are:
 
     - Gigachad (DIF_EASY)
@@ -209,11 +207,9 @@ def diff_prompt(current_dif: str) -> str:
     - Weeb (DIF_HARD)
     """
     prompt = 'Select your difficulty below.\n\n'\
-            f'Current difficulty: {current_dif}\n'\
             f'[{OPTION_A}] - Gigachad\n'\
             f'[{OPTION_B}] - Normie\n'\
-            f'[{OPTION_C}] - Weeb\n'\
-            f'[{OPTION_D}] - Back\n\n'\
+            f'[{OPTION_C}] - Weeb\n\n'\
             'Difficulty levels determine the number of '\
             'turns and confidence gains/losses throughout the date.'
 

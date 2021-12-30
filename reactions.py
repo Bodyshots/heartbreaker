@@ -864,7 +864,7 @@ def abs_muscles(person: Character) -> int:
 
 def math_question(person: Character) -> int:
     """
-    math question LUL
+    math question LULW
 
     - If <person>'s true_pers is OBJECTIVE, return a positive integer
     only if the correct answer is entered. Return a negative int otherwise.

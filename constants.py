@@ -87,6 +87,7 @@ NEGATIVE = 'Negative'
 
 MUSIC_PATH = r'Sounds\Music'
 BATTLE_MUSIC_PATH = MUSIC_PATH + r'\battle_music'
+BATTLE_MUSIC_INTROS_PATH = BATTLE_MUSIC_PATH + r'\starters'
 JINGLE_PATH = r'Sounds\Music\Jingles'
 
 ## Sound Effects
@@ -108,8 +109,6 @@ gunshot_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshots - LittleRobotSoundFacto
 MENU_MUSIC = MUSIC_PATH + '\past_never_come_back.wav'
 OPTIONS_MUSIC = MUSIC_PATH + r'\blue_intermission.wav'
 CREDITS_MUSIC = MUSIC_PATH + r'\my_street.wav'
-BATTLE_MUSIC1 = MUSIC_PATH + r'\retrospective.wav'
-BATTLE_MUSIC2 = MUSIC_PATH + r''
 RESULTS_MUSIC = MUSIC_PATH + r'\results.mp3'
 GAME_OVER_MUSIC = MUSIC_PATH + '\merrily_strolling.wav'
 
