@@ -1,7 +1,11 @@
 import pygame as pg
+import os
 from os.path import abspath
 
 pg.init()
+
+# Pygame Events
+MUSIC_END = pg.USEREVENT + 1
 
 ### Battle Options
 
@@ -82,6 +86,7 @@ NEGATIVE = 'Negative'
 ### Sounds Effects and Music
 
 MUSIC_PATH = r'Sounds\Music'
+BATTLE_MUSIC_PATH = MUSIC_PATH + r'\battle_music'
 JINGLE_PATH = r'Sounds\Music\Jingles'
 
 ## Sound Effects
@@ -101,12 +106,17 @@ gunshot_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshots - LittleRobotSoundFacto
 
 ## Music
 MENU_MUSIC = MUSIC_PATH + '\past_never_come_back.wav'
-OPTIONS_MUSIC = MUSIC_PATH + '\which_brand_of_mustard_shall_i_buy.ogg'
-CREDITS_MUSIC = MUSIC_PATH + r'\falling_raindrops.wav'
-BATTLE_MUSIC = MUSIC_PATH + r'\retrospective.wav'
+OPTIONS_MUSIC = MUSIC_PATH + r'\blue_intermission.wav'
+CREDITS_MUSIC = MUSIC_PATH + r'\my_street.wav'
+BATTLE_MUSIC1 = MUSIC_PATH + r'\retrospective.wav'
+BATTLE_MUSIC2 = MUSIC_PATH + r''
 RESULTS_MUSIC = MUSIC_PATH + r'\results.mp3'
-GAME_OVER_MUSIC = MUSIC_PATH + '\super_chicken_short.wav'
+GAME_OVER_MUSIC = MUSIC_PATH + '\merrily_strolling.wav'
 
+BATTLE_MUSIC_LST = []
+directory_items = os.listdir(abspath(BATTLE_MUSIC_PATH))
+for item in directory_items:
+    if item.endswith(".wav"): BATTLE_MUSIC_LST.append(item[:-4])
 
 # Making all sounds have a consistent volume of around 0.5
 

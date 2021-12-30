@@ -210,9 +210,9 @@ def diff_prompt(current_dif: str) -> str:
     """
     prompt = 'Select your difficulty below.\n\n'\
             f'Current difficulty: {current_dif}\n'\
-            f'[{OPTION_A}] - Gigachad \n'\
-            f'[{OPTION_B}] - Normie \n'\
-            f'[{OPTION_C}] - Weeb \n'\
+            f'[{OPTION_A}] - Gigachad\n'\
+            f'[{OPTION_B}] - Normie\n'\
+            f'[{OPTION_C}] - Weeb\n'\
             f'[{OPTION_D}] - Back\n\n'\
             'Difficulty levels determine the number of '\
             'turns and confidence gains/losses throughout the date.'
@@ -220,9 +220,15 @@ def diff_prompt(current_dif: str) -> str:
     return prompt
 
 def jukebox_prompt(song: str) -> str:
-    prompt = f'Current song: {song}'\
-             f'[{OPTION_A}] - Next'\
-             f'[{OPTION_B}] - Back'\
-             f'[{OPTION_C}] - Exit'
-    
+    prompt = f'Current song: {song}\n'\
+             f'[{OPTION_A}] - Next\n'\
+             f'[{OPTION_B}] - Back\n'\
+             f'[{OPTION_C}] - Exit\n\n'
+    return prompt
+
+def music_select_prompt(song: str) -> str:
+    prompt = f'Select a song:\n{song}\n\n'\
+             f'[{OPTION_A}] - Select\n'\
+             f'[{OPTION_B}] - Next\n'\
+             f'[{OPTION_C}] - Back\n\n'
     return prompt

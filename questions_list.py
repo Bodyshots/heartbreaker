@@ -64,7 +64,7 @@ def questions(person: Character) -> List[Dict]:
             'Question 3': f'You and {person.first_name} notice that the '
                           'restaurant is getting progressively louder.\nIn'\
                           ' fact, it\'s getting harder for you and your date'\
-                          ' to actually speak to each other without shouting!'\
+                          ' to actually speak to each other without shouting!\n\n'\
                           ' What do you do?',
              'Answers': {'A': 'Demand the entire restaurant to be quiet',
                          'B': 'Attempt to speak to your date anyways',
@@ -180,11 +180,10 @@ def questions(person: Character) -> List[Dict]:
             'Question 15': f'Once again, {person.first_name} and you have run'\
                             ' out of things to talk about. What can you do to'\
                             ' pass the time?',
-             'Answers': {'A': f'Challenge {person.first_name} to an'\
-                               ' arm-wrestling match',
-                         'B': f'Play chess with {person.first_name}',
-                         'C': 'just walk past time lol',
-                         'D': 'Show her your abs'}
+             'Answers': {'A': f'Test your physical strength against {person.first_name}',
+                         'B': f'Challenge {person.first_name} to a game of intellect',
+                         'C':  'just walk past time lol',
+                         'D':  'Show her your abs'}
         },
         {
             'Question 16': f'{person.first_name} is reminded of a video she '
@@ -338,27 +337,27 @@ def questions(person: Character) -> List[Dict]:
             'Answers': {'A': f'Persuade {person.first_name} to split the'\
                               ' bill.',
                         'B': f'Pickpocket {person.first_name}',
-                        'C': 'Create money-themed art', #(draw w/ pencil new money)
-                        'D': 'Print money'}
+                        'C': 'Create art',
+                        'D': 'Make more money'}
         },
         {
             'Question 32':  'Out of the corner of your eye, you spot a big,'\
                             ' red, jolly man munching down on some cookies'\
                             ' and milk. Slowly, it all clicks together...\n\n'\
-                            'It\'s Santa Claus! How do you act in this'\
+                            'It\'s clearly Santa Claus! How do you act in this'\
                             ' situation?',
             'Answers': {'A': '"Eat a salad, fat man"',
                         'B': '"HOLY SHIT"',
-                        'C': '"Diabetes in the flesh, huh...',
+                        'C': 'Yeah right',
                         'D': 'FUCK SANTA CLAUS'}
         },
         {
             'Question 33':  f'{person.first_name} asks you about work.'\
                              '\nWhat\'s your job?',
-            'Answers': {'A': '"Plumber"',
+            'Answers': {'A': '"A plumber"',
                         'B': '"I\'m unemployed"',
-                        'C': '"Lawyer"',
-                        'D': '"Coach"'}
+                        'C': '"A lawyer"',
+                        'D': '"A coach"'}
         },
         {
             'Question 34':  '"As part of a team, what role do you prefer?"',
@@ -378,8 +377,8 @@ def questions(person: Character) -> List[Dict]:
         },
         {
             'Question 36':  f' You touch your pockets and seem to be missing'\
-                             ' something.\n\n You\'ve been pickpocketed!\n\n'\
-                             ' However, out of the corner of your eye, you spot'\
+                             ' something.\n\n It seems like you\'ve been pickpocketed!\n\n'\
+                             ' Indeed, out of the corner of your eye, you see'\
                              ' a man walking rapidly. What do you do?',
             'Answers': {'A': 'Confront the man',
                         'B': 'Begrudingly continue on with your date',
@@ -401,24 +400,24 @@ def questions(person: Character) -> List[Dict]:
             'Answers': {'A': '"IMO, you\'re pretty hot"',
                         'B': '"Fun fact: I volunteered at an animal shelter once."',
                         'C': '"It isn\'t much, but I\'ve been going to the gym'\
-                              ' a lot more recently..."',
+                              ' a lot more recently."',
                         'D': '"I\'m too busy to know anything pretty unique."'}
         },
         {
-            'Question 39':  'Out of the corner of your eye you spot '\
-                            'your illegally parked car being towed!\n\n'\
+            'Question 39':  'Out of the corner of your eye you spot a police officer'\
+                            'wheel clamping your illegally parked car down!\n\n'\
                             'What do you do?',
-            'Answers': {'A': 'Persuade the towtruker to look the other way',
+            'Answers': {'A': 'Persuade the officer to look the other way',
                         'B': 'I didn\'t need my car anyways',
-                        'C': 'Block the tow truck from moving any further',
+                        'C': 'Try to get the wheel clamp off',
                         'D': 'Actually, I parked in a legal spot'}
         },
         {
             'Question 40':   f'"What do you think about the {chosen_console}?',
-            'Answers': {'A': f'the {chosen_console} fucking sucks lmao',
+            'Answers': {'A': f'"the {chosen_console} fucking sucks lmao"',
                         'B': '"What\'s that?"',
                         'C': '"It\'s alright"',
-                        'D': '"Pretty based ngl"'} #(based on what? joke)
+                        'D': '"Pretty based ngl"'}
         },
         {
             'Question 41':  '"Tell me your age without saying it", says\n'\
@@ -452,18 +451,18 @@ def questions(person: Character) -> List[Dict]:
                         'D': '"How they act under pressure"'}
         },
         {
-            'Question 45':  '"What are you really proud of?", {person.first_name} asks',
+            'Question 45':  f'"What are you really proud of?", {person.first_name} asks',
             'Answers': {'A': '"My intellect"',
-                        'B': '"My \'grind\'"',
+                        'B': '"My \"grind\""',
                         'C': '"There\'s nothing to be proud of..."',
                         'D': '"Eh, myself in general"'}
         },
         {
             'Question 46':  'Your date asks: "What would you spend a million dollars on?"',
-            'Answers': {'A': '"Probably some training equipment, nothing special"',
-                        'B': '"My crippling student loans"',
-                        'C': '"My gambling addiction"',
-                        'D': '"Investments"'}
+            'Answers': {'A': '"Training equipment!"',
+                        'B': '"Student loans!"',
+                        'C': '"Gambling!"',
+                        'D': '"I would never be able to get a million dollars in the first place..."'}
         },
         {
             'Question 47':  f'"What\'s your favourite holiday?", {person.first_name} asks',
@@ -511,9 +510,9 @@ def questions(person: Character) -> List[Dict]:
         {
             'Question 53':  '"How would you describe me?", your date asks',
             'Answers': {'A':  '"I don\'t know lmao"',
-                        'B': f'"A {rand_pers1}"',
-                        'C': f'"A {rand_pers2}"',
-                        'D': f'"A {person.personality}"'}
+                        'B': f'"{rand_pers1}"',
+                        'C': f'"{rand_pers2}"',
+                        'D': f'"{person.pers}"'}
         }
     ]
     return questions
