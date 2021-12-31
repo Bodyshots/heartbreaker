@@ -489,7 +489,7 @@ def amogus_confused(person: Character) -> int:
     return pathetic(person)
 
 def pretty_cool_q37(person: Character) -> int:
-    print("That\'s two words, idiot\n")
+    print("That\'s two words, idiot.")
     if person.true_pers in (NORMAL, ACTIVE):
         print("Regardless, ", end="")
         if person.true_pers == NORMAL:

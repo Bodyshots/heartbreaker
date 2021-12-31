@@ -125,7 +125,7 @@ def questions(person: Character) -> List[Dict]:
              'Answers': {'A': 'Punch him before he gets the first blow.'
                               ' Then, proceed to beat him up',
                          'B': '"You dated her???"',
-                         'C': '"Don\'t worry, we\'re really just friends"',
+                         'C': '"Don\'t worry, we\'re really just friends',
                          'D': 'Cry'}
         },
         {
@@ -280,7 +280,7 @@ def questions(person: Character) -> List[Dict]:
         },
         {
             'Question 25':  f'{person.first_name} tells you to spell'\
-                             '"ICUP".',
+                             ' "ICUP".',
             'Answers': {'A': '"Seriously?"',
                         'B': 'Spell it out',
                         'C': '"How do you spell it?"',

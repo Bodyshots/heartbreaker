@@ -560,7 +560,7 @@ def item_effect(decision: str, confidence: int, diff: str) -> int:
         select_SE.play()
         return confidence
 
-    amt_gain = conf_gain_adj(amt_gain)
+    amt_gain = conf_gain_adj(amt_gain, diff)
 
     confidence_gain_lost(amt_gain), clear_term()
     return min(confidence, 100)
