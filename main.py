@@ -82,7 +82,7 @@ def main_game() -> None:
 
             elif menu_choice.upper() == OPTION_D:
                 music_loop(OPTIONS_MUSIC, 1000, 100, 0.0)
-                options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
+                options = (OPTION_A, OPTION_B, OPTION_C)
                 menu_choice = prompt_select(options_prompt(), options).upper()
                 clear_term()
                 while menu_choice.upper() in (OPTION_A, OPTION_B):
@@ -255,7 +255,7 @@ def battle(person: Character, diff: str) -> None:
                     select_SE.play()
             elif turns <= 0:
                 game_over_win(confidence, diff)
-                msg = 'Do you want to play again?'
+                msg = 'Play again?'
                 select_SE.play()
                 decision = prompt_select(yes_no_prompt(msg), yes_no).upper()
                 if decision == YES:
@@ -334,7 +334,7 @@ def game_over_lose() -> str:
 
     message = 'You became so unconfident that you ran away from the'\
               ' restaurant.\n\nlmao what a wimp\n\n'\
-              'Want to play again?'
+              'Play again?'
 
     return prompt_select(yes_no_prompt(message), (YES, NO)).upper()
 
@@ -555,12 +555,14 @@ def item_effect(decision: str, confidence: int, diff: str) -> int:
                   ' date doesn\'t seem very impressed...')
         elif amt_gain > 0:
             print('It is absolutely motionless upon impact. Impressive!')
-
+    
     elif decision.upper() == OPTION_D:
         select_SE.play()
         return confidence
 
-    confidence_gain_lost(amt_gain, diff), clear_term()
+    amt_gain = conf_gain_adj(amt_gain)
+
+    confidence_gain_lost(amt_gain), clear_term()
     return min(confidence, 100)
 
 
@@ -574,8 +576,8 @@ def quest_result(decision: str, person: Character, confidence: int,
     the player's <diff> difficulty.
 
     """
-    amt_gain = person.reactions().get(question_num).get(decision.upper())(person)
-    confidence_gain_lost(amt_gain, diff)
+    amt_gain = conf_gain_adj(person.reactions().get(question_num).get(decision.upper())(person), diff)
+    confidence_gain_lost(amt_gain)
     return min(amt_gain + confidence, 100)
 
 def quest_side_effects(cologne_use: int, question_num: int, 
@@ -588,13 +590,12 @@ def quest_side_effects(cologne_use: int, question_num: int,
     return cologne_use
     
 
-def confidence_gain_lost(amt_gain: int, diff: str) -> None:
+def confidence_gain_lost(amt_gain: int) -> None:
     """
     Print how much confidence the user has gained or lost, as determined
     by <amt_gain>.
 
     """
-    amt_gain = conf_gain_adj(amt_gain, diff)
 
     if amt_gain > 0:
         if amt_gain > 15:

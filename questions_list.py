@@ -1,12 +1,11 @@
 """ Module for all questions """
 
-from random import choice, randint
+from random import choice
 from typing import List, Dict
-from reactions import Character, choke_pos
+from character_classes import person_creator
+from reactions import Character
 from file_init import (first_names_lst, last_names_lst, personalities_dict, 
                        file_lst_return)
-import doctest
-import os
 
 def questions(person: Character) -> List[Dict]:
     """ 
@@ -20,8 +19,10 @@ def questions(person: Character) -> List[Dict]:
     chosen_console = choice(file_lst_return('consoles'))
 
     rand_prof1, rand_prof2 = '', ''
-    while rand_prof1 == person.prof: rand_prof1 = Character.rand_prof()
-    while rand_prof2 == person.prof: rand_prof2 = Character.rand_prof()
+    while rand_prof1 == person.prof or rand_prof1 == '': 
+        rand_prof1 = person.rand_prof()[:-1]
+    while rand_prof2 == person.prof or rand_prof2 == '':
+        rand_prof2 = person.rand_prof()[:-1]
 
     rand_pers1, rand_pers2 = '', ''
     personalities = personalities_dict()
@@ -516,3 +517,7 @@ def questions(person: Character) -> List[Dict]:
         }
     ]
     return questions
+
+if __name__ == '__main__':
+    from character_classes import person_creator
+    questions(person_creator())

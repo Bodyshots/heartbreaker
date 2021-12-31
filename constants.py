@@ -109,7 +109,7 @@ gunshot_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshots - LittleRobotSoundFacto
 MENU_MUSIC = MUSIC_PATH + '\past_never_come_back.wav'
 OPTIONS_MUSIC = MUSIC_PATH + r'\blue_intermission.wav'
 CREDITS_MUSIC = MUSIC_PATH + r'\my_street.wav'
-RESULTS_MUSIC = MUSIC_PATH + r'\results.mp3'
+RESULTS_MUSIC = MUSIC_PATH + r'\results.wav'
 GAME_OVER_MUSIC = MUSIC_PATH + '\merrily_strolling.wav'
 
 BATTLE_MUSIC_LST = []
