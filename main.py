@@ -11,9 +11,9 @@ from random import choice, randint, shuffle
 from typing import List, Tuple, Union, Dict, Callable, Optional
 from character_classes import (Character, NormalCharacter, ActiveCharacter,
                                ObjectiveCharacter, NegativeCharacter,
-                               person_creator)
+                               person_creator, rand_nam, rand_pers, specific_person_creator)
 from constants import (BATTLE_MUSIC_INTROS_PATH, EASY_TURNS, GAME_OVER_MUSIC, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, MUSIC_END, NORM_CONF, 
-                       OPTION_A, OPTION_B, OPTION_C, OPTION_D, RUN, ITEM, INFO,
+                       OPTION_A, OPTION_B, OPTION_C, OPTION_D, PASSWORD, RUN, ITEM, INFO,
                        SMALL_NEG, SMALL_POS,
                        TALK, USAGE_DEC, COLOGNE_LOWER, COLOGNE_HIGHER,
                        WASHROOM_LOWER, WASHROOM_HIGHER, SHOW_OFF_LOWER,
@@ -25,9 +25,9 @@ from constants import (BATTLE_MUSIC_INTROS_PATH, EASY_TURNS, GAME_OVER_MUSIC, HA
                        NORM_CONF, N_COLOGNE_AMT, N_WSHROOM_AMT, HARD_TURNS,
                        HARD_CONF, H_COLOGNE_AMT, H_WSHROOM_AMT, DIF_EASY,
                        DIF_NORM, DIF_HARD, MENU_MUSIC, JINGLE_PATH, OPTIONS_MUSIC,
-                       CREDITS_MUSIC, BATTLE_MUSIC_LST, RESULTS_MUSIC, GAME_OVER_MUSIC, BATTLE_MUSIC_PATH)
+                       CREDITS_MUSIC, BATTLE_MUSIC_LST, RESULTS_MUSIC, GAME_OVER_MUSIC, BATTLE_MUSIC_PATH, PASSWORD)
 from questions_list import questions
-from prompts import (decision_prompt, diff_prompt, menu_prompt, item_prompt, music_select_prompt, options_prompt,
+from prompts import (confirm_character, decision_prompt, diff_prompt, enter_password_prompt, menu_prompt, item_prompt, music_select_prompt, name_select, options_prompt, select_personality_prompt, select_play_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
                      question_format, sound_lvl_prompt, instructions_prompt,
                      story_prompt, information_prompt)
@@ -69,8 +69,19 @@ def main_game() -> None:
             select_SE.play(), clear_term()
 
             if menu_choice.upper() == OPTION_A:
-                person = person_creator()
-                battle(person, diff)
+                options = (OPTION_A, OPTION_B, OPTION_C)
+                menu_choice = prompt_select(select_play_prompt(), options).upper()
+                clear_term()
+                if menu_choice == OPTION_A:
+                    battle(person_creator())
+                elif menu_choice == OPTION_B:
+                    chosen_character = select_character()
+                    if isinstance(chosen_character, Character):
+                        options = (OPTION_A, OPTION_B)
+                        menu_choice = prompt_select(confirm_character(chosen_character), 
+                                                    options)
+                        if menu_choice == OPTION_A:
+                            battle(chosen_character)
             
             elif menu_choice.upper() == OPTION_B:
                 prompt_select(story_prompt(), OPTION_A)
@@ -119,6 +130,29 @@ def main_game() -> None:
 
             menu_choice = prompt_select(menu_prompt(), menu_options).upper()
 
+def select_character() -> Union[Character, str]:
+    options = (OPTION_A, PASSWORD)
+    msg = "Incorrect password, try again."
+    menu_choice = prompt_select(enter_password_prompt(), options, msg)
+    if menu_choice == "A": return menu_choice
+    else:
+        options = (OPTION_A, OPTION_B)
+        menu_choice = prompt_select(name_select(), options)
+        if menu_choice == OPTION_A:
+            clear_term()
+            first_name = input("Enter the Character\'s first name: ").strip()
+            clear_term()
+            last_name = input("Enter the Character\'s last name: ").strip()
+            name = first_name + " " + last_name
+        else: name = rand_nam()
+        options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D, OPTION_E)
+        menu_choice = prompt_select(select_personality_prompt(), options).upper()
+        if menu_choice == OPTION_A: return specific_person_creator(NORMAL, name)
+        elif menu_choice == OPTION_B: return specific_person_creator(ACTIVE, name)
+        elif menu_choice == OPTION_C: return specific_person_creator(NEGATIVE, name)
+        elif menu_choice == OPTION_D: return specific_person_creator(OBJECTIVE, name)
+        else: return specific_person_creator(rand_pers()[0], name)
+
 
 def vol_change(volume: float, prompt: Callable[[float], str]) -> float:
     """
@@ -145,10 +179,10 @@ def vol_change(volume: float, prompt: Callable[[float], str]) -> float:
     return vol_choice
 
 
-def battle(person: Character, diff: str) -> None:
+def battle(person: Character) -> None:
     """
     Begins the actual game, featuring the user 'battling' against
-    <person> with <diff>.
+    <person>.
 
     """
 
@@ -365,11 +399,14 @@ def game_over_win(confidence: int, diff: str) -> None:
     pg.mixer.music.unload()
     nums = win_results_music(confidence)
     pg.mixer.music.load(JINGLE_PATH + r'\{}.wav'.format(nums[0]))
-    pg.mixer.music.play()
-    
+    pg.mixer.music.play(), clear_term()
+
     while user_dec != 'a':
-        user_dec = input(win_results_text(nums[1]) + 'Enter in "a"'\
-                                                     ' to continue\n').lower()
+        ending_text = win_results_text(nums[1])
+        if diff == DIF_HARD and confidence > 80:
+            ending_text += f"Select mode unlocked! Password: \"{PASSWORD}\"\n\n"
+        ending_text += 'Enter in "a"'' to continue\n'
+        user_dec = input(ending_text).lower()
         clear_term()
 
 
@@ -423,32 +460,32 @@ def win_results_text(conf_key: int) -> str:
     Return a string based what <conf_key> matches.
 
     >>> win_results_text(80).strip()
-    'Impressive! I might even consider another date with him in the future!'
+    '\"Impressive! I might even consider another date with him in the future!\"'
     >>> win_results_text(20).strip()
-    'Who matched us to date? That was terrible!'
+    '\"Who matched us to date? That was terrible!\"'
     >>> win_results_text(30).strip()
-    'A waste of my time, though I am thankful for the free dinner.'
+    '\"A waste of my time, though I am thankful for the free dinner.\"'
     >>> win_results_text(34).strip()
     ''
 
     """
     
-    conf_states = {90: 'Absolutely amazing! He\'s charming, dashing,'\
+    conf_states = {90: '\"Absolutely amazing! He\'s charming, dashing,'\
                        ' and definitely my type!'\
-                       '\nSo handsome, when\'s our next date?',
-                   80: 'Impressive! I might even consider another date with '\
-                       'him in the future!',
-                   70: 'A great partner! It\'s nice to find a man that'\
-                       ' shares my interests.',
-                   60: 'He\'s much better than the previous men I\'ve dated, '\
-                       'I\'ll tell you that much...',
-                   40: 'It wasn\'t the best date I\'ve ever had, but it was'\
-                       ' far from the worst.',
-                   30: 'A waste of my time, though I am thankful for the free'\
-                       ' dinner.',
-                   20: 'Who matched us to date? That was terrible!',
-                    0: 'Awful. He was unbearably atrocious. Who knew that such'\
-                       ' an absolute and INSANE buffoon ever existed...'}
+                       '\nSo handsome, when\'s our next date?\"',
+                   80: '\"Impressive! I might even consider another date with '\
+                       'him in the future!\"',
+                   70: '\"A great partner! It\'s nice to find a man that'\
+                       ' shares my interests.\"',
+                   60: '\"He\'s much better than the previous men I\'ve dated, '\
+                       'I\'ll tell you that much...\"',
+                   40: '\"It wasn\'t the best date I\'ve ever had, but it was'\
+                       ' far from the worst.\"',
+                   30: '\"A waste of my time, though I am thankful for the free'\
+                       ' dinner.\"',
+                   20: '\"Who matched us to date? That was terrible!\"',
+                    0: '\"Awful. He was unbearably atrocious. Who knew that such'\
+                       ' an absolute and INSANE buffoon ever existed...\"'}
 
     if not conf_states.get(conf_key):
         return 'Error 1: Missing confidence dialogue'

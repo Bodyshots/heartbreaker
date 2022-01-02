@@ -12,7 +12,7 @@ from reactions import (Character, amogus_confused, atrocity_no, atrocity_yes, aw
                        event_robbery_D, math_question, cope, ignore_chair, switch_chair_date)
 from constants import (OPTION_A, OPTION_B, OPTION_C, OPTION_D, NORMAL,
                        OBJECTIVE, ACTIVE, NEGATIVE)
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 from random import choice
 from file_init import first_names_lst, last_names_lst, personalities_dict
 
@@ -942,6 +942,18 @@ def person_creator() -> Character:
     profile = character_dict.get(behaviour[0])(rand_nam(), behaviour[0],
                                                behaviour[1])
     return profile
+
+def specific_person_creator(personality: str, name: str) -> Character:
+     character_dict = {NORMAL: NormalCharacter,
+                       NEGATIVE: NegativeCharacter,
+                       ACTIVE: ActiveCharacter,
+                       OBJECTIVE: ObjectiveCharacter}
+     return character_dict.get(personality)(name, personality, 
+                                            specific_pers(personality)[1])
+
+def specific_pers(personality: str) -> Optional[Tuple[str, str]]:
+     personalities = personalities_dict()
+     return personality, choice(personalities.get(personality))
 
 def rand_nam() -> str:
     """

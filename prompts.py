@@ -164,7 +164,7 @@ def instructions_prompt() -> str:
              ' Show off wisely!\n\nInfo and Run are a bit self-explanatory:'\
              '\n\n3. Info gives you the person\'s name and '\
              'personality.\n\n4. Run ends the game prematurely '\
-             '(using it results in a loss).\n\nGood Luck!\n\n'\
+             '(resulting in a loss).\n\nGood Luck!\n\n'\
              f'[{OPTION_A}] - Back'
     return prompt
 
@@ -225,6 +225,43 @@ def jukebox_prompt(song: str) -> str:
 def music_select_prompt(song: str) -> str:
     prompt = f'Select a song:\n{song}\n\n'\
              f'[{OPTION_A}] - Select\n'\
-             f'[{OPTION_B}] - Next\n'\
-             f'[{OPTION_C}] - Back\n\n'
+             f'[{OPTION_B}] - Next song\n'\
+             f'[{OPTION_C}] - Previous song\n'
+    return prompt
+
+def select_play_prompt() -> str:
+    prompt = f"Select a mode:\n\n"\
+             f'[{OPTION_A}] - Random\n'\
+             f'[{OPTION_B}] - Select Character (requires password)\n'\
+             f'[{OPTION_C}] - Back\n'
+    return prompt
+
+def enter_password_prompt() -> str:
+    prompt = "Enter the password (obtained by completing random mode"\
+             "on Weeb mode with a confidence of 80 or higher)\n"\
+             "Alternatively, enter \"A\" to go back to the select screen.\n\n"\
+             "Password: "
+    return prompt
+
+def select_personality_prompt() -> str:
+    prompt = f"Select a personality type:\n\n"\
+             f'[{OPTION_A}] - Normal\n'\
+             f'[{OPTION_B}] - Active\n'\
+             f'[{OPTION_C}] - Negative\n'\
+             f'[{OPTION_D}] - Objective\n'\
+             f'[{OPTION_E}] - Random\n'
+    return prompt
+
+def name_select() -> str:
+    prompt = f"Give a name for this character:\n"\
+             f'[{OPTION_A}] - Manually\n'\
+             f'[{OPTION_B}] - Randomly\n'
+    return prompt
+
+def confirm_character(person: Character) -> str:
+    prompt = f"Your character is:\n{person}\n"\
+             f"True personality: {person.true_pers}\n"\
+             f"Continue?\n"\
+             f'[{OPTION_A}] - Yes\n'\
+             f'[{OPTION_B}] - No'
     return prompt

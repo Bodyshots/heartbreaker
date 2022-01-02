@@ -472,7 +472,7 @@ def based_confused(person: Character) -> int:
 
 def reference_get_norm_act(person: Character) -> int:
     print(f"Unfortunately, {person.first_name} doesn\'t really get the reference.")
-    return confusion(person)
+    return randint(MED_NEG, SMALL_NEG)
 
 def strawberry_clock_confused(person: Character) -> int:
     print("Jesus Christ, you\'re old.")

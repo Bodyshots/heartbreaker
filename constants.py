@@ -18,16 +18,16 @@ OPTION_F = 'F'
 OPTION_G = 'G'
 
 # Turn Amounts
-EASY_TURNS = 15
-NORM_TURNS = 12
-HARD_TURNS = 8
+EASY_TURNS = 20
+NORM_TURNS = 15
+HARD_TURNS = 10
 
 # Confidence Amounts
 EASY_CONF = 100
 NORM_CONF = 50
 HARD_CONF = 25
 
-# Difficulties (default is DIF_NORM)
+# Difficulties
 DIF_EASY = 'Gigachad'
 DIF_NORM = 'Normie'
 DIF_HARD = 'Weeb'
@@ -40,6 +40,7 @@ INFO = 'N'
 TALK = 'T'
 YES = 'Y'
 NO = 'N'
+PASSWORD = 'What a Weebachad'
 
 ### Item Usage and Lower Bounds and Higher Bounds for Items
 

@@ -98,14 +98,15 @@ def clear_term() -> None:
         print("\033c", end="")
 
 
-def _decision_select(prompt: str, options: tuple) -> str:
+def _decision_select(prompt: str, options: tuple, msg: str) -> str:
     clear_term()
     prompt += '\n'
     decision = input(prompt)
+    if decision in options: return decision
     while (decision.strip().upper() not in options or
            decision.strip().upper() == ''):
         invalid_SE.play(), clear_term()
-        decision = input(f'Invalid choice\n{prompt}')
+        decision = input(f'{msg}\n{prompt}')
     return decision.strip().upper()
 
 
@@ -115,7 +116,7 @@ def q_prompt_select(prompt: str, options: tuple, question_q_and_a):
         input('Error 2: answers is None\n')
         exit()
 
-    decision = _decision_select(prompt, options).upper()
+    decision = prompt_select(prompt, options).upper()
     decision_index = prompt.index(f'[{decision}]')
     if prompt[decision_index:].find('\n') == -1:
         selected_ans = prompt[decision_index:]
@@ -131,7 +132,7 @@ def q_prompt_select(prompt: str, options: tuple, question_q_and_a):
     exit()
 
 
-def prompt_select(prompt: str, options: tuple) -> str:
+def prompt_select(prompt: str, options: tuple, msg="Invalid choice") -> str:
     """ 
     Repeatedly ask the user for a decision, according to <prompt>, until one of
     the determined <options> are received from the user.
@@ -139,4 +140,4 @@ def prompt_select(prompt: str, options: tuple) -> str:
     Return the user's input with leading and trailing whitespace removed.
 
     """
-    return _decision_select(prompt, options)
+    return _decision_select(prompt, options, msg)
