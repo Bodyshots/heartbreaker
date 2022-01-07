@@ -1,6 +1,6 @@
 import pygame as pg
 import os
-from os.path import abspath
+from os.path import abspath, isfile
 
 pg.init()
 
@@ -20,12 +20,12 @@ OPTION_G = 'G'
 # Turn Amounts
 EASY_TURNS = 20
 NORM_TURNS = 15
-HARD_TURNS = 10
+HARD_TURNS = 0
 
 # Confidence Amounts
 EASY_CONF = 100
 NORM_CONF = 50
-HARD_CONF = 25
+HARD_CONF = 100
 
 # Difficulties
 DIF_EASY = 'Gigachad'
@@ -92,31 +92,44 @@ BATTLE_MUSIC_INTROS_PATH = BATTLE_MUSIC_PATH + r'\starters'
 JINGLE_PATH = r'Sounds\Music\Jingles'
 
 ## Sound Effects
-conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_down - JavierZumer.wav'))
-conf_gain_small_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain_small - Komit.wav'))
-conf_gain_big_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain_big - Komit.wav'))
-slap_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slap - LittleRobotFactory.wav')) # needs to be done
-invalid_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_1 - Breviceps.wav'))
-invalid_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_2 - sgtpepperarc360.wav'))
-slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slam - LittleRobotSoundFactory.wav'))
-select_SE = pg.mixer.Sound(abspath(r'Sounds\SE\select - bfxr.wav'))
-run_SE = pg.mixer.Sound(abspath(r'Sounds\SE\run - Jofae.wav'))
-info_SE = pg.mixer.Sound(abspath(r'Sounds\SE\menu_1 - LittleRobotSoundFactory.wav'))
-fight_SE = pg.mixer.Sound(abspath(r'Sounds\SE\fight - LittleRobotSoundFactory.wav'))
-drum_roll_SE = pg.mixer.Sound(abspath(r'Sounds\SE\drum_roll - LittleRobotSoundFactory.wav'))
-gunshot_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshots - LittleRobotSoundFactory.wav'))
+conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_down.wav'))
+conf_gain_small_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain_small.wav'))
+conf_gain_big_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_gain_big.wav'))
+slap_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slap.wav')) 
+invalid_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_1.wav'))
+invalid_2_SE = pg.mixer.Sound(abspath(r'Sounds\SE\invalid_2.wav'))
+slam_SE = pg.mixer.Sound(abspath(r'Sounds\SE\slam.wav'))
+select_SE = pg.mixer.Sound(abspath(r'Sounds\SE\select.wav'))
+# mine, 
+# https://sfxr.me/#34T6Pm17mG7E5zsjYtk4fB9fptUZXL4pjq4zJk98BGwo5jU3wf3WkbV5wTiwSxuGEcRMkxT8NV3MDARFJFTNMJNURzZhzBC9tvmyGTdTBTv7QZyjHx1gpawLb
+run_SE = pg.mixer.Sound(abspath(r'Sounds\SE\run.wav'))
+info_SE = pg.mixer.Sound(abspath(r'Sounds\SE\menu_1.wav'))
+fight_SE = pg.mixer.Sound(abspath(r'Sounds\SE\fight.wav'))
+drum_roll_SE = pg.mixer.Sound(abspath(r'Sounds\SE\drum_roll.wav'))
+gunshot_SE = pg.mixer.Sound(abspath(r'Sounds\SE\gunshots.wav'))
 
 ## Music
-MENU_MUSIC = MUSIC_PATH + '\past_never_come_back.wav'
-OPTIONS_MUSIC = MUSIC_PATH + r'\blue_intermission.wav'
-CREDITS_MUSIC = MUSIC_PATH + r'\my_street.wav'
-RESULTS_MUSIC = MUSIC_PATH + r'\results.wav'
-GAME_OVER_MUSIC = MUSIC_PATH + '\merrily_strolling.wav'
+MENU_MUSIC = MUSIC_PATH + r'\Past Never Come Back.wav'
+OPTIONS_MUSIC = MUSIC_PATH + r'\Blue Intermission.wav'
+CREDITS_MUSIC = MUSIC_PATH + r'\My Street.wav'
+RESULTS_MUSIC = JINGLE_PATH + r'\results.wav'
+GAME_OVER_MUSIC = MUSIC_PATH + r'\Merrily Strolling.wav'
 
 BATTLE_MUSIC_LST = []
+BATTLE_MUSIC_FULL_NMES = []
 directory_items = os.listdir(abspath(BATTLE_MUSIC_PATH))
 for item in directory_items:
-    if item.endswith(".wav"): BATTLE_MUSIC_LST.append(item[:-4])
+    if isfile(os.path.join(abspath(BATTLE_MUSIC_PATH), item)): 
+        BATTLE_MUSIC_LST.append(item[:item.rindex('.')])
+        BATTLE_MUSIC_FULL_NMES.append(item)
+
+BATTLE_MUSIC_INTRO_LST = []
+BATTLE_MUSIC_INTRO_FULL_NMES = []
+directory_items = os.listdir(abspath(BATTLE_MUSIC_INTROS_PATH))
+for item in directory_items:
+    if isfile(os.path.join(abspath(BATTLE_MUSIC_INTROS_PATH), item)): 
+        BATTLE_MUSIC_INTRO_LST.append(item[:item.rindex('.') - 6])
+        BATTLE_MUSIC_INTRO_FULL_NMES.append(item)
 
 # Making all sounds have a consistent volume of around 0.5
 

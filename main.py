@@ -25,7 +25,8 @@ from constants import (BATTLE_MUSIC_INTROS_PATH, EASY_TURNS, GAME_OVER_MUSIC, HA
                        NORM_CONF, N_COLOGNE_AMT, N_WSHROOM_AMT, HARD_TURNS,
                        HARD_CONF, H_COLOGNE_AMT, H_WSHROOM_AMT, DIF_EASY,
                        DIF_NORM, DIF_HARD, MENU_MUSIC, JINGLE_PATH, OPTIONS_MUSIC,
-                       CREDITS_MUSIC, BATTLE_MUSIC_LST, RESULTS_MUSIC, GAME_OVER_MUSIC, BATTLE_MUSIC_PATH, PASSWORD)
+                       CREDITS_MUSIC, BATTLE_MUSIC_LST, RESULTS_MUSIC, GAME_OVER_MUSIC, BATTLE_MUSIC_PATH, 
+                       PASSWORD, BATTLE_MUSIC_FULL_NMES, BATTLE_MUSIC_INTRO_LST, BATTLE_MUSIC_INTRO_FULL_NMES)
 from questions_list import questions
 from prompts import (confirm_character, decision_prompt, diff_prompt, enter_password_prompt, menu_prompt, item_prompt, music_select_prompt, name_select, options_prompt, select_personality_prompt, select_play_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
@@ -77,11 +78,14 @@ def main_game() -> None:
                 elif menu_choice == OPTION_B:
                     chosen_character = select_character()
                     if isinstance(chosen_character, Character):
-                        options = (OPTION_A, OPTION_B)
-                        menu_choice = prompt_select(confirm_character(chosen_character), 
-                                                    options)
-                        if menu_choice == OPTION_A:
+                        yes_no = (YES, NO)
+                        select_SE.play()
+                        menu_choice = prompt_select(yes_no_prompt(confirm_character(chosen_character)), 
+                                                    yes_no)
+                        if menu_choice == YES:
                             battle(chosen_character)
+                        select_SE.play()
+                select_SE.play()
             
             elif menu_choice.upper() == OPTION_B:
                 prompt_select(story_prompt(), OPTION_A)
@@ -122,7 +126,7 @@ def main_game() -> None:
                 menu_choice = prompt_select(yes_no_prompt('Are you sure you want to quit?'),
                                             (YES, NO)).upper()
                 if menu_choice == YES:
-                    clear_term()
+                    select_SE.play(), clear_term()
                     print('Quitting...')
                     exit()
 
@@ -133,19 +137,22 @@ def main_game() -> None:
 def select_character() -> Union[Character, str]:
     options = (OPTION_A, PASSWORD)
     msg = "Incorrect password, try again."
+    select_SE.play()
     menu_choice = prompt_select(enter_password_prompt(), options, msg)
+    select_SE.play()
     if menu_choice == "A": return menu_choice
     else:
         options = (OPTION_A, OPTION_B)
         menu_choice = prompt_select(name_select(), options)
         if menu_choice == OPTION_A:
-            clear_term()
+            select_SE.play(), clear_term()
             first_name = input("Enter the Character\'s first name: ").strip()
-            clear_term()
+            select_SE.play(), clear_term()
             last_name = input("Enter the Character\'s last name: ").strip()
             name = first_name + " " + last_name
         else: name = rand_nam()
         options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D, OPTION_E)
+        select_SE.play()
         menu_choice = prompt_select(select_personality_prompt(), options).upper()
         if menu_choice == OPTION_A: return specific_person_creator(NORMAL, name)
         elif menu_choice == OPTION_B: return specific_person_creator(ACTIVE, name)
@@ -188,7 +195,7 @@ def battle(person: Character) -> None:
 
     while True:
         select_SE.play(), clear_term()
-        battle_track_loc, battle_track = music_select(BATTLE_MUSIC_LST)
+        battle_track_loc, battle_track = music_select(BATTLE_MUSIC_LST, BATTLE_MUSIC_FULL_NMES)
         diff = diff_select()
 
         confidence, turns = NORM_CONF, NORM_TURNS
@@ -206,11 +213,11 @@ def battle(person: Character) -> None:
         cologne_use, bath_use, slap_use = False, False, 0
 
         input(f'You are dating:\n{person}\nEnter any button to continue.\n')
-        intro_items = os.listdir(os.path.abspath(BATTLE_MUSIC_INTROS_PATH))
-        if f'{battle_track}_intro.wav' in intro_items:
+        if battle_track in BATTLE_MUSIC_INTRO_LST:
+            int_i = BATTLE_MUSIC_INTRO_LST.index(battle_track)
             pg.mixer.music.fadeout(1000)
             pg.mixer.music.unload()
-            pg.mixer.music.load(BATTLE_MUSIC_INTROS_PATH + f'\{battle_track}_intro.wav')
+            pg.mixer.music.load(BATTLE_MUSIC_INTROS_PATH + f'\{BATTLE_MUSIC_INTRO_FULL_NMES[int_i]}')
             pg.mixer.music.play(0)
             pg.mixer.music.queue(battle_track_loc, loops=-1)
         else:
@@ -306,12 +313,12 @@ def diff_select() -> str:
     diff_choice, options = '', (OPTION_A, OPTION_B, OPTION_C)
     select_SE.play()
     diff_choice = prompt_select(diff_prompt(), options)
-    select_SE.play(), clear_term()
+    clear_term(), info_SE.play()
     if diff_choice.upper() == OPTION_A: return DIF_EASY
     elif diff_choice.upper() == OPTION_B: return DIF_NORM
     return DIF_HARD
 
-def music_select(music_lst: List[str]) -> Optional[str]:
+def music_select(music_lst: List[str], music_full_nme: List[str]) -> Optional[str]:
     if len(music_lst) < 0:
         return
 
@@ -319,16 +326,18 @@ def music_select(music_lst: List[str]) -> Optional[str]:
     options = (OPTION_A, OPTION_B, OPTION_C)
     while True:
         clear_term()
-        music_loop(BATTLE_MUSIC_PATH + f'\{music_lst[i]}.wav', 0, 100, 0)
+        music_loop(BATTLE_MUSIC_PATH + f'\{music_full_nme[i]}', 0, 100, 0)
         select_choice = prompt_select(music_select_prompt(music_lst[i]), options)
         if select_choice == OPTION_A:
-            info_SE.play(), clear_term()
-            battle_track_loc, battle_track = BATTLE_MUSIC_PATH + f'\{music_lst[i]}.wav', music_lst[i]
+            clear_term()
+            battle_track_loc, battle_track = BATTLE_MUSIC_PATH + f'\{music_full_nme[i]}', music_lst[i]
             return battle_track_loc, battle_track
         elif select_choice == OPTION_B:
+            select_SE.play()
             if i != len(music_lst) - 1: i += 1
             else: i = 0
         else:
+            select_SE.play()
             if i != 0: i -= 1
             else: i = len(music_lst) - 1
 

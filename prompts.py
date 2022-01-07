@@ -261,7 +261,5 @@ def name_select() -> str:
 def confirm_character(person: Character) -> str:
     prompt = f"Your character is:\n{person}\n"\
              f"True personality: {person.true_pers}\n"\
-             f"Continue?\n"\
-             f'[{OPTION_A}] - Yes\n'\
-             f'[{OPTION_B}] - No'
+             f"Continue?\n"
     return prompt
