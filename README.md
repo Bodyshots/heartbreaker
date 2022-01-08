@@ -15,10 +15,10 @@ Apparently, it's to keep the whole occasion a "surprise."
 By only knowing your date's personality, it seems that you'll just have to survive the events that unfold in a proper and gentlemanlike manner.
 
 ### Features
-- 20 questions (so far) that each have 4 responses (4 * 20 = 80 unique responses)!
+- 53 questions (so far) that each have 4 responses (4 * 53 = 212 possible responses)!
 - 4 different personalities that your date can take on, each responding differently to how you act in certain questions!
 - Maintain your confidence throughout the date by answering questions "correctly" and by using various items!
-- Answer 10 randomly selected questions involving your date in order to win! Depending on how well you do can determine how your date thinks of you overall.
+- Answer a set amount of randomly selected questions in order to win! How well you do determines how your date thinks of you overall.
 - Sweet gamer music!
 
 # There are 2 ways to play/access this game
