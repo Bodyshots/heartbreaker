@@ -767,7 +767,7 @@ def ignore_chair(person: Character) -> int:
 def switch_chair_date(person: Character) -> int:
     print("You explain your situation to your date.\n")
     if person.true_pers == ACTIVE: 
-        print("Surprisingly, your date agrees and admires your"\
+        print("Surprisingly, your date obliges and admires your"\
               " courage for asking!")
         return randint(SMALL_POS, MED_POS)
     print("Your date refuses to switch chairs with you.")
@@ -791,7 +791,7 @@ def look_officer(person: Character) -> int:
     return unimpressed(person)
 
 def ignore_clamp(person: Character) -> int:
-    print("Getting that clamp off\'s gonna cost a lot of money...")
+    print("Getting that clamp off is gonna cost a lot of money...")
     return randint(LARGE_NEG, MED_NEG)
 
 def try_clamp_off(person: Character) -> int:

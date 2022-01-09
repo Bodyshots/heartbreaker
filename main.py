@@ -85,7 +85,10 @@ def main_game() -> None:
                         if menu_choice == YES:
                             battle(chosen_character)
                         select_SE.play()
-                select_SE.play()
+                    else:
+                        select_SE.play()
+                else:
+                    select_SE.play()
             
             elif menu_choice.upper() == OPTION_B:
                 prompt_select(story_prompt(), OPTION_A)
@@ -139,7 +142,6 @@ def select_character() -> Union[Character, str]:
     msg = "Incorrect password, try again."
     select_SE.play()
     menu_choice = prompt_select(enter_password_prompt(), options, msg)
-    select_SE.play()
     if menu_choice == "A": return menu_choice
     else:
         options = (OPTION_A, OPTION_B)
@@ -303,6 +305,7 @@ def battle(person: Character) -> None:
                     person, decision = person_creator(), ''
                 else:
                     select_SE.play()
+                    music_loop(MENU_MUSIC, 1000, 500, 0.0)
                     return
 
             if decision != '':
@@ -404,14 +407,13 @@ def game_over_win(confidence: int, diff: str) -> None:
     input(f'You have survived all {turn_amt} turns as a {diff}!\n')
     select_SE.play()
     input('However, how does your date feel?\n'), clear_term()
-    print('Your date says...'), drum_roll_SE.play(), sleep(4.5)
+    print('Your date says...'), drum_roll_SE.play(), sleep(3.2)
     pg.mixer.music.unload()
     nums = win_results_music(confidence)
     pg.mixer.music.load(JINGLE_PATH + r'\{}.wav'.format(nums[0]))
     pg.mixer.music.play(), clear_term()
-
     while user_dec != 'a':
-        ending_text = win_results_text(nums[1])
+        ending_text = win_results_text(nums[1]) + f'Your confidence was {confidence}%!' + '\n' * 2
         if diff == DIF_HARD and confidence > 80:
             ending_text += f"Select mode unlocked! Password: \"{PASSWORD}\"\n\n"
         ending_text += 'Enter in "a"'' to continue\n'

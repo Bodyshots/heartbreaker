@@ -1,8 +1,19 @@
 import pygame as pg
 import os
-from os.path import abspath, isfile
+from os.path import abspath, join
 
 pg.init()
+
+def _music_file_checker(file: str) -> bool:
+    """
+    Return True if <file> is a playable music file for Pygame.
+    Return False otherwise.
+    """
+    try:
+        pg.mixer.music.load(file)
+    except pg.error:
+        return False
+    return True
 
 # Pygame Events
 MUSIC_END = pg.USEREVENT + 1
@@ -115,19 +126,19 @@ CREDITS_MUSIC = MUSIC_PATH + r'\My Street.wav'
 RESULTS_MUSIC = JINGLE_PATH + r'\results.wav'
 GAME_OVER_MUSIC = MUSIC_PATH + r'\Merrily Strolling.wav'
 
-BATTLE_MUSIC_LST = []
-BATTLE_MUSIC_FULL_NMES = []
+BATTLE_MUSIC_LST, BATTLE_MUSIC_FULL_NMES = [], []
 directory_items = os.listdir(abspath(BATTLE_MUSIC_PATH))
 for item in directory_items:
-    if isfile(os.path.join(abspath(BATTLE_MUSIC_PATH), item)): 
+    item_path = join(abspath(BATTLE_MUSIC_PATH), item)
+    if _music_file_checker(item_path): 
         BATTLE_MUSIC_LST.append(item[:item.rindex('.')])
         BATTLE_MUSIC_FULL_NMES.append(item)
 
-BATTLE_MUSIC_INTRO_LST = []
-BATTLE_MUSIC_INTRO_FULL_NMES = []
+BATTLE_MUSIC_INTRO_LST, BATTLE_MUSIC_INTRO_FULL_NMES = [], []
 directory_items = os.listdir(abspath(BATTLE_MUSIC_INTROS_PATH))
 for item in directory_items:
-    if isfile(os.path.join(abspath(BATTLE_MUSIC_INTROS_PATH), item)): 
+    item_path = join(abspath(BATTLE_MUSIC_INTROS_PATH), item)
+    if _music_file_checker(item_path): 
         BATTLE_MUSIC_INTRO_LST.append(item[:item.rindex('.') - 6])
         BATTLE_MUSIC_INTRO_FULL_NMES.append(item)
 

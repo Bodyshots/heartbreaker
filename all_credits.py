@@ -251,17 +251,13 @@ def creds() -> str:
                  'https://freesound.org/people/Breviceps/sounds/445978/',
                  'CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
                  'https://creativecommons.org/publicdomain/zero/1.0/')
-    se7 = Credit('Wrong answer.', 'SgtPepperArc360',
-                 'https://freesound.org/people/SgtPepperArc360/sounds/341732/',
-                 'Copyright 2016 SgtPepperArc360 (CC BY-NC 3.0)',
-                 'https://creativecommons.org/licenses/by-nc/3.0/')
-    se8 = Credit('Retro game heal sound', 'lulyc',
+    se7 = Credit('Retro game heal sound', 'lulyc',
                  'https://freesound.org/people/lulyc/sounds/346116/',
                  'CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
                  'https://creativecommons.org/publicdomain/zero/1.0/')
 
-    se_credits = CreditRoll('Sound Effects Provided by:')
-    se = [se1, se2, se3, se4, se5, se6, se7, se8]
+    se_credits = CreditRoll('Sound Effects Provided by')
+    se = [se1, se2, se3, se4, se5, se6, se7]
     for i in se: se_credits.add(i)
 
     # Code

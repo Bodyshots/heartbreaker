@@ -438,7 +438,7 @@ def questions(person: Character) -> List[Dict]:
                         'D': '42.4338° N, 83.9845° W'}
         },
         {
-            'Question 43':  'Ellos no saben Pepelaugh',
+            'Question 43':  'El no sabe Pepelaugh',
             'Answers': {'A': 'Clueless',
                         'B': 'What?',
                         'C': 'Si',

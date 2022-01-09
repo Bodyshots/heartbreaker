@@ -102,9 +102,9 @@ def _decision_select(prompt: str, options: tuple, msg: str) -> str:
     clear_term()
     prompt += '\n'
     decision = input(prompt)
-    if decision in options: return decision
     while (decision.strip().upper() not in options or
            decision.strip().upper() == ''):
+        if decision in options: return decision
         invalid_SE.play(), clear_term()
         decision = input(f'{msg}\n{prompt}')
     return decision.strip().upper()
