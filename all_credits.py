@@ -154,9 +154,13 @@ def creds() -> str:
                       'https://modarchive.org/index.php?request=view_profile&query=69141',
                       'Public Domain Certification',
                       'https://creativecommons.org/licenses/publicdomain/')
+    bat_mus5 = Credit('Fruity Radioactivity', 'K. Jose',
+                      'https://modarchive.org/index.php?request=view_profile&query=86612',
+                      'CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
+                      'https://creativecommons.org/publicdomain/zero/1.0/')
 
     bat_mus_credits = CreditRoll('Battle Music')
-    all_bat_mus = [bat_mus1, bat_mus2, bat_mus3, bat_mus4]
+    all_bat_mus = [bat_mus1, bat_mus2, bat_mus3, bat_mus4, bat_mus5]
     for i in all_bat_mus: bat_mus_credits.add(i)
 
     # Jingles

@@ -12,7 +12,7 @@ from typing import List, Tuple, Union, Dict, Callable, Optional
 from character_classes import (Character, NormalCharacter, ActiveCharacter,
                                ObjectiveCharacter, NegativeCharacter,
                                person_creator, rand_nam, rand_pers, specific_person_creator)
-from constants import (BATTLE_MUSIC_INTROS_PATH, EASY_TURNS, GAME_OVER_MUSIC, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, MUSIC_END, NORM_CONF, 
+from constants import (BATTLE_MUSIC_INTROS_PATH, DEFAULT_MUSIC_VOL, EASY_TURNS, GAME_OVER_MUSIC, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, NORM_CONF, 
                        OPTION_A, OPTION_B, OPTION_C, OPTION_D, PASSWORD, RUN, ITEM, INFO,
                        SMALL_NEG, SMALL_POS,
                        TALK, USAGE_DEC, COLOGNE_LOWER, COLOGNE_HIGHER,
@@ -52,7 +52,7 @@ def main_game() -> None:
 
     """
     menu_choice = ''
-    music_vol = 0.5
+    music_vol = DEFAULT_MUSIC_VOL
     diff = DIF_NORM
     credit_str = creds()
     pg.mixer.music.set_volume(music_vol)
@@ -329,7 +329,7 @@ def music_select(music_lst: List[str], music_full_nme: List[str]) -> Optional[st
     options = (OPTION_A, OPTION_B, OPTION_C)
     while True:
         clear_term()
-        music_loop(BATTLE_MUSIC_PATH + f'\{music_full_nme[i]}', 0, 100, 0)
+        music_loop(BATTLE_MUSIC_PATH + f'\{music_full_nme[i]}', 0, 1000, 0)
         select_choice = prompt_select(music_select_prompt(music_lst[i]), options)
         if select_choice == OPTION_A:
             clear_term()
@@ -395,14 +395,13 @@ def game_over_win(confidence: int, diff: str) -> None:
 
     """
 
-    user_dec, turn_amt = '', NORM_TURNS
+    if diff == DIF_HARD: turn_amt = HARD_TURNS
+    elif diff == DIF_EASY: turn_amt = EASY_TURNS
+    else: turn_amt = NORM_TURNS
+    user_dec = ''
     pg.mixer.music.stop(), pg.mixer.music.unload()
     pg.mixer.music.load(RESULTS_MUSIC), pg.mixer.music.play()
 
-    if diff == DIF_HARD:
-        turn_amt = HARD_TURNS
-    elif diff == DIF_EASY:
-        turn_amt = EASY_TURNS
 
     input(f'You have survived all {turn_amt} turns as a {diff}!\n')
     select_SE.play()

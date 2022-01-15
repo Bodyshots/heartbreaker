@@ -15,9 +15,6 @@ def _music_file_checker(file: str) -> bool:
         return False
     return True
 
-# Pygame Events
-MUSIC_END = pg.USEREVENT + 1
-
 ### Battle Options
 
 OPTION_A = 'A'
@@ -101,6 +98,7 @@ MUSIC_PATH = r'Sounds\Music'
 BATTLE_MUSIC_PATH = MUSIC_PATH + r'\battle_music'
 BATTLE_MUSIC_INTROS_PATH = BATTLE_MUSIC_PATH + r'\starters'
 JINGLE_PATH = r'Sounds\Music\Jingles'
+DEFAULT_MUSIC_VOL = 0.5
 
 ## Sound Effects
 conf_lose_SE = pg.mixer.Sound(abspath(r'Sounds\SE\conf_down.wav'))
