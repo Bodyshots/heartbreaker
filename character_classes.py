@@ -656,10 +656,11 @@ class NegativeCharacter(Character):
                             OPTION_B: pathetic,
                             OPTION_C: confusion,
                             OPTION_D: sincere_laugh},
-                       44: {OPTION_A: distasteful,
-                            OPTION_B: distasteful,
-                            OPTION_C: distasteful,
-                            OPTION_D: distasteful},
+                       44: {OPTION_A: appreciate,
+                            OPTION_B: appreciate,
+                            OPTION_C: appreciate,
+                            OPTION_D: appreciate}, # no idea how a neg char
+                                                   # would react here tbh
                        45: {OPTION_A: distasteful,
                             OPTION_B: distasteful,
                             OPTION_C: sincere_laugh,
