@@ -28,7 +28,7 @@ OPTION_G = 'G'
 # Turn Amounts
 EASY_TURNS = 20
 NORM_TURNS = 15
-HARD_TURNS = 0
+HARD_TURNS = 10
 
 # Confidence Amounts
 EASY_CONF = 100

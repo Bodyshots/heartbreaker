@@ -415,7 +415,7 @@ def game_over_win(confidence: int, diff: str) -> None:
         ending_text = win_results_text(nums[1]) + f'Your confidence was {confidence}%!' + '\n' * 2
         if diff == DIF_HARD and confidence > 80:
             ending_text += f"Select mode unlocked! Password: \"{PASSWORD}\"\n\n"
-        ending_text += 'Enter in "a"'' to continue\n'
+        ending_text += 'Enter "a" to continue\n'
         user_dec = input(ending_text).lower()
         clear_term()
 
