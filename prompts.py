@@ -4,7 +4,7 @@ from constants import (TALK, ITEM, INFO, RUN, OPTION_A, OPTION_B, OPTION_C,
                        OPTION_D, OPTION_E, OPTION_F, YES, NO, DIF_EASY,
                        DIF_NORM, DIF_HARD)
 from character_classes import Character
-from typing import Dict
+from typing import Dict, List
 
 
 def decision_prompt(confidence: float, turns: int) -> str:
@@ -14,7 +14,7 @@ def decision_prompt(confidence: float, turns: int) -> str:
 
     """
     prompt = 'What do you want to do?\n'\
-             f'Turns left: {turns}\n'\
+             f'Turns left: {turns}\n\n'\
              f'[{TALK}] - Talk\n'\
              f'[{ITEM}] - Items\n'\
              f'[{INFO}] - Info\n'\
@@ -30,7 +30,7 @@ def menu_prompt() -> str:
     quit.
 
     """
-    prompt = 'Main Menu:\n'\
+    prompt = 'Main Menu:\n\n'\
             f'[{OPTION_A}] - Play the game!\n'\
             f'[{OPTION_B}] - Story\n'\
             f'[{OPTION_C}] - Instructions\n'\
@@ -48,7 +48,7 @@ def item_prompt(cologne: int, excuses: int, confidence: int) -> str:
 
     """
     prompt = f'Your Confidence: {confidence}%\n'\
-              'Items:\n'\
+              'Items:\n\n'\
              f'[{OPTION_A}] - Cologne: {cologne}\n'\
              f'[{OPTION_B}] - Washroom Break Excuses: {excuses}\n'\
              f'[{OPTION_C}] - Show Off!\n'\
@@ -71,20 +71,21 @@ def yes_no_prompt(message: str) -> str:
     return prompt
 
 
-def question_format(questions: Dict) -> str:
+def question_format(questions: Dict, answers: List[str]) -> str:
     """
     Return a prompt for the user to decide how to respond to a random question
     from <questions>.
 
     """
-    answers = questions.get('Answers')
-    prompt = f'{(questions.get(sorted(list(questions.keys()))[1]))}\n'\
-             f'[{OPTION_A}] - {answers.get(OPTION_A)}\n'\
-             f'[{OPTION_B}] - {answers.get(OPTION_B)}\n'\
-             f'[{OPTION_C}] - {answers.get(OPTION_C)}\n'\
-             f'[{OPTION_D}] - {answers.get(OPTION_D)}'
+    options = (OPTION_A, OPTION_B, OPTION_C, OPTION_D)
+    i = 0
 
-    return prompt
+    prompt = f'{(questions.get(sorted(list(questions.keys()))[1]))}\n\n'
+    for answer in answers:
+        prompt += f'[{options[i]}] - {answer}\n'
+        i += 1
+
+    return prompt.rstrip()
 
 
 def options_prompt() -> str:
@@ -94,11 +95,10 @@ def options_prompt() -> str:
 
     """
 
-    prompt = 'What would you like to change?\n'\
+    prompt = 'What would you like to change?\n\n'\
             f'[{OPTION_A}] - Music Volume\n'\
             f'[{OPTION_B}] - Sound Effect (SE) Volume\n'\
-            f'[{OPTION_C}] - Difficulty\n'\
-            f'[{OPTION_D}] - Back'
+            f'[{OPTION_C}] - Back'
 
     return prompt
 
@@ -164,7 +164,7 @@ def instructions_prompt() -> str:
              ' Show off wisely!\n\nInfo and Run are a bit self-explanatory:'\
              '\n\n3. Info gives you the person\'s name and '\
              'personality.\n\n4. Run ends the game prematurely '\
-             '(using it results in a loss).\n\nGood Luck!\n\n'\
+             '(resulting in a loss).\n\nGood Luck!\n\n'\
              f'[{OPTION_A}] - Back'
     return prompt
 
@@ -197,21 +197,69 @@ def information_prompt(person: Character) -> str:
     return f'Information:\n{person}\n[{OPTION_A}] - Back'
 
 
-def diff_prompt(current_dif: str) -> str:
+def diff_prompt() -> str:
     """
-    Show the <current_dif> (current difficulty) of the game
-    and show a list of difficulties that the user can
+    Show a list of difficulties that the user can
     choose from. These are:
 
-    - Easy
-    - Medium
-    - Hard
+    - Gigachad (DIF_EASY)
+    - Normal (DIF_NORMAL)
+    - Weeb (DIF_HARD)
     """
-    prompt = 'Select your difficulty below.\n'\
-            f'Current difficulty: {current_dif}\n'\
-            f'[{OPTION_A}] - {DIF_EASY}\n'\
-            f'[{OPTION_B}] - {DIF_NORM}\n'\
-            f'[{OPTION_C}] - {DIF_HARD}\n'\
-            f'[{OPTION_D}] - Back'
+    prompt = 'Select your difficulty below.\n\n'\
+            f'[{OPTION_A}] - Gigachad\n'\
+            f'[{OPTION_B}] - Normie\n'\
+            f'[{OPTION_C}] - Weeb\n\n'\
+            'Difficulty levels determine the number of '\
+            'turns and confidence gains/losses throughout the date.'
 
+    return prompt
+
+def jukebox_prompt(song: str) -> str:
+    prompt = f'Current song: {song}\n'\
+             f'[{OPTION_A}] - Next\n'\
+             f'[{OPTION_B}] - Back\n'\
+             f'[{OPTION_C}] - Exit\n\n'
+    return prompt
+
+def music_select_prompt(song: str) -> str:
+    prompt = f'Select a song:\n{song}\n\n'\
+             f'[{OPTION_A}] - Select\n'\
+             f'[{OPTION_B}] - Next song\n'\
+             f'[{OPTION_C}] - Previous song\n'
+    return prompt
+
+def select_play_prompt() -> str:
+    prompt = f"Select a mode:\n\n"\
+             f'[{OPTION_A}] - Random\n'\
+             f'[{OPTION_B}] - Select Character (requires password)\n'\
+             f'[{OPTION_C}] - Back\n'
+    return prompt
+
+def enter_password_prompt() -> str:
+    prompt = "Enter the password (obtained by completing random mode"\
+             "on Weeb mode with a confidence of 80 or higher)\n"\
+             "Alternatively, enter \"A\" to go back to the select screen.\n\n"\
+             "Password: "
+    return prompt
+
+def select_personality_prompt() -> str:
+    prompt = f"Select a personality type:\n\n"\
+             f'[{OPTION_A}] - Normal\n'\
+             f'[{OPTION_B}] - Active\n'\
+             f'[{OPTION_C}] - Negative\n'\
+             f'[{OPTION_D}] - Objective\n'\
+             f'[{OPTION_E}] - Random\n'
+    return prompt
+
+def name_select() -> str:
+    prompt = f"Give a name for this character:\n"\
+             f'[{OPTION_A}] - Manually\n'\
+             f'[{OPTION_B}] - Randomly\n'
+    return prompt
+
+def confirm_character(person: Character) -> str:
+    prompt = f"Your character is:\n{person}\n"\
+             f"True personality: {person.true_pers}\n"\
+             f"Continue?\n"
     return prompt
