@@ -45,4 +45,4 @@ For possible clueless users, like my future self, that may not understand how to
 # Other Notes
 - This game is a WIP (though I'm not planning to work on it any time soon). Things may be added, removed, etc. Who knows what'll happen?
 
-- If you've played the game, you'll notice that some questions tend to repeat themselves across multiple playthroughs. This is because I only added 20 questions to the game. I ask you 10 of these questions (no repeats). So, for each completed playthrough you're going to cover 1/2 of my made questions. That's a lot! If you do have anymore questions, feel free to suggest them.
+- If you've played the game, you'll notice that some questions tend to repeat themselves across multiple playthroughs. This is because I only added 53 questions to the game. I ask you 10-20 of these questions (no repeats). So, for each completed playthrough you're going to about half of my made questions. That's a lot! If you do have anymore questions, feel free to suggest them.
