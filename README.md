@@ -33,7 +33,7 @@ Depending on your anti-virus software, the program may get labelled as a trojan.
 
 Requirements:
 - Pygame
-- Git LFS (I think, not too sure)
+- Git LFS
 
 ### idk how to make this game work pls help
 For possible clueless users, like my future self, that may not understand how to actually get the game to work, here are some pointers that may help you out:
@@ -41,8 +41,3 @@ For possible clueless users, like my future self, that may not understand how to
 - You can't just straight up click the green download button and download the game as a zip. You have to actually clone the repository through the command line so that Git LFS can actually fetch its needed files.
 
 - Make sure you're in the correct directory! I've personally wasted a couple of hours in dealing with this problem.
-
-# Other Notes
-- This game is a WIP (though I'm not planning to work on it any time soon). Things may be added, removed, etc. Who knows what'll happen?
-
-- If you've played the game, you'll notice that some questions tend to repeat themselves across multiple playthroughs. This is because I only added 20 questions to the game. I ask you 10 of these questions (no repeats). So, for each completed playthrough you're going to cover 1/2 of my made questions. That's a lot! If you do have anymore questions, feel free to suggest them.
