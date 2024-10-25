@@ -1,17 +1,12 @@
-""" (Not) Super Seducer: The Bootleg Version - The Main File That Runs the Game """
+""" Heartbreaker - The Main File That Runs the Game """
 
 from sys import exit
-import doctest
 import re
 import pygame as pg
-import doctest
-import os
 from time import sleep
 from random import choice, randint, shuffle
 from typing import List, Tuple, Union, Dict, Callable, Optional
-from character_classes import (Character, NormalCharacter, ActiveCharacter,
-                               ObjectiveCharacter, NegativeCharacter,
-                               person_creator, rand_nam, rand_pers, specific_person_creator)
+from character_classes import (Character, person_creator, rand_nam, rand_pers, specific_person_creator)
 from constants import (BATTLE_MUSIC_INTROS_PATH, DEFAULT_MUSIC_VOL, EASY_TURNS, GAME_OVER_MUSIC, HARD_CONF, HARD_TURNS, MINOR_NEG, MINOR_POS, NORM_CONF, 
                        OPTION_A, OPTION_B, OPTION_C, OPTION_D, PASSWORD, RUN, ITEM, INFO,
                        SMALL_NEG, SMALL_POS,
@@ -28,7 +23,8 @@ from constants import (BATTLE_MUSIC_INTROS_PATH, DEFAULT_MUSIC_VOL, EASY_TURNS, 
                        CREDITS_MUSIC, BATTLE_MUSIC_LST, RESULTS_MUSIC, GAME_OVER_MUSIC, BATTLE_MUSIC_PATH, 
                        PASSWORD, BATTLE_MUSIC_FULL_NMES, BATTLE_MUSIC_INTRO_LST, BATTLE_MUSIC_INTRO_FULL_NMES)
 from questions_list import questions
-from prompts import (confirm_character, decision_prompt, diff_prompt, enter_password_prompt, menu_prompt, item_prompt, music_select_prompt, name_select, options_prompt, select_personality_prompt, select_play_prompt,
+from prompts import (confirm_character, decision_prompt, diff_prompt, enter_password_prompt, menu_prompt, item_prompt, music_select_prompt, 
+                     name_select, options_prompt, select_personality_prompt, select_play_prompt,
                      yes_no_prompt, credits_prompt, music_lvl_prompt,
                      question_format, sound_lvl_prompt, instructions_prompt,
                      story_prompt, information_prompt)
@@ -42,7 +38,7 @@ pg.init()
 
 # Game Ready
 
-print('Welcome to (Not) Super Seducer: The Bootleg Version!')
+print('Welcome to Heartbreaker!')
 input('Enter any key to start!\n')
 
 
@@ -53,7 +49,6 @@ def main_game() -> None:
     """
     menu_choice = ''
     music_vol = DEFAULT_MUSIC_VOL
-    diff = DIF_NORM
     credit_str = creds()
     pg.mixer.music.set_volume(music_vol)
     pg.mixer.music.set_endevent()
@@ -219,7 +214,7 @@ def battle(person: Character) -> None:
             int_i = BATTLE_MUSIC_INTRO_LST.index(battle_track)
             pg.mixer.music.fadeout(1000)
             pg.mixer.music.unload()
-            pg.mixer.music.load(BATTLE_MUSIC_INTROS_PATH + f'\{BATTLE_MUSIC_INTRO_FULL_NMES[int_i]}')
+            pg.mixer.music.load(BATTLE_MUSIC_INTROS_PATH + f'/{BATTLE_MUSIC_INTRO_FULL_NMES[int_i]}')
             pg.mixer.music.play(0)
             pg.mixer.music.queue(battle_track_loc, loops=-1)
         else:
@@ -329,11 +324,11 @@ def music_select(music_lst: List[str], music_full_nme: List[str]) -> Optional[st
     options = (OPTION_A, OPTION_B, OPTION_C)
     while True:
         clear_term()
-        music_loop(BATTLE_MUSIC_PATH + f'\{music_full_nme[i]}', 0, 1000, 0)
+        music_loop(BATTLE_MUSIC_PATH + f'/{music_full_nme[i]}', 0, 1000, 0)
         select_choice = prompt_select(music_select_prompt(music_lst[i]), options)
         if select_choice == OPTION_A:
             clear_term()
-            battle_track_loc, battle_track = BATTLE_MUSIC_PATH + f'\{music_full_nme[i]}', music_lst[i]
+            battle_track_loc, battle_track = BATTLE_MUSIC_PATH + f'/{music_full_nme[i]}', music_lst[i]
             return battle_track_loc, battle_track
         elif select_choice == OPTION_B:
             select_SE.play()
@@ -629,11 +624,11 @@ def quest_result(decision: str, person: Character, confidence: int,
 
 def quest_side_effects(cologne_use: int, question_num: int, 
                        decision: str) -> int:
-    if question_num == 32 and decision == 'B':
+    if question_num == 32 and decision == OPTION_B:
         cologne_use += 1
     elif question_num == 36:
-        if decision == 'A': cologne_use += 1
-        elif decision == 'B' and cologne_use > 0: cologne_use -= 1
+        if decision == OPTION_A: cologne_use += 1
+        elif decision == OPTION_B and cologne_use > 0: cologne_use -= 1
     return cologne_use
     
 

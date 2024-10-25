@@ -1,4 +1,4 @@
-# (Not) Super Seducer: The Bootleg Version
+# Heartbreaker
 (Couldn't think of a better name)
 
 One of my first bigger projects, which is just a typical dating game *OMEGALUL*.

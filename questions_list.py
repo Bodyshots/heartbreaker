@@ -332,7 +332,7 @@ def questions(person: Character) -> List[Dict]:
         {
             'Question 31':  'Though your food is of excellent quality, you'\
                             ' suddenly realize your wallet isn\'t as so.'\
-                            ' You\'re too poor to pay for both'\
+                            ' You\'re too poor to pay for both '\
                            f'{person.first_name}\'s meal as well as yours!\n\n'\
                             'What do you do?',
             'Answers': {'A': f'Persuade {person.first_name} to split the'\
@@ -378,8 +378,8 @@ def questions(person: Character) -> List[Dict]:
         },
         {
             'Question 36':  f' You touch your pockets and seem to be missing'\
-                             ' something.\n\n It seems like you\'ve been pickpocketed!\n\n'\
-                             ' Indeed, out of the corner of your eye, you see'\
+                             ' something.\n\nIt seems like you\'ve been pickpocketed!\n\n'\
+                             'Indeed, out of the corner of your eye, you see'\
                              ' a man walking rapidly. What do you do?',
             'Answers': {'A': 'Confront the man',
                         'B': 'Begrudingly continue on with your date',

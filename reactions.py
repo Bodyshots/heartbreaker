@@ -6,7 +6,6 @@ from constants import (NORMAL, OBJECTIVE, ACTIVE, NEGATIVE,
                        run_SE, gunshot_SE, WASHROOM_LOWER,
                        WASHROOM_HIGHER)
 import pygame as pg
-from os import path
 from typing import Dict, Callable
 from file_init import file_lst_return
 

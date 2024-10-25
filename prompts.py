@@ -1,8 +1,7 @@
 """ Module for the game's prompts """
 
 from constants import (TALK, ITEM, INFO, RUN, OPTION_A, OPTION_B, OPTION_C,
-                       OPTION_D, OPTION_E, OPTION_F, YES, NO, DIF_EASY,
-                       DIF_NORM, DIF_HARD)
+                       OPTION_D, OPTION_E, OPTION_F, YES, NO)
 from character_classes import Character
 from typing import Dict, List
 
